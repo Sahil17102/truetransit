@@ -161,12 +161,15 @@ function HeroVisual() {
       <div className="orbit orbit-one" />
       <div className="orbit orbit-two" />
       <div className="parcel">
-        <div className="parcel-top" />
-        <div className="parcel-side" />
+        <div className="parcel-top"><span>Manifest</span><strong>TT-4928</strong></div>
+        <div className="parcel-side"><span /><span /><span /></div>
         <div className="parcel-front">
-          <span className="mini-brand">TT</span>
+          <div className="label-head">
+            <span className="mini-brand">TT</span>
+            <div><small>Priority shipment</small><strong>HYD - BLR</strong></div>
+          </div>
           <div className="barcode" />
-          <small>NYC - SFO</small>
+          <div className="label-meta"><span>2.4 kg</span><span>Express</span><span>Insured</span></div>
         </div>
       </div>
       <div className="float-card status-card">
