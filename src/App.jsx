@@ -498,36 +498,66 @@ function LogisticsIndustries() {
       copy: 'Manage prepaid, COD, same-day and regional shipments with cleaner tracking visibility for every customer.',
       icon: Package,
       visual: 'commerce',
+      status: 'COD ready',
+      metric: '2.4k',
+      label: 'orders today',
+      route: 'HYD -> BLR',
+      progress: '82%',
     },
     {
       title: 'Courier partner network',
       copy: 'Coordinate multiple carrier partners, compare service levels and keep dispatch teams aligned from pickup to doorstep.',
       icon: Truck,
       visual: 'courier',
+      status: 'Live rates',
+      metric: '14',
+      label: 'active partners',
+      route: 'Delhivery + DTDC',
+      progress: '68%',
     },
     {
       title: 'Warehouse operations',
       copy: 'Move labels, packing, handover scans and route decisions into one dependable shipping workflow.',
       icon: Home,
       visual: 'warehouse',
+      status: 'Scan sync',
+      metric: '96%',
+      label: 'handover done',
+      route: 'Dock A -> Hub 03',
+      progress: '74%',
     },
     {
       title: 'Returns and RTO',
       copy: 'Keep return pickups, reverse movement and failed delivery handling visible without adding extra manual follow-up.',
       icon: Route,
       visual: 'returns',
+      status: 'RTO watch',
+      metric: '31',
+      label: 'returns queued',
+      route: 'Customer -> WH',
+      progress: '56%',
     },
     {
       title: 'Bulk shipment planning',
       copy: 'Estimate chargeable weight, group shipments by lane and prepare high-volume dispatches with better cost control.',
       icon: BadgePercent,
       visual: 'bulk',
+      status: 'Rate lock',
+      metric: '18%',
+      label: 'cost saved',
+      route: 'North lane',
+      progress: '88%',
     },
     {
       title: 'Customer updates',
       copy: 'Give customers calm, consistent order updates across tracking status, delays and final delivery milestones.',
       icon: Radar,
       visual: 'updates',
+      status: 'Alerts sent',
+      metric: '99.1%',
+      label: 'SMS delivered',
+      route: 'Pickup -> Doorstep',
+      progress: '91%',
     },
   ];
 
@@ -539,11 +569,22 @@ function LogisticsIndustries() {
           <h2>TrueTransit supports every logistics workflow.</h2>
         </div>
         <div className="industries-grid">
-          {industries.map(({ title, copy, icon: Icon, visual }) => (
+          {industries.map(({ title, copy, icon: Icon, visual, status, metric, label, route, progress }) => (
             <article className="industry-card reveal" key={title}>
               <div className={`industry-visual ${visual}`} aria-hidden="true">
-                <Icon />
-                <span /><span /><span />
+                <div className="industry-widget">
+                  <div className="widget-top">
+                    <span className="widget-icon"><Icon /></span>
+                    <span className="widget-status"><Check /> {status}</span>
+                  </div>
+                  <strong>{metric}</strong>
+                  <small>{label}</small>
+                  <div className="widget-route">
+                    <span>{route}</span>
+                    <b>{progress}</b>
+                  </div>
+                  <div className="widget-bar"><span style={{ width: progress }} /></div>
+                </div>
               </div>
               <div className="industry-copy">
                 <h3>{title}</h3>
