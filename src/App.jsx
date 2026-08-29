@@ -491,34 +491,92 @@ function FeatureGrid({ onNavigate }) {
   );
 }
 
-function LogisticsAds({ onNavigate }) {
+function LogisticsIndustries() {
+  const industries = [
+    {
+      title: 'Ecommerce deliveries',
+      copy: 'Manage prepaid, COD, same-day and regional shipments with cleaner tracking visibility for every customer.',
+      icon: Package,
+      visual: 'commerce',
+    },
+    {
+      title: 'Courier partner network',
+      copy: 'Coordinate multiple carrier partners, compare service levels and keep dispatch teams aligned from pickup to doorstep.',
+      icon: Truck,
+      visual: 'courier',
+    },
+    {
+      title: 'Warehouse operations',
+      copy: 'Move labels, packing, handover scans and route decisions into one dependable shipping workflow.',
+      icon: Home,
+      visual: 'warehouse',
+    },
+    {
+      title: 'Returns and RTO',
+      copy: 'Keep return pickups, reverse movement and failed delivery handling visible without adding extra manual follow-up.',
+      icon: Route,
+      visual: 'returns',
+    },
+    {
+      title: 'Bulk shipment planning',
+      copy: 'Estimate chargeable weight, group shipments by lane and prepare high-volume dispatches with better cost control.',
+      icon: BadgePercent,
+      visual: 'bulk',
+    },
+    {
+      title: 'Customer updates',
+      copy: 'Give customers calm, consistent order updates across tracking status, delays and final delivery milestones.',
+      icon: Radar,
+      visual: 'updates',
+    },
+  ];
+
+  return (
+    <section className="industries-section">
+      <div className="container">
+        <div className="industries-heading reveal">
+          <p className="eyebrow"><span /> Shipment use cases</p>
+          <h2>TrueTransit supports every logistics workflow.</h2>
+        </div>
+        <div className="industries-grid">
+          {industries.map(({ title, copy, icon: Icon, visual }) => (
+            <article className="industry-card reveal" key={title}>
+              <div className={`industry-visual ${visual}`} aria-hidden="true">
+                <Icon />
+                <span /><span /><span />
+              </div>
+              <div className="industry-copy">
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LogisticsAds() {
   const cards = [
     {
       type: 'Operations guide',
       title: 'Cut delivery exceptions before they become support tickets',
-      cta: 'Read guide',
-      href: '/tracking',
       variant: 'route-visual',
     },
     {
       type: 'Rate playbook',
       title: 'Find the right courier price for every shipment lane',
-      cta: 'Calculate now',
-      href: '/rate-calculator',
       variant: 'rate-visual',
     },
     {
       type: 'Packaging tool',
       title: 'Use chargeable weight to avoid billing surprises',
-      cta: 'Check weight',
-      href: '/weight-calculator',
       variant: 'weight-visual',
     },
     {
       type: 'Transit support',
       title: 'Keep customers updated from pickup to doorstep',
-      cta: 'Contact team',
-      href: '/contact',
       variant: 'support-visual',
     },
   ];
@@ -542,9 +600,7 @@ function LogisticsAds({ onNavigate }) {
               </div>
               <small>{card.type}</small>
               <h3>{card.title}</h3>
-              <AppLink href={card.href} onNavigate={onNavigate}>
-                {card.cta} <ArrowRight />
-              </AppLink>
+              <p>Built for shipment teams that need clear operations, cleaner handoffs and reliable customer updates.</p>
             </article>
           ))}
         </div>
@@ -789,7 +845,7 @@ function HomePage({ onNavigate, showToast }) {
       </section>
 
       <ShipmentFlow />
-      <AiSection showToast={showToast} />
+      <LogisticsIndustries />
       <SuiteSection onNavigate={onNavigate} />
 
       <section className="readiness" id="solutions">
@@ -812,7 +868,7 @@ function HomePage({ onNavigate, showToast }) {
 
       <Stories />
       <FeatureGrid onNavigate={onNavigate} />
-      <LogisticsAds onNavigate={onNavigate} />
+      <LogisticsAds />
 
       <section className="developer-section" id="developers">
         <div className="container developer-inner">
