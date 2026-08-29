@@ -877,9 +877,21 @@ function HomePage({ onNavigate, showToast }) {
 
       <section className="trust-strip" aria-label="Customer logos">
         <div className="container">
-          <p>Trusted to keep great brands moving</p>
+          <p>Courier partners and logistics network</p>
           <div className="logo-row">
-            <span>NORTHSTAR</span><span>Form & Field</span><span>Arcadia</span><span>MONUMENT</span><span>kinfolk</span><span>VANTAGE</span>
+            {[
+              ['BlueDart', 'Express air', 'bd'],
+              ['Delhivery', 'Surface network', 'dl'],
+              ['DTDC', 'Pan India', 'dt'],
+              ['XpressBees', 'Ecommerce', 'xb'],
+              ['Ekart', 'Marketplace', 'ek'],
+              ['Shadowfax', 'Hyperlocal', 'sf'],
+            ].map(([name, label, tone]) => (
+              <span className={`partner-logo ${tone}`} key={name}>
+                <b>{name.slice(0, 2).toUpperCase()}</b>
+                <span><strong>{name}</strong><small>{label}</small></span>
+              </span>
+            ))}
           </div>
         </div>
       </section>
