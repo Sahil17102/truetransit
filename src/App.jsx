@@ -372,8 +372,13 @@ function SuiteSection({ onNavigate }) {
             <div className="suite-icon"><Braces /></div>
             <span className="card-number">01</span>
             <div className="code-window">
-              <div className="code-dots"><span /><span /><span /></div>
-              <code><b>POST</b> /v1/shipments<br /><span>{'{'}</span><br />&nbsp;&nbsp;"to": <em>"San Francisco"</em>,<br />&nbsp;&nbsp;"parcel": <em>"medium_box"</em><br /><span>{'}'}</span></code>
+              <div className="code-dots"><span /><span /><span /><small>API request</small></div>
+              <code><b>POST</b> /v1/shipments</code>
+              <div className="api-lines">
+                <p><span>carrier</span><strong>BlueDart</strong></p>
+                <p><span>service</span><strong>Express</strong></p>
+                <p><span>status</span><strong>Label ready</strong></p>
+              </div>
             </div>
             <h3>Shipping API</h3>
             <p>Create labels, compare rates, and manage shipments across every major carrier with one clean integration.</p>
@@ -384,10 +389,11 @@ function SuiteSection({ onNavigate }) {
             <div className="suite-icon"><Route /></div>
             <span className="card-number">02</span>
             <div className="map-visual">
+              <div className="track-head"><span>TT-4928</span><strong>Out for delivery</strong></div>
               <span className="map-pin pin-one"><Package /></span>
-              <span className="map-pin pin-two"><Home /></span>
+              <span className="map-pin pin-two"><Truck /></span>
               <svg viewBox="0 0 400 180" aria-hidden="true"><path d="M42,121 C104,20 179,165 236,77 S336,35 365,92" /></svg>
-              <div className="map-status"><small>Arriving today</small><strong>2:15-4:15 PM</strong></div>
+              <div className="map-status"><small>ETA window</small><strong>2:15-4:15 PM</strong></div>
             </div>
             <h3>Predictive tracking</h3>
             <p>Give customers accurate delivery windows and keep your team ahead of exceptions before support tickets arrive.</p>
@@ -399,7 +405,12 @@ function SuiteSection({ onNavigate }) {
             <span className="card-number">03</span>
             <div className="shield-visual">
               <ShieldCheck />
-              <div><span>Shipment protected</span><strong>$250.00</strong><small>Claim resolution under 48 hours</small></div>
+              <div className="coverage-card">
+                <span>Coverage active</span>
+                <strong>$250.00</strong>
+                <small>Claim SLA under 48 hours</small>
+                <p><Check /> Auto-approved for eligible packages</p>
+              </div>
             </div>
             <h3>Embedded protection</h3>
             <p>Protect every package with automated coverage and a claims experience your customers will actually enjoy.</p>
