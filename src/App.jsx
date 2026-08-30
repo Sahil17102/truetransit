@@ -1003,6 +1003,90 @@ function ContactPage({ showToast }) {
   );
 }
 
+function ReadinessSection({ onNavigate }) {
+  const targetScore = 92;
+  const arcLength = 282.8;
+  const sectionRef = useRef(null);
+  const [score, setScore] = useState(0);
+  const dashOffset = arcLength * (1 - score / 100);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    let frameId;
+    let started = false;
+
+    function runAnimation() {
+      if (started) return;
+      started = true;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setScore(targetScore);
+        return;
+      }
+
+      const duration = 950;
+      const startTime = performance.now();
+
+      function tick(now) {
+        const elapsed = Math.min((now - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - elapsed, 3);
+        setScore(Math.round(targetScore * eased));
+
+        if (elapsed < 1) {
+          frameId = window.requestAnimationFrame(tick);
+        } else {
+          setScore(targetScore);
+        }
+      }
+
+      frameId = window.requestAnimationFrame(tick);
+    }
+
+    if (!section || !('IntersectionObserver' in window)) {
+      runAnimation();
+      return () => {
+        if (frameId) window.cancelAnimationFrame(frameId);
+      };
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        runAnimation();
+        observer.disconnect();
+      }
+    }, { threshold: 0.35 });
+
+    observer.observe(section);
+    return () => {
+      observer.disconnect();
+      if (frameId) window.cancelAnimationFrame(frameId);
+    };
+  }, []);
+
+  return (
+    <section className="readiness" id="solutions" ref={sectionRef}>
+      <div className="container readiness-inner reveal">
+        <div className="readiness-copy">
+          <p className="eyebrow light-eye"><span /> Network readiness</p>
+          <h2>Can your operation<br />handle the <em>rush?</em></h2>
+          <p>Take a two-minute assessment and get a custom checklist for peak season resilience.</p>
+          <AppLink className="button button-light" href="/weight-calculator" onNavigate={onNavigate}>Check chargeable weight <ArrowUpRight /></AppLink>
+        </div>
+        <div className="gauge-wrap">
+          <div className="gauge" aria-label={`${targetScore} out of 100 peak readiness`}>
+            <svg viewBox="0 0 240 140">
+              <path className="gauge-bg" d="M30 120 A90 90 0 0 1 210 120" />
+              <path className="gauge-fill" d="M30 120 A90 90 0 0 1 210 120" style={{ strokeDashoffset: dashOffset }} />
+            </svg>
+            <div className="gauge-value"><strong>{score}</strong><span>/100</span><small>Peak ready</small></div>
+          </div>
+          <div className="gauge-note"><CircleCheck /><div><strong>Your network looks strong</strong><span>2 opportunities identified</span></div></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function HomePage({ onNavigate, showToast }) {
   return (
     <>
@@ -1063,23 +1147,7 @@ function HomePage({ onNavigate, showToast }) {
       <LogisticsIndustries />
       <SuiteSection onNavigate={onNavigate} />
 
-      <section className="readiness" id="solutions">
-        <div className="container readiness-inner reveal">
-          <div className="readiness-copy">
-            <p className="eyebrow light-eye"><span /> Network readiness</p>
-            <h2>Can your operation<br />handle the <em>rush?</em></h2>
-            <p>Take a two-minute assessment and get a custom checklist for peak season resilience.</p>
-            <AppLink className="button button-light" href="/weight-calculator" onNavigate={onNavigate}>Check chargeable weight <ArrowUpRight /></AppLink>
-          </div>
-          <div className="gauge-wrap">
-            <div className="gauge">
-              <svg viewBox="0 0 240 140"><path className="gauge-bg" d="M30 120 A90 90 0 0 1 210 120" /><path className="gauge-fill" d="M30 120 A90 90 0 0 1 210 120" /></svg>
-              <div className="gauge-value"><strong>92</strong><span>/100</span><small>Peak ready</small></div>
-            </div>
-            <div className="gauge-note"><CircleCheck /><div><strong>Your network looks strong</strong><span>2 opportunities identified</span></div></div>
-          </div>
-        </div>
-      </section>
+      <ReadinessSection onNavigate={onNavigate} />
 
       <Stories />
       <FeatureGrid onNavigate={onNavigate} />
