@@ -1,12 +1,12 @@
 .scene {
   --scene-navy: #0d1b4d;
-  --scene-blue: #2267c9;
-  --scene-sky: #7dd3fc;
-  --scene-orange: #f47a0b;
+  --scene-blue: #0b3a78;
+  --scene-sky: #dbeafe;
+  --scene-orange: #e31b23;
   position: relative;
-  width: min(100%, 510px);
-  aspect-ratio: 1.48;
-  margin: -6px clamp(0px, 3vw, 36px) 0 auto;
+  width: min(100%, 540px);
+  aspect-ratio: 1.56;
+  margin: 2px clamp(0px, 3vw, 28px) 0 auto;
   align-self: flex-end;
   isolation: isolate;
   perspective: 1000px;
@@ -21,7 +21,7 @@
   z-index: -2;
   inset: 25% 3% 2%;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(34, 103, 201, 0.2), rgba(125, 211, 252, 0.05) 58%, transparent 74%);
+  background: radial-gradient(ellipse, rgba(11, 58, 120, 0.18), rgba(227, 27, 35, 0.05) 58%, transparent 74%);
   filter: blur(8px);
   transform: rotateX(64deg) translateZ(-30px);
 }
@@ -34,25 +34,25 @@
   top: 18%;
   left: 38%;
   border-radius: 50%;
-  background: rgba(125, 211, 252, 0.36);
-  filter: blur(38px);
+  background: rgba(11, 58, 120, 0.18);
+  filter: blur(42px);
   animation: glowBreathe 5s ease-in-out infinite;
 }
 
 .networkPlane {
   position: absolute;
-  inset: 27% 2% 1% 1%;
+  inset: 26% 1% 2% 0;
   overflow: hidden;
-  border: 1px solid rgba(34, 103, 201, 0.16);
-  border-radius: 38% 44% 34% 40%;
-  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(11, 58, 120, 0.16);
+  border-radius: 22px;
+  background-color: rgba(255, 255, 255, 0.82);
   background-image:
-    linear-gradient(rgba(34, 103, 201, 0.075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 103, 201, 0.075) 1px, transparent 1px),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(210, 238, 255, 0.68));
-  background-size: 30px 30px, 30px 30px, 100% 100%;
-  box-shadow: 0 30px 42px rgba(13, 27, 77, 0.12), inset 0 0 40px rgba(255, 255, 255, 0.92);
-  transform: rotateX(57deg) rotateZ(-7deg) translateZ(-24px);
+    linear-gradient(rgba(11, 58, 120, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 58, 120, 0.07) 1px, transparent 1px),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(232, 239, 248, 0.84));
+  background-size: 34px 34px, 34px 34px, 100% 100%;
+  box-shadow: 0 30px 42px rgba(13, 27, 77, 0.13), inset 0 0 40px rgba(255, 255, 255, 0.88);
+  transform: rotateX(58deg) rotateZ(-5deg) translateZ(-24px);
   transform-style: preserve-3d;
 }
 
@@ -67,7 +67,7 @@
   stroke-width: 3;
   stroke-linecap: round;
   stroke-dasharray: 8 11;
-  filter: drop-shadow(0 2px 3px rgba(34, 103, 201, 0.2));
+  filter: drop-shadow(0 2px 3px rgba(11, 58, 120, 0.22));
   animation: routeFlow 8s linear infinite;
 }
 
@@ -85,7 +85,7 @@
   border: 3px solid #fff;
   border-radius: 50%;
   background: var(--scene-orange);
-  box-shadow: 0 0 0 5px rgba(244, 122, 11, 0.16), 0 6px 12px rgba(13, 27, 77, 0.2);
+  box-shadow: 0 0 0 5px rgba(227, 27, 35, 0.14), 0 6px 12px rgba(13, 27, 77, 0.2);
   animation: hubPulse 2.4s ease-out infinite;
 }
 
@@ -96,7 +96,7 @@
 .globe {
   position: absolute;
   z-index: 4;
-  top: 16%;
+  top: 13%;
   right: 10%;
   width: 31%;
   aspect-ratio: 1;
@@ -105,7 +105,7 @@
   border-radius: 50%;
   background:
     radial-gradient(circle at 31% 26%, rgba(255, 255, 255, 0.95) 0 5%, transparent 6%),
-    radial-gradient(circle at 34% 31%, #9ee6ff 0%, #3d8de3 35%, #174da0 70%, #0d1b4d 100%);
+    radial-gradient(circle at 34% 31%, #eef6ff 0%, #5d98db 35%, #0b3a78 70%, #0d1b4d 100%);
   box-shadow:
     -16px 24px 36px rgba(13, 27, 77, 0.22),
     inset -15px -12px 20px rgba(5, 20, 65, 0.36),
@@ -137,7 +137,7 @@
   border: 2px solid #fff;
   border-radius: 50%;
   background: var(--scene-orange);
-  box-shadow: 0 0 0 0 rgba(244, 122, 11, 0.65);
+  box-shadow: 0 0 0 0 rgba(227, 27, 35, 0.56);
   animation: globeSignal 2s ease-out infinite;
 }
 
@@ -153,8 +153,8 @@
   --parcel-scale: 1;
   position: absolute;
   z-index: 6;
-  left: 19%;
-  top: 27%;
+  left: 17%;
+  top: 29%;
   width: 124px;
   height: 128px;
   transform-style: preserve-3d;
@@ -187,7 +187,7 @@
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.32);
   border-radius: 8px;
-  background: linear-gradient(145deg, #ff9a32, #ed6500 65%, #c84e00);
+  background: linear-gradient(145deg, #153d7b, #0b3a78 58%, #071d45);
   box-shadow: inset 8px 9px 14px rgba(255, 255, 255, 0.16);
   transform: translateZ(46px);
 }
@@ -208,7 +208,7 @@
 .cubeSide {
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 7px;
-  background: linear-gradient(145deg, #d75a00, #a83b00);
+  background: linear-gradient(145deg, #0b2f68, #071d45);
   transform: rotateY(90deg) translateZ(46px);
 }
 
@@ -223,7 +223,7 @@
   height: 92px;
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 8px;
-  background: linear-gradient(135deg, #ffbd70, #f58a20);
+  background: linear-gradient(135deg, #e6eef8, #a9bdd9);
   transform: rotateX(90deg) translateZ(46px);
 }
 
@@ -275,7 +275,7 @@
   color: #fff;
   border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 11px;
-  background: linear-gradient(135deg, #1f65c4, var(--scene-navy));
+  background: linear-gradient(135deg, var(--scene-orange), var(--scene-navy));
   box-shadow: 0 10px 18px rgba(13, 27, 77, 0.24);
   animation: truckDrive 6.2s ease-in-out infinite;
 }
@@ -287,9 +287,9 @@
   display: flex;
   align-items: center;
   color: var(--scene-navy);
-  border: 1px solid rgba(255, 255, 255, 0.84);
-  background: rgba(255, 255, 255, 0.84);
-  box-shadow: 0 14px 28px rgba(13, 27, 77, 0.14);
+  border: 1px solid rgba(11, 58, 120, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 28px rgba(13, 27, 77, 0.13);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -297,7 +297,7 @@
 .infoCard {
   gap: 9px;
   padding: 9px 12px;
-  border-radius: 14px;
+  border-radius: 8px;
 }
 
 .infoCard small,
@@ -308,7 +308,7 @@
 
 .infoCard small {
   margin-bottom: 4px;
-  color: #6d7894;
+  color: #64748b;
   font-size: 0.49rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -356,7 +356,7 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 10px 13px;
-  border-radius: 14px;
+  border-radius: 8px;
   animation: cardFloat 5s ease-in-out -2.5s infinite;
 }
 
@@ -385,8 +385,8 @@
 }
 
 @keyframes globeSignal {
-  0% { box-shadow: 0 0 0 0 rgba(244, 122, 11, 0.68); }
-  75%, 100% { box-shadow: 0 0 0 16px rgba(244, 122, 11, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(227, 27, 35, 0.56); }
+  75%, 100% { box-shadow: 0 0 0 16px rgba(227, 27, 35, 0); }
 }
 
 @keyframes parcelFloat {
@@ -408,8 +408,8 @@
 }
 
 @keyframes hubPulse {
-  0%, 100% { box-shadow: 0 0 0 4px rgba(244, 122, 11, 0.16), 0 6px 12px rgba(13, 27, 77, 0.2); }
-  50% { box-shadow: 0 0 0 10px rgba(244, 122, 11, 0), 0 6px 12px rgba(13, 27, 77, 0.2); }
+  0%, 100% { box-shadow: 0 0 0 4px rgba(227, 27, 35, 0.15), 0 6px 12px rgba(13, 27, 77, 0.2); }
+  50% { box-shadow: 0 0 0 10px rgba(227, 27, 35, 0), 0 6px 12px rgba(13, 27, 77, 0.2); }
 }
 
 @keyframes glowBreathe {

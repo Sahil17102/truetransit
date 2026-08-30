@@ -19,11 +19,11 @@ interface AuthShellProps {
 
 const authPalette = {
   navy: '#0D1B4D',
-  orange: '#E86F00',
+  orange: '#E31B23',
   text: '#111111',
-  muted: '#3C465F',
-  blob: '#E8F7FF',
-  blobEdge: '#DDF0FC',
+  muted: '#44546F',
+  blob: '#EEF5FF',
+  blobEdge: '#E5EDF8',
 }
 
 const deliveryArtwork = '/images/client-auth-delivery-van-theme.png'
@@ -52,7 +52,13 @@ export default function AuthShell({
         maxHeight: '100dvh',
         width: '100%',
         boxSizing: 'border-box',
-        bgcolor: '#FFFFFF',
+        bgcolor: '#F8FAFE',
+        backgroundImage: `
+          linear-gradient(rgba(11, 58, 120, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(11, 58, 120, 0.045) 1px, transparent 1px),
+          linear-gradient(180deg, #FFFFFF 0%, #F4F8FD 54%, #EEF4FB 100%)
+        `,
+        backgroundSize: '40px 40px, 40px 40px, auto',
         color: authPalette.text,
         fontFamily: authDisplayFont,
         display: 'flex',
@@ -89,7 +95,8 @@ export default function AuthShell({
             zIndex: 0,
             inset: { xs: '18px -44% 18px -30%', lg: '0 6% 0 7%' },
             bgcolor: authPalette.blob,
-            background: `linear-gradient(145deg, ${authPalette.blob} 0%, #F4FBFF 48%, ${authPalette.blobEdge} 100%)`,
+            background: `linear-gradient(145deg, ${authPalette.blob} 0%, #F8FBFF 48%, ${authPalette.blobEdge} 100%)`,
+            boxShadow: `inset 0 1px 0 rgba(255,255,255,0.76), 0 36px 90px ${alpha(authPalette.navy, 0.08)}`,
             borderRadius: {
               xs: '42% 58% 48% 52% / 12% 16% 84% 88%',
               lg: '46% 54% 50% 50% / 16% 18% 82% 84%',
@@ -196,7 +203,7 @@ export default function AuthShell({
                           color: index === titleLines.length - 1 ? 'transparent' : authPalette.navy,
                           background:
                             index === titleLines.length - 1
-                              ? `linear-gradient(90deg, ${authPalette.orange} 0%, #FFB15A 48%, ${authPalette.navy} 100%)`
+                              ? `linear-gradient(90deg, ${authPalette.orange} 0%, ${authPalette.navy} 56%, #08A37A 100%)`
                               : 'none',
                           WebkitBackgroundClip: index === titleLines.length - 1 ? 'text' : 'border-box',
                           backgroundClip: index === titleLines.length - 1 ? 'text' : 'border-box',
@@ -226,6 +233,10 @@ export default function AuthShell({
                       fontWeight: 800,
                       lineHeight: 1.35,
                       maxWidth: { xs: 310, sm: 470 },
+                      p: 1.15,
+                      borderRadius: '8px',
+                      bgcolor: alpha('#FFFFFF', 0.58),
+                      border: `1px solid ${alpha(authPalette.navy, 0.08)}`,
                     }}
                   >
                     <Box component="span">{brandIdentity.supportEmail}</Box>
@@ -274,15 +285,22 @@ export default function AuthShell({
                 width: '100%',
                 maxWidth: { xs: 'calc(100vw - 36px)', sm: isCompact ? 430 : 430, md: isCompact ? 440 : 460 },
                 mx: { xs: 'auto', lg: 0 },
-                pt: { xs: 0, lg: isCompact ? 0.6 : 0 },
-                pb: { xs: 1, lg: 0 },
+                p: { xs: 1.15, sm: 2.15, md: 2.35 },
+                pt: { xs: 1.15, lg: isCompact ? 2.35 : 2.2 },
+                pb: { xs: 1.15, lg: 2.35 },
+                borderRadius: '8px',
+                border: `1px solid ${alpha(authPalette.navy, 0.08)}`,
+                bgcolor: alpha('#FFFFFF', 0.78),
+                boxShadow: `0 28px 64px ${alpha(authPalette.navy, 0.12)}`,
+                backdropFilter: 'blur(18px)',
+                WebkitBackdropFilter: 'blur(18px)',
               }}
             >
               <Stack spacing={{ xs: 0.9, md: 1 }} alignItems="center" sx={{ mb: { xs: 1.05, md: 1.25 } }}>
                 <BrandLogo
                   sx={{
-                    width: { xs: 122, sm: 146, md: 154 },
-                    filter: 'drop-shadow(0 10px 18px rgba(13, 27, 77, 0.08))',
+                    width: { xs: 150, sm: 176, md: 190 },
+                    filter: 'drop-shadow(0 10px 18px rgba(13, 27, 77, 0.10))',
                   }}
                 />
                 <Stack spacing={0.8} alignItems="center" textAlign="center">

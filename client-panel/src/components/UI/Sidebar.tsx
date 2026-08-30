@@ -243,7 +243,7 @@ export default function Sidebar({
   const WHITE = isDark ? '#f8fafc' : '#11182d'
   const itemHoverBg = isDark ? alpha('#ffffff', 0.035) : alpha('#11182d', 0.045)
   const childHoverBg = isDark ? alpha('#ffffff', 0.045) : alpha(ACTIVE, 0.07)
-  const activeBg = isDark ? alpha(ACTIVE, 0.28) : alpha(ACTIVE, 0.08)
+  const activeBg = isDark ? alpha(ACTIVE, 0.28) : alpha(ACTIVE, 0.075)
   const childActiveBg = isDark ? alpha(ACTIVE, 0.24) : alpha(ACTIVE, 0.1)
   const iconMuted = isDark ? '#91a7c3' : alpha(ACTIVE, 0.58)
   const activeText = isDark ? '#d9e7fa' : ACTIVE
@@ -276,10 +276,10 @@ export default function Sidebar({
         ? 'clamp(34px, 5.2vh, 43px)'
         : 'clamp(29px, 4.25vh, 38px)'
       : 44,
-    borderRadius: isSidebarExpanded ? 0 : 1.5,
+    borderRadius: isSidebarExpanded ? 1.5 : 1.5,
     px: isSidebarExpanded ? (temporary ? 3.6 : 2.75) : 0,
     py: 0,
-    mx: isSidebarExpanded ? 0 : 1.25,
+    mx: isSidebarExpanded ? 1.35 : 1.25,
     color: TEXT,
     position: 'relative',
     transition: 'background-color 160ms ease, color 160ms ease',
@@ -301,11 +301,11 @@ export default function Sidebar({
     '&::before': {
       content: '""',
       position: 'absolute',
-      left: 0,
+      left: -1,
       top: 11,
       bottom: 11,
       width: 4,
-      borderRadius: '0 8px 8px 0',
+      borderRadius: 999,
       bgcolor: ACCENT,
       '@media (max-height: 760px)': {
         top: 7,
@@ -467,8 +467,8 @@ export default function Sidebar({
     >
       <Box
         sx={{
-          height: temporary ? 'clamp(58px, 8vh, 72px)' : 'clamp(48px, 7.2vh, 64px)',
-          px: isSidebarExpanded ? (temporary ? 2.25 : 1.75) : 1,
+          height: temporary ? 'clamp(68px, 8.4vh, 82px)' : 'clamp(66px, 7.6vh, 76px)',
+          px: isSidebarExpanded ? (temporary ? 2.4 : 2.1) : 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: isSidebarExpanded ? 'flex-start' : 'center',
@@ -481,17 +481,14 @@ export default function Sidebar({
           sx={{
             width: isSidebarExpanded
               ? temporary
-                ? 'clamp(138px, 18vh, 156px)'
-                : 'clamp(124px, 17vh, 144px)'
+                ? 'clamp(174px, 22vh, 198px)'
+                : 'clamp(166px, 20vh, 188px)'
               : 56,
             height: isSidebarExpanded
               ? temporary
-                ? 'clamp(46px, 6.2vh, 52px)'
-                : 'clamp(42px, 5.8vh, 48px)'
+                ? 'clamp(46px, 6.2vh, 54px)'
+                : 'clamp(44px, 5.9vh, 52px)'
               : 32,
-            aspectRatio: 'auto',
-            backgroundSize: isSidebarExpanded ? 'cover' : '68px 68px',
-            backgroundPosition: 'center',
             flexShrink: 0,
           }}
         />

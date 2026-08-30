@@ -11,7 +11,7 @@ import { useAuth } from '../../context/auth/AuthContext'
 import { getPostAuthRedirect } from '../../utils/authRedirect'
 
 const AUTH_NAVY = '#0D1B4D'
-const AUTH_ORANGE = '#E86F00'
+const AUTH_ORANGE = '#E31B23'
 
 export default function Login() {
   const { loading, isAuthenticated, user } = useAuth()
@@ -41,12 +41,12 @@ export default function Login() {
         <Box
           sx={{
             borderRadius: '7px',
-            border: 'none',
-            backgroundColor: alpha('#FFFFFF', 0.42),
+            backgroundColor: alpha('#0D1B4D', 0.045),
             overflow: 'hidden',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            boxShadow: 'none',
+            border: `1px solid ${alpha(AUTH_NAVY, 0.08)}`,
+            boxShadow: `inset 0 1px 0 ${alpha('#FFFFFF', 0.72)}`,
           }}
         >
           {[
@@ -62,7 +62,7 @@ export default function Login() {
                 py: { xs: 0.75, sm: 0.82 },
                 px: { xs: 0.5, sm: 1 },
                 minHeight: 40,
-                background: mode === item.value ? '#FFFFFF' : 'rgba(247,248,252,0.54)',
+                background: mode === item.value ? '#FFFFFF' : 'transparent',
                 color: mode === item.value ? AUTH_ORANGE : alpha(AUTH_NAVY, 0.72),
                 fontWeight: 800,
                 fontSize: { xs: '0.68rem', sm: '0.86rem' },

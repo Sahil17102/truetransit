@@ -53,8 +53,8 @@ export default function LoginLogisticsScene() {
       <div className={`${styles.infoCard} ${styles.liveCard}`}>
         <span className={styles.liveDot} />
         <div>
-          <small>NETWORK</small>
-          <strong>Live routes</strong>
+          <small>CONTROL</small>
+          <strong>Route health</strong>
         </div>
       </div>
 
@@ -63,8 +63,8 @@ export default function LoginLogisticsScene() {
           <Check size={14} strokeWidth={3} />
         </span>
         <div>
-          <small>DELIVERY</small>
-          <strong>On schedule</strong>
+          <small>SLA</small>
+          <strong>96.8% on time</strong>
         </div>
       </div>
 
