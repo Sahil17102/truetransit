@@ -166,13 +166,13 @@ function HeroVisual() {
         <div className="parcel-front">
           <div className="label-head">
             <span className="mini-brand">TT</span>
-            <div><small>Demo shipment</small><strong>Lane hidden</strong></div>
+            <div><small>Demo shipment</small><strong>Route preview</strong></div>
           </div>
           <div className="barcode masked-barcode" aria-hidden="true" />
           <div className="label-meta">
-            <span>Weight hidden</span>
-            <span>Service hidden</span>
-            <span>Details masked</span>
+            <span>Sample weight</span>
+            <span>Demo service</span>
+            <span>Preview label</span>
           </div>
         </div>
       </div>
@@ -183,7 +183,7 @@ function HeroVisual() {
       </div>
       <div className="float-card rate-card">
         <TrendingDown />
-        <div><small>Sample saving</small><strong>Range hidden</strong></div>
+        <div><small>Sample saving</small><strong>Rate preview</strong></div>
       </div>
       <div className="route-dot route-a" />
       <div className="route-dot route-b" />
@@ -519,7 +519,7 @@ function LogisticsIndustries() {
       status: 'COD ready',
       metric: '2.4k',
       label: 'orders today',
-      route: 'Lane hidden',
+      route: 'Route preview',
       progress: '82%',
     },
     {
