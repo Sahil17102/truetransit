@@ -65,7 +65,7 @@ export default function AuthShell({
         alignItems: { xs: 'flex-start', lg: 'center' },
         justifyContent: { xs: 'flex-start', lg: 'center' },
         overflowX: 'hidden',
-        overflowY: 'auto',
+        overflowY: { xs: 'auto', lg: 'hidden' },
         overscrollBehavior: 'contain',
         WebkitOverflowScrolling: 'touch',
         touchAction: 'auto',
@@ -79,7 +79,7 @@ export default function AuthShell({
           width: { xs: '100%', lg: isCompact ? 'min(790px, calc(100vw - 36px))' : 'min(1480px, calc(100vw - 40px))' },
           maxWidth: '100%',
           height: 'auto',
-          minHeight: { xs: 'auto', lg: 'min(680px, calc(100dvh - 14px))' },
+          minHeight: { xs: 'auto', lg: 'min(640px, calc(100dvh - 18px))' },
           maxHeight: 'none',
           borderRadius: 0,
           border: 'none',
@@ -93,7 +93,7 @@ export default function AuthShell({
           sx={{
             position: 'absolute',
             zIndex: 0,
-            inset: { xs: '18px -44% 18px -30%', lg: '0 6% 0 7%' },
+            inset: { xs: '18px -44% 18px -30%', lg: '12px 6% 12px 7%' },
             bgcolor: authPalette.blob,
             background: `linear-gradient(145deg, ${authPalette.blob} 0%, #F8FBFF 48%, ${authPalette.blobEdge} 100%)`,
             boxShadow: `inset 0 1px 0 rgba(255,255,255,0.76), 0 36px 90px ${alpha(authPalette.navy, 0.08)}`,
@@ -116,14 +116,14 @@ export default function AuthShell({
             height: 'auto',
             boxSizing: 'border-box',
             alignItems: { xs: 'flex-start', lg: 'center' },
-            alignContent: 'flex-start',
-            px: { xs: 1.4, sm: 2, md: 2.6, lg: 2.2 },
-            py: { xs: 2.1, sm: 2.4, md: 2.8, lg: 2 },
+            alignContent: { xs: 'flex-start', lg: 'center' },
+            px: { xs: 1.4, sm: 2, md: 2.6, lg: 2.8 },
+            py: { xs: 2.1, sm: 2.4, md: 2.8, lg: 1.4 },
           }}
         >
           {!isCompact && (
             <Grid
-              size={{ xs: 12, lg: 6.6 }}
+              size={{ xs: 12, lg: 6.5 }}
               sx={{
                 display: 'flex',
                 alignItems: { xs: 'center', lg: 'center' },
@@ -135,17 +135,18 @@ export default function AuthShell({
               <Stack
                 sx={{
                   width: '100%',
+                  minHeight: { lg: 610 },
                   justifyContent: 'center',
                   alignItems: { xs: 'center', lg: 'flex-start' },
                   textAlign: { xs: 'center', lg: 'left' },
                   pt: { xs: 0.4, lg: 0 },
                   pb: { xs: 1.2, lg: 0 },
-                  gap: { xs: 1.5, lg: 1.2 },
+                  gap: { xs: 1.5, lg: 1.45 },
                 }}
               >
                 <Stack
                   spacing={{ xs: 0.9, md: 1 }}
-                  sx={{ width: '100%', maxWidth: 520, minWidth: 0 }}
+                  sx={{ width: '100%', maxWidth: 590, minWidth: 0 }}
                 >
                   <Box
                     component="span"
@@ -187,7 +188,7 @@ export default function AuthShell({
                     sx={{
                       color: authPalette.navy,
                       fontFamily: authDisplayFont,
-                      fontSize: { xs: '1.64rem', sm: '2.18rem', md: '2.52rem', lg: '2.62rem' },
+                      fontSize: { xs: '1.64rem', sm: '2.18rem', md: '2.48rem', lg: '2.54rem' },
                       lineHeight: { xs: 1.08, md: 1.02 },
                       fontWeight: 800,
                       letterSpacing: 0,
@@ -219,24 +220,36 @@ export default function AuthShell({
                       fontSize: { xs: '0.9rem', sm: '1rem', md: '1.04rem' },
                       fontWeight: 600,
                       lineHeight: 1.52,
-                      maxWidth: { xs: 300, sm: 460 },
+                      maxWidth: { xs: 300, sm: 520 },
                       overflowWrap: 'break-word',
                     }}
                   >
                     {subtitle}
                   </Typography>
                   <Stack
-                    spacing={0.45}
+                    spacing={0.35}
                     sx={{
                       color: authPalette.navy,
-                      fontSize: { xs: '0.74rem', sm: '0.8rem' },
+                      fontSize: { xs: '0.74rem', sm: '0.78rem' },
                       fontWeight: 800,
                       lineHeight: 1.35,
-                      maxWidth: { xs: 310, sm: 470 },
-                      p: 1.15,
+                      maxWidth: { xs: 310, sm: 520 },
+                      p: { xs: 1.05, sm: 1.15 },
                       borderRadius: '8px',
                       bgcolor: alpha('#FFFFFF', 0.58),
                       border: `1px solid ${alpha(authPalette.navy, 0.08)}`,
+                      display: 'grid',
+                      gridTemplateColumns: { xs: '1fr', sm: 'minmax(0, 1fr) minmax(0, 1fr)' },
+                      columnGap: 1.4,
+                      rowGap: 0.35,
+                      '& > span': {
+                        minWidth: 0,
+                        overflowWrap: 'break-word',
+                      },
+                      '& > span:last-of-type': {
+                        gridColumn: { xs: 'auto', sm: '1 / -1' },
+                        maxWidth: 470,
+                      },
                     }}
                   >
                     <Box component="span">{brandIdentity.supportEmail}</Box>
@@ -270,11 +283,11 @@ export default function AuthShell({
           )}
 
           <Grid
-            size={{ xs: 12, lg: isCompact ? 12 : 5.4 }}
+            size={{ xs: 12, lg: isCompact ? 12 : 5.5 }}
             sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: { xs: 'center', lg: 'flex-start' },
+              justifyContent: { xs: 'center', lg: 'center' },
               height: { xs: 'auto', lg: '100%' },
               minHeight: 0,
               minWidth: 0,

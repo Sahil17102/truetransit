@@ -4,10 +4,10 @@
   --scene-sky: #dbeafe;
   --scene-orange: #e31b23;
   position: relative;
-  width: min(100%, 540px);
-  aspect-ratio: 1.56;
-  margin: 2px clamp(0px, 3vw, 28px) 0 auto;
-  align-self: flex-end;
+  width: min(100%, 470px);
+  aspect-ratio: 1.62;
+  margin: 8px auto 0;
+  align-self: center;
   isolation: isolate;
   perspective: 1000px;
   transform-style: preserve-3d;
@@ -154,9 +154,9 @@
   position: absolute;
   z-index: 6;
   left: 17%;
-  top: 29%;
-  width: 124px;
-  height: 128px;
+  top: 28%;
+  width: 112px;
+  height: 118px;
   transform-style: preserve-3d;
   animation: parcelFloat 4.4s ease-in-out infinite;
 }
@@ -165,8 +165,8 @@
   position: absolute;
   left: 8px;
   top: 7px;
-  width: 92px;
-  height: 86px;
+  width: 84px;
+  height: 78px;
   transform: rotateX(-17deg) rotateY(32deg) rotateZ(-2deg);
   transform-style: preserve-3d;
 }
@@ -189,11 +189,11 @@
   border-radius: 8px;
   background: linear-gradient(145deg, #153d7b, #0b3a78 58%, #071d45);
   box-shadow: inset 8px 9px 14px rgba(255, 255, 255, 0.16);
-  transform: translateZ(46px);
+  transform: translateZ(42px);
 }
 
 .cubeFront span {
-  font-size: 0.68rem;
+  font-size: 0.61rem;
   font-weight: 900;
   letter-spacing: 0.08em;
 }
@@ -209,7 +209,7 @@
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 7px;
   background: linear-gradient(145deg, #0b2f68, #071d45);
-  transform: rotateY(90deg) translateZ(46px);
+  transform: rotateY(90deg) translateZ(42px);
 }
 
 .cubeSide span {
@@ -220,11 +220,11 @@
 }
 
 .cubeTop {
-  height: 92px;
+  height: 84px;
   border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 8px;
   background: linear-gradient(135deg, #e6eef8, #a9bdd9);
-  transform: rotateX(90deg) translateZ(46px);
+  transform: rotateX(90deg) translateZ(42px);
 }
 
 .cubeTop i {
@@ -238,8 +238,8 @@
   position: absolute;
   left: 1px;
   bottom: 3px;
-  width: 108px;
-  height: 28px;
+  width: 96px;
+  height: 24px;
   border-radius: 50%;
   background: rgba(13, 27, 77, 0.2);
   filter: blur(9px);
