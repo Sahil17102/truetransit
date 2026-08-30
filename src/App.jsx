@@ -193,10 +193,10 @@ function HeroVisual() {
 
 function CourierConsole() {
   const carriers = [
-    ['TT Express', '$8.42', '2 days', CircleCheck, true],
-    ['Regional Plus', '$9.18', '2-3 days', Truck, false],
-    ['Priority Ground', '$10.04', '3 days', Route, false],
-    ['Economy', '$7.95', '5 days', ShieldCheck, false],
+    ['TT Express', 'Rs. 699', '2 days', CircleCheck, true],
+    ['Regional Plus', 'Rs. 759', '2-3 days', Truck, false],
+    ['Priority Ground', 'Rs. 829', '3 days', Route, false],
+    ['Economy', 'Rs. 649', '5 days', ShieldCheck, false],
   ];
 
   return (
@@ -207,7 +207,7 @@ function CourierConsole() {
         <small>Live</small>
       </div>
       <div className="console-metrics">
-        <article><small>Best rate</small><strong>$8.42</strong><span className="positive">-18%</span></article>
+        <article><small>Best rate</small><strong>Rs. 699</strong><span className="positive">-18%</span></article>
         <article><small>On-time SLA</small><strong>97.8%</strong><span className="positive">+4.2%</span></article>
         <article><small>Exceptions</small><strong>23</strong><span className="warning">Review</span></article>
       </div>
@@ -221,8 +221,8 @@ function CourierConsole() {
         </div>
         <div className="shipment-timeline">
           <div className="timeline-map">
-            <span className="hub hub-a">NYC</span>
-            <span className="hub hub-b">SFO</span>
+            <span className="hub hub-a">DEL</span>
+            <span className="hub hub-b">BLR</span>
             <div className="route-line" />
             <div className="route-progress" />
           </div>
@@ -324,7 +324,7 @@ function AiSection({ showToast }) {
           <div className="ai-workspace">
             <div className="ai-topbar"><span>Network overview</span><div><Bell /><span className="live-pill">Live</span></div></div>
             <div className="metric-grid">
-              <article><small>Shipping spend</small><strong>$248.4K</strong><span className="down"><ArrowDown /> 12.4%</span><div className="sparkline line-one" /></article>
+              <article><small>Shipping spend</small><strong>Rs. 2.48L</strong><span className="down"><ArrowDown /> 12.4%</span><div className="sparkline line-one" /></article>
               <article><small>On-time delivery</small><strong>96.8%</strong><span className="up"><ArrowUp /> 4.1%</span><div className="sparkline line-two" /></article>
               <article><small>Avg. transit time</small><strong>2.4 days</strong><span className="down"><ArrowDown /> 0.3d</span><div className="sparkline line-three" /></article>
             </div>
@@ -333,13 +333,13 @@ function AiSection({ showToast }) {
                 <div className="card-title"><span>Cost by carrier</span><small>Last 30 days <ChevronDown /></small></div>
                 <div className="bars" aria-label="Carrier cost chart">
                   {['52%', '78%', '43%', '92%', '61%', '35%'].map((height, index) => (
-                    <div style={{ '--height': height }} key={height}><span>{['$42k', '$68k', '$35k', '$82k', '$49k', '$26k'][index]}</span><b>{String.fromCharCode(65 + index)}</b></div>
+                    <div style={{ '--height': height }} key={height}><span>{['Rs. 42k', 'Rs. 68k', 'Rs. 35k', 'Rs. 82k', 'Rs. 49k', 'Rs. 26k'][index]}</span><b>{String.fromCharCode(65 + index)}</b></div>
                   ))}
                 </div>
               </div>
               <div className="recommend-card">
                 <div className="ai-badge"><Sparkles /> AI recommendation</div>
-                <h3>You can save an estimated <em>$18,420</em> this quarter.</h3>
+                <h3>You can save an estimated <em>Rs. 18,420</em> this quarter.</h3>
                 <p>Move 22% of Zone 5 shipments to regional carriers while keeping your current delivery promise.</p>
                 <button
                   type="button"
@@ -351,7 +351,7 @@ function AiSection({ showToast }) {
                 >
                   Simulate change <ArrowRight />
                 </button>
-                <div className={`simulation${simulated ? ' show' : ''}`}><span>Estimated savings</span><strong>$18,420</strong><small>+ 1.2% on-time delivery</small></div>
+                <div className={`simulation${simulated ? ' show' : ''}`}><span>Estimated savings</span><strong>Rs. 18,420</strong><small>+ 1.2% on-time delivery</small></div>
               </div>
             </div>
             <div className="ask-bar"><Sparkles /><span>Ask: "Where did we overspend last week?"</span><button type="button" aria-label="Submit question"><ArrowUp /></button></div>
@@ -1293,7 +1293,7 @@ function CustomersPage({ onNavigate }) {
 
 function PricingPage({ onNavigate, showToast }) {
   const plans = [
-    ['Launch', '$0', '10,000 free labels, tracking webhooks, and sandbox access.', '/developers', 'Build now'],
+    ['Launch', 'Rs. 0', '10,000 free labels, tracking webhooks, and sandbox access.', '/developers', 'Build now'],
     ['Growth', 'Custom', 'Discounted rates, AI recommendations, branded tracking, and shared support.', '/solutions', 'Talk to sales', true],
     ['Enterprise', 'Scale', 'Dedicated limits, security reviews, network planning, and premium support.', '/customers', 'See results'],
   ];
