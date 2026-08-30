@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #fafbfe;
+  background-attachment: scroll;
+  background-repeat: no-repeat;
+  color: #0f172a;
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+html[data-client-theme='dark'] {
+  color-scheme: dark;
+}
+
+html[data-client-theme='dark'],
+html[data-client-theme='dark'] body,
+html[data-client-theme='dark'] #root {
+  background: #0f141b;
+  color: #f8fafc;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overscroll-behavior: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.site-shell {
+  position: relative;
+  overflow-x: clip;
+}
+
+.landing-marquee-left,
+.landing-marquee-right {
+  will-change: transform;
+}
+
+.landing-marquee-left {
+  animation: landing-marquee-left 42s linear infinite;
+}
+
+.landing-marquee-right {
+  animation: landing-marquee-right 42s linear infinite;
+}
+
+@keyframes landing-marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.333%);
+  }
+}
+
+@keyframes landing-marquee-right {
+  from {
+    transform: translateX(-33.333%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(250, 251, 254, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 999px;
+  border: 2px solid rgba(250, 251, 254, 0.9);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 rgba(250, 251, 254, 0.9);
+}
+
+html[data-client-theme='dark'] ::-webkit-scrollbar-track {
+  background-color: #0f141b;
+}
+
+html[data-client-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #3a4350;
+  border-color: #0f141b;
+}
+
+html[data-client-theme='dark'] ::-webkit-scrollbar-thumb:hover {
+  background: #586579;
+}
+
+html[data-client-theme='dark'] * {
+  scrollbar-color: #3a4350 #0f141b;
+}

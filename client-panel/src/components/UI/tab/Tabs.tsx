@@ -1,0 +1,386 @@
+import {
+  alpha,
+  BottomNavigation,
+  BottomNavigationAction,
+  Box,
+  Divider,
+  Menu,
+  MenuItem,
+  Paper,
+  Tab,
+  Tabs,
+  styled,
+  useMediaQuery,
+  useTheme,
+  type TabsProps,
+} from '@mui/material'
+import * as React from 'react'
+import { MdKeyboardArrowDown } from 'react-icons/md'
+
+type StatusColor = 'primary' | 'success' | 'warning' | 'error' | undefined
+
+export interface TabItem<T extends string = string> {
+  label: string
+  value: T
+  icon?: React.ReactElement
+  badgeCount?: number
+  statusColor?: StatusColor
+  to?: string
+}
+
+interface SmartTabsProps<T extends string = string> {
+  tabs: TabItem<T>[]
+  value: T
+  onChange: (value: T) => void
+  muiTabsProps?: Omit<TabsProps, 'value' | 'onChange'>
+  compact?: boolean
+  desktopVisibleCount?: number
+  mobileVisibleCount?: number
+}
+
+const StyledTabs = styled(Tabs)(() => ({
+  minHeight: 0,
+  '& .MuiTabs-flexContainer': {
+    gap: 10,
+    flexWrap: 'wrap',
+  },
+  '& .MuiTabs-indicator': {
+    display: 'none',
+  },
+}))
+
+const StyledTab = styled(Tab)(({ theme }) => ({
+  minHeight: 0,
+  minWidth: 0,
+  textTransform: 'none',
+  borderRadius: 10,
+  padding: '10px 18px',
+  fontWeight: 500,
+  fontSize: '0.92rem',
+  color: theme.palette.text.secondary,
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`,
+  backgroundColor: theme.palette.mode === 'dark' ? '#151b23' : alpha('#ffffff', 0.72),
+  boxShadow: `0 10px 24px ${alpha(theme.palette.text.primary, 0.04)}`,
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    backgroundColor: theme.palette.mode === 'dark' ? alpha('#ffffff', 0.08) : alpha(theme.palette.secondary.main, 0.12),
+    color: theme.palette.text.primary,
+  },
+  '&.Mui-selected': {
+    color: theme.palette.text.primary,
+    background: theme.palette.mode === 'dark'
+      ? alpha(theme.palette.primary.main, 0.18)
+      : `linear-gradient(135deg, ${alpha(theme.palette.primary.light, 0.2)} 0%, ${alpha(theme.palette.secondary.main, 0.14)} 100%)`,
+    borderColor: alpha(theme.palette.primary.main, 0.18),
+    boxShadow: `0 16px 30px ${alpha(theme.palette.text.primary, 0.08)}`,
+  },
+}))
+
+const CounterChip = styled('span')(({ theme }) => ({
+  fontSize: '0.72rem',
+  padding: '3px 8px',
+  borderRadius: 8,
+  background: alpha(theme.palette.primary.main, 0.08),
+  color: theme.palette.primary.main,
+  fontWeight: 600,
+}))
+
+export function SmartTabs<T extends string = string>({
+  tabs,
+  value,
+  onChange,
+  muiTabsProps,
+  compact = false,
+  desktopVisibleCount = 6,
+  mobileVisibleCount = 3,
+}: SmartTabsProps<T>) {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isDark = theme.palette.mode === 'dark'
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
+  const open = Boolean(anchorEl)
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
+  const handleClose = () => setAnchorEl(null)
+
+  const visibleCount = isMobile ? mobileVisibleCount : desktopVisibleCount
+  const visibleTabs = tabs.slice(0, visibleCount)
+  const overflowTabs = tabs.slice(visibleCount)
+  const selectedOverflowTab = overflowTabs.find((t) => t.value === value)
+  const isOverflowSelected = Boolean(selectedOverflowTab)
+  const controlledValue = isOverflowSelected ? '__more__' : value
+
+  const getTabTone = (statusColor: StatusColor) => {
+    if (statusColor === 'success') return '#05BD7E'
+    if (statusColor === 'warning') return '#F59E0B'
+    if (statusColor === 'error') return '#EF4444'
+    if (statusColor === 'primary') return '#1D2842'
+    return undefined
+  }
+
+  const getDirectSelectedSx = (statusColor: StatusColor) => {
+    const tone = getTabTone(statusColor)
+    if (!tone) return undefined
+
+    return {
+      color: '#FFFFFF',
+      background: tone,
+      borderColor: tone,
+      boxShadow: `0 12px 24px ${alpha(tone, 0.24)}`,
+    }
+  }
+
+  const getSelectedSx = (statusColor: StatusColor) => {
+    const selectedSx = getDirectSelectedSx(statusColor)
+    if (!selectedSx) return undefined
+
+    return {
+      '&.Mui-selected': selectedSx,
+    }
+  }
+
+  const handleChange = (_: React.SyntheticEvent, val: unknown) => {
+    if (val === '__more__') return
+    onChange(val as T)
+  }
+
+  if (isMobile) {
+    return (
+      <Paper
+        sx={{
+          position: 'fixed',
+          bottom: 14,
+          left: 14,
+          right: 14,
+          zIndex: 999,
+          borderRadius: '14px',
+          overflow: 'hidden',
+          border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
+          background: isDark ? alpha('#151b23', 0.96) : alpha('#fff9f3', 0.92),
+          boxShadow: `0 24px 48px ${alpha(theme.palette.text.primary, 0.16)}`,
+          backdropFilter: 'blur(18px)',
+        }}
+        elevation={0}
+      >
+        <BottomNavigation
+          showLabels
+          value={controlledValue}
+          onChange={handleChange}
+          sx={{
+            background: 'transparent',
+            '& .MuiBottomNavigationAction-root': {
+              minWidth: 0,
+              color: theme.palette.text.secondary,
+              transition: 'all 0.2s ease',
+            },
+            '& .Mui-selected': {
+              color: theme.palette.primary.main,
+            },
+          }}
+        >
+          {visibleTabs.map((t, index) => (
+            <BottomNavigationAction
+              key={`${t.label}-${index}`}
+              label={
+                <Box display="flex" alignItems="center" gap={0.5}>
+                  {t.label}
+                  {typeof t.badgeCount === 'number' && <CounterChip>{t.badgeCount}</CounterChip>}
+                </Box>
+              }
+              value={t.value}
+              icon={t.icon}
+              sx={{
+                '&.Mui-selected': {
+                  bgcolor: alpha(theme.palette.secondary.main, 0.12),
+                  borderRadius: '10px',
+                },
+              }}
+            />
+          ))}
+
+          {overflowTabs.length > 0 && (
+            <>
+              <BottomNavigationAction
+                label="More"
+                value="__more__"
+                icon={<MdKeyboardArrowDown />}
+                onClick={handleOpen}
+                sx={{
+                  '&.Mui-selected': {
+                    bgcolor: alpha(theme.palette.primary.main, 0.12),
+                    borderRadius: '10px',
+                  },
+                }}
+              />
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                PaperProps={{
+                  sx: {
+                    mt: -1,
+                    borderRadius: 3,
+                    border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
+                    background: isDark ? '#151b23' : alpha('#fffaf4', 0.96),
+                    boxShadow: `0 20px 42px ${alpha(theme.palette.text.primary, 0.12)}`,
+                    minWidth: 200,
+                  },
+                }}
+              >
+                {overflowTabs.map((t) => (
+                  <MenuItem
+                    key={t.value}
+                    selected={value === t.value}
+                    onClick={() => {
+                      onChange(t.value)
+                      handleClose()
+                    }}
+                    sx={{ fontWeight: 700, gap: 1 }}
+                  >
+                    {t.label}
+                    {typeof t.badgeCount === 'number' && <CounterChip>{t.badgeCount}</CounterChip>}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </>
+          )}
+        </BottomNavigation>
+      </Paper>
+    )
+  }
+
+  return (
+    <Box>
+      <Box
+        sx={{
+          p: 1,
+          borderRadius: compact ? '8px' : '12px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          background: isDark ? '#101720' : alpha('#fff9f3', 0.86),
+          border: `1px solid ${isDark ? alpha('#f8fafc', 0.12) : alpha(theme.palette.primary.main, 0.1)}`,
+          boxShadow: compact
+            ? `0 5px 12px ${alpha(theme.palette.text.primary, 0.045)}`
+            : `0 18px 32px ${alpha(theme.palette.text.primary, 0.06)}`,
+          ...(compact ? { p: 0.35 } : {}),
+        }}
+      >
+        <StyledTabs
+          value={controlledValue}
+          onChange={handleChange}
+          sx={{
+            '& .MuiTabs-flexContainer': {
+              gap: compact ? 0.75 : 1.25,
+            },
+          }}
+          {...muiTabsProps}
+        >
+          {visibleTabs.map((tab) => {
+            const labelContent = (
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {tab.icon ? <Box sx={{ display: 'flex', alignItems: 'center' }}>{tab.icon}</Box> : null}
+                {tab.label}
+                {typeof tab.badgeCount === 'number' && <CounterChip>{tab.badgeCount}</CounterChip>}
+              </Box>
+            )
+            return (
+              <StyledTab
+                key={tab.value}
+                value={tab.value}
+                label={labelContent}
+                disableRipple
+                sx={
+                  compact
+                    ? {
+                        borderRadius: '8px',
+                        px: 1.15,
+                        py: 0.55,
+                        fontSize: '0.78rem',
+                        ...getSelectedSx(tab.statusColor),
+                      }
+                    : getSelectedSx(tab.statusColor)
+                }
+              />
+            )
+          })}
+
+          {overflowTabs.length > 0 && (
+            <>
+              <StyledTab
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.45 }}>
+                    More
+                    <MdKeyboardArrowDown size={17} />
+                  </Box>
+                }
+                value="__more__"
+                onClick={handleOpen}
+                disableRipple
+                sx={
+                  isOverflowSelected
+                    ? {
+                        ...(getDirectSelectedSx(selectedOverflowTab?.statusColor) || {
+                          color: theme.palette.text.primary,
+                          background: alpha(theme.palette.primary.main, 0.12),
+                        }),
+                        ...(compact
+                          ? {
+                              borderRadius: '8px',
+                              px: 1.15,
+                              py: 0.55,
+                              fontSize: '0.78rem',
+                            }
+                          : {}),
+                      }
+                    : compact
+                      ? {
+                          borderRadius: '8px',
+                          px: 1.15,
+                          py: 0.55,
+                          fontSize: '0.78rem',
+                      }
+                    : undefined
+                }
+              />
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                PaperProps={{
+                  sx: {
+                    mt: 1,
+                    borderRadius: 3,
+                    border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
+                    background: isDark ? '#151b23' : alpha('#fffaf4', 0.96),
+                    boxShadow: `0 24px 48px ${alpha(theme.palette.text.primary, 0.12)}`,
+                    minWidth: 220,
+                  },
+                }}
+              >
+                {overflowTabs.map((t) => (
+                  <MenuItem
+                    key={t.value}
+                    selected={value === t.value}
+                    onClick={() => {
+                      onChange(t.value)
+                      handleClose()
+                    }}
+                    sx={{ fontWeight: 700, gap: 1 }}
+                  >
+                    {t.label}
+                    {typeof t.badgeCount === 'number' && <CounterChip>{t.badgeCount}</CounterChip>}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </>
+          )}
+        </StyledTabs>
+      </Box>
+      <Divider sx={{ mt: compact ? 0.35 : 1.4, borderColor: alpha(theme.palette.primary.main, 0.08) }} />
+    </Box>
+  )
+}

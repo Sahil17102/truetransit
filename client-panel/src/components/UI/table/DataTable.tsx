@@ -1,0 +1,834 @@
+import type { JSX } from '@emotion/react/jsx-runtime'
+import {
+  alpha,
+  Box,
+  Card,
+  CardContent,
+  Collapse,
+  Divider,
+  IconButton,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material'
+import React, { useEffect, useRef } from 'react'
+import { MdExpandLess, MdExpandMore } from 'react-icons/md'
+import CustomCheckbox from '../inputs/CustomCheckbox'
+
+export interface Column<T> {
+  id: keyof T
+  label_desc?: string
+  label: JSX.Element | string
+  align?: 'right' | 'left' | 'center'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  render?: (value: any, row: T) => React.ReactNode
+  minWidth?: number
+  hiddenOnMobile?: boolean
+  truncate?: boolean
+  sticky?: 'left' | 'right'
+  stickyOffset?: number
+  backgroundColor?: string
+}
+
+export interface DataTableProps<T extends { id: string | number }> {
+  rows: T[]
+  columns: Column<T>[]
+  title?: string
+  subTitle?: string
+  maxHeight?: number
+  pagination?: boolean
+  selectable?: boolean
+  onSelectRows?: (ids: Array<T['id']>) => void
+  selectedRowIds?: Array<T['id']>
+  rowsPerPageOptions?: number[]
+  defaultRowsPerPage?: number
+  bgOverlayImg?: string
+  renderExpandedRow?: (row: T) => React.ReactNode
+  expandable?: boolean
+  currentPage?: number
+  onPageChange?: (page: number) => void
+  onRowsPerPageChange?: (rowsPerPage: number) => void
+  totalCount?: number
+  onRowClick?: (row: T) => void
+  selectionResetToken?: number | string
+  density?: 'regular' | 'compact'
+  tableVariant?: 'default' | 'shipment'
+}
+
+export default function DataTable<T extends { id: string | number }>(props: DataTableProps<T>) {
+  const {
+    rows,
+    columns,
+    title,
+    subTitle,
+    maxHeight = 500,
+    pagination = false,
+    selectable = false,
+    onSelectRows,
+    selectedRowIds,
+    rowsPerPageOptions = [5, 10, 25],
+    defaultRowsPerPage = 10,
+    bgOverlayImg,
+    renderExpandedRow,
+    expandable,
+    currentPage,
+    onPageChange,
+    onRowsPerPageChange,
+    totalCount,
+    onRowClick,
+    selectionResetToken,
+    density = 'regular',
+    tableVariant = 'default',
+  } = props
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isDark = theme.palette.mode === 'dark'
+  const primary = theme.palette.primary.main
+  const textPrimary = theme.palette.text.primary
+  const textSecondary = theme.palette.text.secondary
+  const borderColor = isDark ? alpha('#f8fafc', 0.12) : alpha(textPrimary, 0.1)
+  const softBorderColor = isDark ? alpha('#f8fafc', 0.08) : alpha(textPrimary, 0.06)
+  const surface = isDark ? '#151b23' : '#FFFFFF'
+  const surfaceMuted = isDark ? '#101720' : '#F5F6F8'
+  const isShipmentVariant = tableVariant === 'shipment'
+  const shipmentAccent = theme.palette.primary.main
+  const shipmentHeader = '#05BD7E'
+  const headerBg = isShipmentVariant
+    ? shipmentHeader
+    : isDark
+      ? '#1b2430'
+      : 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,242,236,0.98) 100%)'
+  const tableBg = isDark ? '#101720' : isShipmentVariant ? '#F5F6F8' : '#FFFCF8'
+  const selectionColumnWidth = isShipmentVariant ? 56 : 48
+  const rowHover = alpha(primary, 0.045)
+  const mobileCardBg = isDark
+    ? 'linear-gradient(180deg, #151b23 0%, #101720 100%)'
+    : 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(249,244,238,0.96) 100%)'
+  const isCompact = density === 'compact'
+
+  const [localPage, setLocalPage] = React.useState(0)
+  const [localRowsPerPage, setLocalRowsPerPage] = React.useState(defaultRowsPerPage)
+  const [selectedIds, setSelectedIds] = React.useState<Array<T['id']>>([])
+  const [expandedRowId, setExpandedRowId] = React.useState<T['id'] | null>(null)
+
+  const expandedRef = useRef<HTMLDivElement | null>(null)
+  const onSelectRowsRef = useRef(onSelectRows)
+
+  const page = currentPage ?? localPage
+  const rowsPerPage = localRowsPerPage
+  const paginationPage = currentPage !== undefined ? Math.max(page - 1, 0) : page
+
+  const handleChangePage = (_: unknown, newPage: number) => {
+    if (onPageChange) onPageChange(newPage + 1)
+    else setLocalPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newRowsPerPage = +event.target.value
+    if (onRowsPerPageChange) onRowsPerPageChange(newRowsPerPage)
+    else {
+      setLocalRowsPerPage(newRowsPerPage)
+      setLocalPage(0)
+    }
+  }
+
+  const isAllSelected = rows.length > 0 && rows.every((r) => selectedIds.includes(r.id))
+
+  useEffect(() => {
+    onSelectRowsRef.current = onSelectRows
+  }, [onSelectRows])
+
+  const handleSelect = (id: T['id']) => {
+    const selected = selectedIds.includes(id)
+      ? selectedIds.filter((i) => i !== id)
+      : [...selectedIds, id]
+    setSelectedIds(selected)
+    onSelectRows?.(selected)
+  }
+
+  const handleSelectAll = (checked: boolean) => {
+    const allIds = checked ? rows.map((r) => r.id) : []
+    setSelectedIds(allIds)
+    onSelectRows?.(allIds)
+  }
+
+  useEffect(() => {
+    if (!selectedRowIds) return
+    setSelectedIds(selectedRowIds)
+  }, [selectedRowIds])
+
+  useEffect(() => {
+    setSelectedIds((currentSelectedIds) => {
+      const visibleIds = new Set(rows.map((row) => row.id))
+      const nextSelectedIds = currentSelectedIds.filter((id) => visibleIds.has(id))
+      const isSameSelection =
+        nextSelectedIds.length === currentSelectedIds.length &&
+        nextSelectedIds.every((id, index) => id === currentSelectedIds[index])
+
+      if (!isSameSelection) {
+        onSelectRowsRef.current?.(nextSelectedIds)
+        return nextSelectedIds
+      }
+
+      return currentSelectedIds
+    })
+  }, [rows])
+
+  useEffect(() => {
+    if (selectionResetToken === undefined) return
+    setSelectedIds([])
+    onSelectRowsRef.current?.([])
+  }, [selectionResetToken])
+
+  const toggleExpand = (id: T['id']) => {
+    const isExpanding = id !== expandedRowId
+    setExpandedRowId(isExpanding ? id : null)
+    if (isExpanding && expandedRef.current) {
+      setTimeout(() => {
+        expandedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 160)
+    }
+  }
+
+  const visibleColumns = columns.filter((col) => !(col.hiddenOnMobile && isMobile))
+  const shipmentTableMinWidth = isShipmentVariant
+    ? visibleColumns.reduce((total, col) => total + (col.minWidth || 100), selectable ? 38 : 0) +
+      (expandable && renderExpandedRow ? 40 : 0)
+    : undefined
+
+  return (
+    <CardContent
+      sx={{
+        position: 'relative',
+        width: '100%',
+        overflow: 'hidden',
+        borderRadius: isShipmentVariant || isCompact ? '8px' : '14px',
+        border: `1px solid ${isShipmentVariant ? alpha(textPrimary, 0.08) : borderColor}`,
+        background: isShipmentVariant
+          ? tableBg
+          : isDark
+            ? surfaceMuted
+          : 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(252,247,241,0.98) 100%)',
+        boxShadow: isShipmentVariant
+          ? `0 8px 18px ${alpha(textPrimary, 0.04)}`
+          : isCompact
+          ? `0 8px 20px ${alpha(textPrimary, 0.06)}`
+          : `0 20px 42px ${alpha(textPrimary, 0.07)}`,
+        p: 0,
+      }}
+    >
+      {bgOverlayImg && (
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${bgOverlayImg})`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            opacity: 0.05,
+            zIndex: 1,
+          }}
+        />
+      )}
+
+      <Box
+        sx={{
+          position: 'relative',
+          zIndex: 2,
+          p: isShipmentVariant
+            ? { xs: 0.45, sm: 0.5, md: 0.55 }
+            : isCompact ? { xs: 1, sm: 1.15, md: 1.25 } : { xs: 1.6, sm: 2.1, md: 2.4 },
+        }}
+      >
+        {(title || subTitle || pagination) && (
+          <Stack
+            mb={isShipmentVariant ? 0.3 : isCompact ? 1 : 2}
+            direction={{ xs: 'column', sm: 'row' }}
+            alignItems={{ xs: 'flex-start', sm: 'center' }}
+            justifyContent="space-between"
+            spacing={isShipmentVariant ? 0.35 : isCompact ? 0.75 : 1.5}
+            sx={{
+              px: isShipmentVariant ? { xs: 0, sm: 0.05 } : isCompact ? { xs: 0.1, sm: 0.2 } : { xs: 0.4, sm: 0.6 },
+              py: isShipmentVariant ? 0 : isCompact ? { xs: 0.1, sm: 0.25 } : { xs: 0.5, sm: 0.8 },
+            }}
+          >
+            <Stack spacing={isCompact ? 0.3 : 0.8}>
+              {title && (
+                <Typography
+                  sx={{
+                    fontSize: isShipmentVariant
+                      ? { xs: '0.9rem', sm: '0.96rem' }
+                      : isCompact ? { xs: '0.95rem', sm: '1.02rem' } : { xs: '1.02rem', sm: '1.18rem' },
+                    fontWeight: 600,
+                    letterSpacing: 0,
+                    color: textPrimary,
+                  }}
+                >
+                  {title}
+                </Typography>
+              )}
+              {subTitle && (
+                <Typography
+                  sx={{
+                    fontSize: '0.84rem',
+                    color: textSecondary,
+                    maxWidth: 640,
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {subTitle}
+                </Typography>
+              )}
+            </Stack>
+
+            {pagination && totalCount !== undefined && (
+              <TablePagination
+                component="div"
+                count={totalCount}
+                page={paginationPage}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={rowsPerPageOptions}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                  borderRadius: '10px',
+                  px: isShipmentVariant ? 0.2 : isCompact ? 0.4 : 1.2,
+                  backgroundColor: isDark ? alpha(surface, 0.96) : alpha('#ffffff', 0.92),
+                  border: `1px solid ${borderColor}`,
+                  boxShadow: isCompact ? 'none' : `0 10px 24px ${alpha(textPrimary, 0.05)}`,
+                  '& .MuiToolbar-root': {
+                    minHeight: isShipmentVariant ? 28 : isCompact ? 34 : undefined,
+                    px: isCompact ? 0.5 : undefined,
+                  },
+                  '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+                    fontSize: isCompact ? '11px' : '12px',
+                    color: textSecondary,
+                    fontWeight: 500,
+                  },
+                  '& .MuiTablePagination-select': {
+                    color: textPrimary,
+                    fontWeight: 600,
+                  },
+                  '& .MuiTablePagination-actions button': {
+                    color: primary,
+                    '&:hover': {
+                      backgroundColor: alpha(primary, 0.08),
+                    },
+                  },
+                }}
+              />
+            )}
+          </Stack>
+        )}
+
+        {isMobile ? (
+          rows.length === 0 ? (
+            <Stack
+              alignItems="center"
+              justifyContent="center"
+              spacing={0.6}
+              sx={{
+                minHeight: 150,
+                py: 3,
+                borderRadius: isCompact ? '8px' : '12px',
+                border: `1px solid ${borderColor}`,
+                background: mobileCardBg,
+              }}
+            >
+              <Typography sx={{ fontSize: '14px', fontWeight: 600, color: textPrimary }}>
+                No records found
+              </Typography>
+              <Typography variant="body2" sx={{ color: textSecondary }}>
+                There is no data to display yet.
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack spacing={isCompact ? 1 : 1.6}>
+            {selectable && (
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{
+                  px: 0.5,
+                  py: 0.35,
+                }}
+              >
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <CustomCheckbox
+                    checked={isAllSelected}
+                    onChange={(e) => handleSelectAll(e.target.checked)}
+                  />
+                  <Typography fontSize="12px" fontWeight={500} sx={{ color: textPrimary }}>
+                    Select all
+                  </Typography>
+                </Stack>
+                <Typography fontSize="12px" sx={{ color: textSecondary }}>
+                  {selectedIds.length} selected
+                </Typography>
+              </Stack>
+            )}
+            {rows.map((row) => {
+              const isExpanded = expandedRowId === row.id
+              return (
+                <Card
+                  key={row.id}
+                  variant="outlined"
+                  sx={{
+                    borderRadius: isCompact ? '8px' : '12px',
+                    border: `1px solid ${borderColor}`,
+                    background: mobileCardBg,
+                    boxShadow: `0 14px 28px ${alpha(textPrimary, 0.05)}`,
+                  }}
+                >
+                  <CardContent sx={{ px: isCompact ? 1.4 : 2, py: isCompact ? 1.25 : 1.8 }}>
+                    <Stack spacing={isCompact ? 1 : 1.35}>
+                      {selectable && (
+                        <Stack direction="row" alignItems="center" justifyContent="space-between">
+                          <Stack direction="row" alignItems="center" spacing={1}>
+                            <CustomCheckbox
+                              checked={selectedIds.includes(row.id)}
+                              onChange={() => handleSelect(row.id)}
+                            />
+                            <Typography fontSize="12px" fontWeight={500} sx={{ color: textPrimary }}>
+                              Select entry
+                            </Typography>
+                          </Stack>
+                        </Stack>
+                      )}
+                      {columns.map((col) => {
+                        if (col.hiddenOnMobile) return null
+                        const value = col.render ? col.render(row[col.id], row) : row[col.id]
+                        return (
+                          <Box key={col.id as string}>
+                            <Typography
+                              fontSize="11px"
+                              fontWeight={600}
+                              sx={{ color: alpha(textSecondary, 0.92), textTransform: 'uppercase', letterSpacing: 0 }}
+                            >
+                              {col.label}
+                            </Typography>
+                            {col.label_desc ? (
+                              <Typography fontSize="10px" fontWeight={500} sx={{ color: textSecondary, opacity: 0.85 }}>
+                                {col.label_desc}
+                              </Typography>
+                            ) : null}
+                            <Typography fontSize="13px" sx={{ color: textPrimary, mt: 0.45 }}>
+                              {React.isValidElement(value)
+                                ? value
+                                : typeof value === 'object'
+                                  ? JSON.stringify(value)
+                                  : String(value)}
+                            </Typography>
+                            <Divider sx={{ mt: 1, borderColor: softBorderColor }} />
+                          </Box>
+                        )
+                      })}
+                    </Stack>
+
+                    {renderExpandedRow && (
+                      <IconButton
+                        size="small"
+                        onClick={() => toggleExpand(row.id)}
+                        sx={{
+                          mt: 1,
+                          color: primary,
+                          bgcolor: alpha(primary, 0.08),
+                          border: `1px solid ${alpha(primary, 0.14)}`,
+                          '&:hover': { backgroundColor: alpha(primary, 0.12) },
+                        }}
+                      >
+                        {isExpanded ? <MdExpandLess /> : <MdExpandMore />}
+                      </IconButton>
+                    )}
+
+                    <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                      <Box ref={expandedRef} mt={1.2}>
+                        {renderExpandedRow?.(row)}
+                      </Box>
+                    </Collapse>
+                  </CardContent>
+                </Card>
+              )
+            })}
+            </Stack>
+          )
+        ) : (
+          <Box sx={{ overflowX: 'auto', borderRadius: isCompact ? '8px' : '14px' }}>
+            <TableContainer
+              component={Paper}
+              sx={{
+                background: tableBg,
+                border: isShipmentVariant ? 'none' : `1px solid ${borderColor}`,
+                minWidth: '100%',
+                maxHeight,
+                boxShadow: 'none',
+                borderRadius: isCompact ? '8px' : '12px',
+                backdropFilter: 'none',
+                overflowX: 'auto',
+              }}
+            >
+              <Table
+                stickyHeader={!isShipmentVariant}
+                size="small"
+                sx={
+                  isShipmentVariant
+                    ? {
+                        borderCollapse: 'separate',
+                        borderSpacing: '0 6px',
+                        tableLayout: 'fixed',
+                        width: '100%',
+                        minWidth: shipmentTableMinWidth,
+                      }
+                    : undefined
+                }
+              >
+                <TableHead>
+                  <TableRow
+                    sx={
+                      isShipmentVariant
+                        ? {
+                            '& th:first-of-type': {
+                              borderTopLeftRadius: '8px',
+                              borderBottomLeftRadius: '8px',
+                            },
+                            '& th:last-of-type': {
+                              borderTopRightRadius: '8px',
+                              borderBottomRightRadius: '8px',
+                            },
+                          }
+                        : undefined
+                    }
+                  >
+                    {selectable && (
+                      <TableCell
+                        padding="checkbox"
+                        sx={{
+                          position: isShipmentVariant ? 'static' : 'sticky',
+                          top: isShipmentVariant ? undefined : 0,
+                          left: isShipmentVariant ? undefined : 0,
+                          background: headerBg,
+                          color: isShipmentVariant ? '#FFFFFF' : alpha(textPrimary, 0.86),
+                          borderBottom: isShipmentVariant ? 'none' : `1px solid ${borderColor}`,
+                          zIndex: isShipmentVariant ? theme.zIndex.appBar + 1 : theme.zIndex.appBar + 5,
+                          width: selectionColumnWidth,
+                          minWidth: selectionColumnWidth,
+                          maxWidth: selectionColumnWidth,
+                          py: isShipmentVariant ? 0.95 : isCompact ? 0.75 : 1.4,
+                          px: 0,
+                          textAlign: 'center',
+                          boxShadow: isShipmentVariant
+                            ? 'none'
+                            : `6px 0 10px ${alpha(textPrimary, 0.08)}`,
+                        }}
+                      >
+                        <CustomCheckbox
+                          checked={isAllSelected}
+                          onChange={(e) => handleSelectAll(e.target.checked)}
+                          color="primary"
+                          sx={isShipmentVariant ? { p: '2px' } : undefined}
+                        />
+                      </TableCell>
+                    )}
+
+                    {columns.map((col, colIndex) =>
+                      col.hiddenOnMobile && isMobile ? null : (
+                        <TableCell
+                          key={col.id as string}
+                          align={col.align ?? 'left'}
+                          sx={{
+                            position: col.sticky ? 'sticky' : 'static',
+                            top: 0,
+                            background: headerBg,
+                            color: isShipmentVariant ? '#FFFFFF' : alpha(textPrimary, 0.86),
+                            minWidth: isShipmentVariant ? 0 : col.minWidth || (isCompact ? 80 : 100),
+                            width: isShipmentVariant ? col.minWidth || 100 : undefined,
+                            maxWidth: isShipmentVariant ? col.minWidth || 100 : undefined,
+                            fontWeight: 600,
+                            fontSize: isShipmentVariant ? '11.3px' : isCompact ? '10.5px' : '11px',
+                            textTransform: isShipmentVariant ? 'none' : 'uppercase',
+                            letterSpacing: 0,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            zIndex: col.sticky ? theme.zIndex.appBar + 3 : theme.zIndex.appBar + 1,
+                            borderBottom: isShipmentVariant ? 'none' : `1px solid ${borderColor}`,
+                            py: isShipmentVariant ? 0.95 : isCompact ? 0.75 : 1.4,
+                            px: isShipmentVariant ? 0.55 : isCompact ? 1 : 2,
+                            pl: isShipmentVariant && selectable && colIndex === 0 ? 2.6 : undefined,
+                            ...(col.sticky === 'right'
+                              ? {
+                                  right: col.stickyOffset ?? 0,
+                                  boxShadow:
+                                    col.stickyOffset === 0
+                                      ? `-6px 0 10px ${alpha(textPrimary, 0.08)}`
+                                      : undefined,
+                                }
+                              : {}),
+                            ...(col.sticky === 'left'
+                              ? {
+                                  left: col.stickyOffset ?? (selectable ? selectionColumnWidth : 0),
+                                  boxShadow: `6px 0 10px ${alpha(textPrimary, 0.08)}`,
+                                }
+                              : {}),
+                          }}
+                        >
+                          {col.label}
+                          {col.label_desc ? (
+                            <Typography fontSize="10px" fontWeight={500} sx={{ color: alpha(textSecondary, 0.92), mt: 0.45 }}>
+                              {col.label_desc}
+                            </Typography>
+                          ) : null}
+                        </TableCell>
+                      ),
+                    )}
+
+                    {expandable && renderExpandedRow && (
+                      <TableCell
+                        sx={{
+                          position: 'sticky',
+                          top: 0,
+                          background: headerBg,
+                          borderBottom: `1px solid ${borderColor}`,
+                          width: 40,
+                          zIndex: theme.zIndex.appBar + 1,
+                        }}
+                      />
+                    )}
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {rows.length === 0 && (
+                    <TableRow
+                      sx={{
+                        backgroundColor: isDark ? surface : '#FFFFFF',
+                        '& > td': { borderBottom: 'none' },
+                      }}
+                    >
+                      <TableCell
+                        colSpan={
+                          columns.length +
+                          (selectable ? 1 : 0) +
+                          (expandable && renderExpandedRow ? 1 : 0)
+                        }
+                        align="center"
+                        sx={{
+                          height: isCompact ? 170 : 220,
+                          px: 2,
+                          py: 4,
+                          backgroundColor: isDark ? surface : '#FFFFFF',
+                        }}
+                      >
+                        <Stack alignItems="center" spacing={0.65}>
+                          <Typography sx={{ color: textPrimary, fontSize: '14px', fontWeight: 600 }}>
+                            No records found
+                          </Typography>
+                          <Typography sx={{ color: textSecondary, fontSize: '12px' }}>
+                            There is no data to display yet.
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {rows.map((row) => {
+                    const isExpanded = expandedRowId === row.id
+                    return (
+                      <React.Fragment key={row.id}>
+                        <TableRow
+                          hover={!!onRowClick}
+                          onClick={onRowClick ? () => onRowClick(row) : undefined}
+                          sx={{
+                            borderBottom: isShipmentVariant ? 'none' : `1px solid ${softBorderColor}`,
+                            backgroundColor: isDark ? surface : isShipmentVariant ? '#FFFFFF' : '#fffdfa',
+                            transition: 'background-color .18s ease, box-shadow .18s ease',
+                            '&:nth-of-type(even)': isShipmentVariant
+                              ? undefined
+                              : {
+                              backgroundColor: isDark ? '#18212c' : alpha('#F7F1EB', 0.5),
+                            },
+                            ...(isShipmentVariant
+                              ? {
+                                  boxShadow: `0 1px 0 ${alpha(textPrimary, 0.08)}`,
+                                  '& > td:first-of-type': {
+                                    borderTopLeftRadius: '8px',
+                                    borderBottomLeftRadius: '8px',
+                                  },
+                                  '& > td:last-of-type': {
+                                    borderTopRightRadius: '8px',
+                                    borderBottomRightRadius: '8px',
+                                  },
+                                }
+                              : {}),
+                            '&:hover': onRowClick
+                              ? {
+                                  backgroundColor: rowHover,
+                                  cursor: 'pointer',
+                                }
+                              : {
+                                  backgroundColor: isShipmentVariant ? alpha(shipmentAccent, 0.045) : alpha(primary, 0.025),
+                                },
+                          }}
+                        >
+                          {selectable && (
+                            <TableCell
+                              padding="checkbox"
+                              sx={{
+                                position: isShipmentVariant ? 'static' : 'sticky',
+                                left: isShipmentVariant ? undefined : 0,
+                                width: selectionColumnWidth,
+                                minWidth: selectionColumnWidth,
+                                maxWidth: selectionColumnWidth,
+                                px: 0,
+                                py: isShipmentVariant ? 1.05 : isCompact ? 0.85 : 1.45,
+                                textAlign: 'center',
+                                backgroundColor: isDark ? surface : '#FFFFFF',
+                                overflow: 'hidden',
+                                zIndex: isShipmentVariant ? 1 : 4,
+                                boxShadow: isShipmentVariant
+                                  ? 'none'
+                                  : `6px 0 10px ${alpha(textPrimary, 0.05)}`,
+                              }}
+                            >
+                              <CustomCheckbox
+                                checked={selectedIds.includes(row.id)}
+                                onChange={() => handleSelect(row.id)}
+                                sx={isShipmentVariant ? { p: '2px', color: primary } : { color: primary }}
+                              />
+                            </TableCell>
+                          )}
+
+                          {columns.map((col, colIndex) => {
+                            if (col.hiddenOnMobile && isMobile) return null
+                            const value = row[col.id]
+                            const cellContent = col.render ? col.render(value, row) : (value as React.ReactNode)
+                            const shouldTruncate = col.truncate !== false
+
+                            let tooltipTitle: string | undefined
+                            if (shouldTruncate && !React.isValidElement(cellContent)) {
+                              if (value !== null && value !== undefined && typeof value !== 'object') {
+                                tooltipTitle = String(value)
+                              }
+                            }
+
+                            return (
+                              <TableCell
+                                key={col.id as string}
+                                align={col.align ?? 'left'}
+                                sx={{
+                                  position: col.sticky ? 'sticky' : 'static',
+                                  color: textPrimary,
+                                  fontSize: isShipmentVariant ? '12.4px' : '13px',
+                                  fontWeight: 400,
+                                  width: isShipmentVariant ? col.minWidth || 100 : undefined,
+                                  minWidth: isShipmentVariant ? col.minWidth || 100 : undefined,
+                                  maxWidth: isShipmentVariant
+                                    ? col.minWidth || 100
+                                    : shouldTruncate
+                                      ? isCompact ? 180 : 240
+                                      : 'none',
+                                  whiteSpace: shouldTruncate || isShipmentVariant ? 'nowrap' : 'normal',
+                                  overflow: shouldTruncate || isShipmentVariant ? 'hidden' : 'visible',
+                                  textOverflow: shouldTruncate || isShipmentVariant ? 'ellipsis' : 'clip',
+                                  py: isShipmentVariant ? 1.05 : isCompact ? 0.85 : 1.45,
+                                  px: isShipmentVariant ? 0.55 : isCompact ? 1 : 2,
+                                  pl: isShipmentVariant && selectable && colIndex === 0 ? 2.6 : undefined,
+                                  borderBottom: 'none',
+                                  backgroundColor: col.sticky || isShipmentVariant ? (isDark ? surface : '#FFFFFF') : undefined,
+                                  zIndex: col.sticky ? 2 : 1,
+                                  ...(col.sticky === 'right'
+                                    ? {
+                                        right: col.stickyOffset ?? 0,
+                                        boxShadow:
+                                          col.stickyOffset === 0
+                                            ? `-6px 0 10px ${alpha(textPrimary, 0.08)}`
+                                            : undefined,
+                                      }
+                                    : {}),
+                                  ...(col.sticky === 'left'
+                                    ? {
+                                        left: col.stickyOffset ?? (selectable ? selectionColumnWidth : 0),
+                                        boxShadow: `6px 0 10px ${alpha(textPrimary, 0.08)}`,
+                                      }
+                                    : {}),
+                                }}
+                              >
+                                {tooltipTitle ? (
+                                  <Tooltip title={tooltipTitle} arrow disableInteractive>
+                                    <Box component="div" sx={{ maxWidth: '100%', minWidth: 0, overflow: 'hidden' }}>{cellContent}</Box>
+                                  </Tooltip>
+                                ) : (
+                                  <Box component="div" sx={{ maxWidth: '100%', minWidth: 0, overflow: 'hidden' }}>{cellContent}</Box>
+                                )}
+                              </TableCell>
+                            )
+                          })}
+
+                          {expandable && renderExpandedRow && (
+                            <TableCell sx={{ py: isCompact ? 0.75 : 1.5, px: isCompact ? 1 : 2 }}>
+                              <IconButton
+                                size="small"
+                                onClick={() => toggleExpand(row.id)}
+                                sx={{
+                                  color: primary,
+                                  bgcolor: alpha(primary, 0.08),
+                                  border: `1px solid ${alpha(primary, 0.14)}`,
+                                  '&:hover': { backgroundColor: alpha(primary, 0.12) },
+                                }}
+                              >
+                                {isExpanded ? <MdExpandLess /> : <MdExpandMore />}
+                              </IconButton>
+                            </TableCell>
+                          )}
+                        </TableRow>
+
+                        {expandable && renderExpandedRow && (
+                          <TableRow>
+                            <TableCell
+                              colSpan={columns.length + (selectable ? 2 : 1)}
+                              sx={{
+                                p: 0,
+                                backgroundColor: isDark ? alpha(primary, 0.08) : alpha(primary, 0.03),
+                                borderTop: `1px solid ${borderColor}`,
+                              }}
+                            >
+                              <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                                <Box
+                                  ref={expandedRef}
+                                  p={isCompact ? 1.75 : 2.8}
+                                  sx={{
+                                    background: isDark
+                                      ? 'linear-gradient(180deg, #151b23 0%, #101720 100%)'
+                                      : 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,242,236,0.98) 100%)',
+                                  }}
+                                >
+                                  {renderExpandedRow(row)}
+                                </Box>
+                              </Collapse>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </React.Fragment>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        )}
+      </Box>
+    </CardContent>
+  )
+}

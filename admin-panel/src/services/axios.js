@@ -1,0 +1,137 @@
+import axios from "axios";
+
+const DEFAULT_API_BASE_URL = "/api";
+const LEGACY_RAILWAY_API_HOST = ["choice", "me-backend-production.up.railway.app"].join("");
+const PLACEHOLDER_API_HOST = "your-backend-url.onrender.com";
+
+const normalizeApiBaseUrl = (rawBaseUrl) => {
+  if (!rawBaseUrl) return DEFAULT_API_BASE_URL;
+
+  try {
+    const candidate = new URL(rawBaseUrl, window.location.origin);
+    if (
+      candidate.hostname === LEGACY_RAILWAY_API_HOST ||
+      candidate.hostname === PLACEHOLDER_API_HOST
+    ) {
+      return DEFAULT_API_BASE_URL;
+    }
+
+    const normalized = candidate.href.replace(/\/+$/, "");
+    if (normalized.endsWith("/api") || normalized.includes("/api/"))
+      return normalized;
+    return `${normalized}/api`;
+  } catch {
+    return DEFAULT_API_BASE_URL;
+  }
+};
+
+const API_BASE_URL = normalizeApiBaseUrl(process.env.REACT_APP_API_BASE_URL);
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+  timeout: 30000,
+});
+
+let refreshPromise = null;
+
+const redirectToSignIn = () => {
+  if (window.location.pathname !== "/login") {
+    window.location.replace("/login");
+  }
+};
+
+const clearStoredAuth = () => {
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("adminUser");
+};
+
+const updateAuthStore = async (accessToken, refreshToken) => {
+  const { useAuthStore } = await import("../store/useAuthStore");
+  const userId = localStorage.getItem("userId");
+  useAuthStore
+    .getState()
+    .login(accessToken, userId, refreshToken, useAuthStore.getState().user);
+};
+
+const refreshAuthTokens = (refreshToken) => {
+  if (!refreshPromise) {
+    refreshPromise = axios
+      .post(
+        `${API_BASE_URL}/auth/refresh-token`,
+        { refreshToken },
+        {
+          headers: {
+            "x-refresh-token": refreshToken,
+          },
+          timeout: 15000,
+        }
+      )
+      .then(async ({ data }) => {
+        if (!data?.accessToken || !data?.refreshToken) {
+          throw new Error("Invalid response from refresh token endpoint");
+        }
+
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        await updateAuthStore(data.accessToken, data.refreshToken);
+        return data;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+
+  return refreshPromise;
+};
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    const requestUrl = originalRequest?.url || "";
+
+    if (
+      error.response?.status !== 401 ||
+      !originalRequest ||
+      originalRequest._retry ||
+      requestUrl.includes("/auth/")
+    ) {
+      return Promise.reject(error);
+    }
+
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      clearStoredAuth();
+      redirectToSignIn();
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    try {
+      const data = await refreshAuthTokens(refreshToken);
+      originalRequest.headers = originalRequest.headers || {};
+      originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+      return api(originalRequest);
+    } catch (refreshErr) {
+      clearStoredAuth();
+      const { useAuthStore } = await import("../store/useAuthStore");
+      useAuthStore.getState().logout();
+      redirectToSignIn();
+      return Promise.reject(refreshErr);
+    }
+  }
+);
+
+export default api;

@@ -1,0 +1,237 @@
+import {
+  Box,
+  Center,
+  Checkbox,
+  Flex,
+  Spinner,
+  Stack,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
+import CardHeader from 'components/Card/CardHeader'
+import Pagination from 'components/Tables/Pagination'
+import TablesTableRow from 'components/Tables/TablesTableRow'
+import { useEffect, useRef, useState } from 'react'
+
+export const GenericTable = ({
+  title,
+  data = [],
+  captions = [],
+  titleActions = null,
+  columnKeys = [],
+  renderers = {},
+  renderActions,
+  loading = false,
+  page,
+  setPage,
+  totalCount,
+  perPage,
+  setPerPage,
+  paginated = true,
+  sortByComponent = null,
+  columnWidths = {},
+  showCheckboxes = false,
+  onSelectionChange,
+  selectedRows = [],
+  perPageOptions,
+  actionsColumnWidth = '180px',
+  stickyRightColumnKeys = [],
+  stickyRightOffsets = {},
+  onRowClick,
+}) => {
+  const textColor = useColorModeValue('#0F172A', '#E6EDF3')
+  const headerBg = useColorModeValue('#F8FAFC', '#1a2234')
+  const headerColor = useColorModeValue('#64748B', '#8B949E')
+  const borderColor = useColorModeValue('#E2E8F0', '#30363D')
+  const stickyDivider = useColorModeValue('#E2E8F0', '#30363D')
+  const stickyShadow = useColorModeValue(
+    '-14px 0 18px -16px rgba(15, 23, 42, 0.18)',
+    '-14px 0 18px -16px rgba(1, 4, 9, 0.65)',
+  )
+  const scrollRef = useRef(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    const handleScroll = () => {
+      setIsScrolled(el.scrollLeft > 0)
+    }
+
+    el.addEventListener('scroll', handleScroll)
+    return () => el.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const toggleSelectAll = () => {
+    let newSelection = []
+    if (selectedRows.length === data.length) newSelection = []
+    else newSelection = data?.map((row) => row.id)
+    onSelectionChange?.(newSelection)
+  }
+
+  const toggleRow = (id) => {
+    const currentSelection = Array.isArray(selectedRows) ? selectedRows : []
+    const newSelection = currentSelection.includes(id)
+      ? currentSelection.filter((r) => r !== id)
+      : [...currentSelection, id]
+
+    onSelectionChange?.(newSelection)
+  }
+
+  return (
+    <Card overflow="visible" p="0">
+      <CardHeader p="20px 20px 16px">
+        <Flex width="100%" alignItems="center" justifyContent="space-between" direction={{ base: 'column', md: 'row' }} gap={2}>
+          <Stack direction="row" gap={4} align="center">
+            <Text fontSize={{ base: 'md', md: 'lg' }} color={textColor} fontWeight="800" letterSpacing="0">
+              {title}
+            </Text>
+            {sortByComponent}
+          </Stack>
+          {titleActions}
+          {paginated && (
+            <Box mt={{ base: 3, md: 0 }}>
+              <Pagination
+                page={page}
+                setPage={setPage}
+                totalCount={totalCount ?? 0}
+                perPage={perPage}
+                perPageOptions={perPageOptions}
+                setPerPage={setPerPage}
+              />
+            </Box>
+          )}
+        </Flex>
+      </CardHeader>
+
+      <CardBody p={0}>
+        <Box
+          ref={scrollRef}
+          borderWidth="1px"
+          borderColor={borderColor}
+          borderRadius="12px"
+          overflow="hidden"
+          style={{ width: '100%', overflowX: 'auto', overflowY: 'visible' }}
+        >
+          <Table variant="simple" color={textColor}>
+            <Thead>
+              <Tr>
+                {showCheckboxes && (
+                  <Th ps={5} bg={headerBg} position="sticky" top={0} zIndex={3} color={headerColor}>
+                    <Checkbox
+                      isChecked={selectedRows.length === data.length && data.length > 0}
+                      isIndeterminate={selectedRows.length > 0 && selectedRows.length < data.length}
+                      onChange={toggleSelectAll}
+                    />
+                  </Th>
+                )}
+                {columnKeys.map((key, idx) => (
+                  <Th
+                    key={key}
+                    ps={5}
+                    color={headerColor}
+                    minW={columnWidths[key] || 'auto'}
+                    maxW={columnWidths[key] || 'auto'}
+                    position="sticky"
+                    top={0}
+                    bg={headerBg}
+                    fontWeight="700"
+                    fontSize="12px"
+                    letterSpacing="0.08em"
+                    textTransform="uppercase"
+                    position="sticky"
+                    right={stickyRightColumnKeys.includes(key) ? stickyRightOffsets[key] || 0 : undefined}
+                    zIndex={stickyRightColumnKeys.includes(key) ? 4 : 2}
+                    boxShadow={
+                      stickyRightColumnKeys.includes(key) && (stickyRightOffsets[key] || 0) === 0
+                        ? '-6px 0 10px rgba(1, 4, 9, 0.25)'
+                        : undefined
+                    }
+                  >
+                    {captions[idx]}
+                  </Th>
+                ))}
+                {renderActions && (
+                  <Th
+                    bg={headerBg}
+                    color={headerColor}
+                    px={5}
+                    minW={actionsColumnWidth}
+                    w={actionsColumnWidth}
+                    position="sticky"
+                    right={0}
+                    top={0}
+                    zIndex={4}
+                    whiteSpace="nowrap"
+                    borderLeft="1px solid"
+                    borderColor={stickyDivider}
+                    boxShadow={stickyShadow}
+                    fontSize="12px"
+                    letterSpacing="0.08em"
+                    textTransform="uppercase"
+                  >
+                    Actions
+                  </Th>
+                )}
+              </Tr>
+            </Thead>
+
+            <Tbody>
+              {loading ? (
+                <Tr>
+                  <Td colSpan={columnKeys.length + (renderActions ? 1 : 0)}>
+                    <Center py={16}>
+                      <Spinner size="md" color="brand.500" />
+                    </Center>
+                  </Td>
+                </Tr>
+              ) : data.length === 0 ? (
+                <Tr>
+                  <Td colSpan={columnKeys.length + (renderActions ? 1 : 0)}>
+                    <Center py={16}>
+                      <Text color={headerColor} fontWeight="500">No data</Text>
+                    </Center>
+                  </Td>
+                </Tr>
+              ) : (
+                data.map((row, idx) => (
+                  <TablesTableRow
+                    key={idx}
+                    row={row}
+                    checkboxComponent={
+                      showCheckboxes ? (
+                        <Td ps={5}>
+                          <Checkbox isChecked={selectedRows.includes(row.id)} onChange={() => toggleRow(row.id)} />
+                        </Td>
+                      ) : null
+                    }
+                    columnKeys={columnKeys}
+                    renderers={renderers}
+                    renderActions={renderActions}
+                    columnWidths={columnWidths}
+                    isScrolled={isScrolled}
+                    actionsColumnWidth={actionsColumnWidth}
+                    stickyDivider={stickyDivider}
+                    stickyShadow={stickyShadow}
+                    stickyRightColumnKeys={stickyRightColumnKeys}
+                    stickyRightOffsets={stickyRightOffsets}
+                    onClick={onRowClick ? () => onRowClick(row) : undefined}
+                  />
+                ))
+              )}
+            </Tbody>
+          </Table>
+        </Box>
+      </CardBody>
+    </Card>
+  )
+}
