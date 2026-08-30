@@ -98,7 +98,7 @@ export default function OtpLoginPanel({
       sessionStorage.setItem('activeEmail', normalizedEmail)
       setInlineOtp(DEMO_OTP)
       setStep('verify')
-      setCode(DEMO_OTP)
+      setCode('')
       toast.open({
         message: 'Demo verification code generated. Use the code shown on screen.',
         severity: 'success',

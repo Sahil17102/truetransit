@@ -4,6 +4,7 @@ export const DEMO_SESSION_EMAIL_KEY = 'truetransit-demo-email'
 const DEMO_HOSTS = new Set([
   'localhost',
   '127.0.0.1',
+  'truetransit-2.onrender.com',
 ])
 
 export const isDemoLoginEnabled = () =>
