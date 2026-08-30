@@ -1095,8 +1095,8 @@ function HomePage({ onNavigate, showToast }) {
         <div className="container hero-inner">
           <div className="hero-copy reveal">
             <p className="eyebrow"><span /> Transit You Can Trust</p>
-            <h1>TrueTransit<br /><em>Mobility Pvt Ltd.</em></h1>
-            <p className="hero-lede">Professional mobility and shipping intelligence for labels, tracking, insurance, and smarter carrier decisions - from first shipment to global scale.</p>
+            <h1>Deliver Faster.<br /><em>Ship Smarter.</em></h1>
+            <p className="hero-lede">Fast shipping intelligence for labels, tracking, insurance, and smarter courier decisions - from first shipment to national scale.</p>
             <div className="hero-actions">
               <AppLink href="/tracking" className="button button-dark" onNavigate={onNavigate}>Track shipment <ArrowUpRight /></AppLink>
               <AppLink href="/rate-calculator" className="button button-outline" onNavigate={onNavigate}>Calculate rate</AppLink>
