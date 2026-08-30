@@ -76,7 +76,7 @@ Data and Privacy
 - ${TERMS_PRIVACY_POLICY_LINE}
 - By using the platform, you consent to this processing and to sharing relevant shipment, customer, KYC, billing, and tracking information with couriers, payment processors, technology providers, auditors, legal authorities, and support teams where necessary.
 - You must provide your customers with appropriate notices and permissions before sharing their personal data with TrueTransit for shipment processing, tracking, COD, NDR, RTO, support, and communication.
-- You can request correction, access, or deletion of eligible personal information by contacting Hello@truetransitmobility.com or 9906690088, subject to legal, accounting, courier, fraud-prevention, and dispute-retention requirements.
+- You can request correction, access, or deletion of eligible personal information by contacting Hello@truetransitmobility.com or +91 99066 90088, subject to legal, accounting, courier, fraud-prevention, and dispute-retention requirements.
 
 Service Availability and Liability
 - The platform is provided on an as-is and as-available basis. We work to keep it reliable, but we do not guarantee uninterrupted, error-free, or delay-free operation.
@@ -85,7 +85,7 @@ Service Availability and Liability
 
 Suspension and Termination
 - We may suspend or restrict access if we detect fraud risk, abusive behavior, unpaid dues, prohibited shipments, policy violations, courier complaints, security concerns, or unlawful activity.
-- You may stop using the platform or request account closure by contacting Hello@truetransitmobility.com or 9906690088.
+- You may stop using the platform or request account closure by contacting Hello@truetransitmobility.com or +91 99066 90088.
 - Outstanding charges, reconciliation items, claims, disputes, and legal obligations survive account closure.
 
 Updates to These Terms
@@ -93,7 +93,7 @@ Updates to These Terms
 - Continued use of the platform after an update means you accept the revised terms.
 
 Contact and Grievance
-- For terms, privacy, billing, shipment, refund, or grievance questions, contact TrueTransit at Hello@truetransitmobility.com or 9906690088.
+- For terms, privacy, billing, shipment, refund, or grievance questions, contact TrueTransit at Hello@truetransitmobility.com or +91 99066 90088.
 `
 
 // components/layout/constants.ts

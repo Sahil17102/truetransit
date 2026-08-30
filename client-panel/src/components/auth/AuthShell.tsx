@@ -1,7 +1,7 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import BrandLogo from '../brand/BrandLogo'
-import { brand } from '../../theme/brand'
+import { brand, brandIdentity } from '../../theme/brand'
 
 interface AuthShellProps {
   eyebrow: string
@@ -218,6 +218,22 @@ export default function AuthShell({
                   >
                     {subtitle}
                   </Typography>
+                  <Stack
+                    spacing={0.45}
+                    sx={{
+                      color: authPalette.navy,
+                      fontSize: { xs: '0.74rem', sm: '0.8rem' },
+                      fontWeight: 800,
+                      lineHeight: 1.35,
+                      maxWidth: { xs: 310, sm: 470 },
+                    }}
+                  >
+                    <Box component="span">{brandIdentity.supportEmail}</Box>
+                    <Box component="span">{brandIdentity.supportPhone}</Box>
+                    <Box component="span" sx={{ color: alpha(authPalette.navy, 0.68), fontWeight: 700 }}>
+                      {brandIdentity.supportAddress}
+                    </Box>
+                  </Stack>
                 </Stack>
 
                 {visual ?? (

@@ -184,7 +184,7 @@ const faqs = [
   {
     question: 'How can I contact customer support?',
     answer:
-      'Our customer support team is available 24/7 to assist you. You can reach us at +919403891046, email us at Hello@truetransitmobility.com, or chat with us on WhatsApp. Our office hours are 9:00 AM to 6:00 PM, Monday to Friday.',
+      'Our customer support team is available 24/7 to assist you. You can reach us at +91 99066 90088, email us at Hello@truetransitmobility.com, or chat with us on WhatsApp. Our office hours are 9:00 AM to 6:00 PM, Monday to Friday.',
   },
   {
     question: 'What are the packaging guidelines?',

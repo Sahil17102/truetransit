@@ -1,4 +1,4 @@
-const CACHE_PREFIX = 'fastship-assets-'
+const CACHE_PREFIX = 'truetransit-assets-'
 
 self.addEventListener('install', () => {
   self.skipWaiting()

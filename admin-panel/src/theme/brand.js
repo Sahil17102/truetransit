@@ -19,11 +19,11 @@ export const brand = {
 export const brandIdentity = {
   name: 'TrueTransit',
   shortName: 'TrueTransit',
-  tagline: 'Delivering Trust, Every Time.',
+  tagline: 'Transit You Can Trust.',
   supportEmail: 'Hello@truetransitmobility.com',
-  supportPhone: '+91 94038 91046',
-  supportAddress: 'G-10, Bajrang Complex, Telipara, Bilaspur, Chhattisgarh',
-  logoPath: '/fastship-logo.png',
+  supportPhone: '+91 99066 90088',
+  supportAddress: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
+  logoPath: '/truetransit-logo.png',
 }
 
 export const brandFonts = {

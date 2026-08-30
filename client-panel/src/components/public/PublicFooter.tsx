@@ -82,7 +82,7 @@ export default function PublicFooter() {
               </Stack>
               <Stack direction="row" spacing={1.2} alignItems="center">
                 <FiPhone color="#6c5ce7" />
-                <Box component="a" href="tel:+919403891046" sx={{ color: alpha('#fff', 0.62), fontWeight: 600 }}>
+                <Box component="a" href="tel:+919906690088" sx={{ color: alpha('#fff', 0.62), fontWeight: 600 }}>
                   {brandIdentity.supportPhone}
                 </Box>
               </Stack>
@@ -90,7 +90,7 @@ export default function PublicFooter() {
                 <FiMapPin color="#6c5ce7" style={{ marginTop: 3, flexShrink: 0 }} />
                 <Box
                   component="a"
-                  href="https://maps.google.com/?q=Telipara+Bilaspur+Chhattisgarh"
+                  href="https://maps.google.com/?q=The+District+Financial+District+Hyderabad+Nanakramguda+Telangana+500032"
                   target="_blank"
                   rel="noreferrer"
                   sx={{ color: alpha('#fff', 0.62), fontWeight: 600, maxWidth: 300 }}

@@ -156,7 +156,7 @@ export const SupportTicketsPage = () => {
       {!showTableLoading && (
         <Stack direction="row" justifyContent="flex-end">
           <Button
-            href={`https://wa.me/91${brandIdentity.supportPhone}?text=Hi%2C%20I%27m%20a%20seller%20and%20I%20need%20some%20assistance.%20Can%20you%20please%20help%3F`}
+            href={`https://wa.me/${brandIdentity.supportPhone.replace(/\D/g, '')}?text=Hi%2C%20I%27m%20a%20seller%20and%20I%20need%20some%20assistance.%20Can%20you%20please%20help%3F`}
             target="_blank"
             rel="noopener noreferrer"
             variant="outlined"

@@ -28,10 +28,10 @@ export const brandFonts = {
 export const brandIdentity = {
   name: 'TrueTransit',
   shortName: 'TrueTransit',
-  tagline: 'Fast. Safe. Worldwide.',
+  tagline: 'Transit You Can Trust.',
   supportEmail: 'Hello@truetransitmobility.com',
-  supportPhone: '+91 84878 81121',
-  supportAddress: 'Ahmedabad, Gujarat, India',
+  supportPhone: '+91 99066 90088',
+  supportAddress: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
   logoSrc: '/brand/shipment-email-logo.png',
   markSrc: '/brand/shipment-email-mark.png',
 }

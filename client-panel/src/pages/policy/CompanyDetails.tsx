@@ -17,7 +17,7 @@ import { brandIdentity } from '../../theme/brand'
 const CompanyDetails = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const coords = { lat: 34.209, lng: 74.3429 }
+  const coords = { lat: 17.4326, lng: 78.3405 }
 
   return (
     <Stack mt={2} gap={5}>
