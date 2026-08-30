@@ -31,6 +31,14 @@ import { useHistory } from "react-router-dom";
 import { loginAdmin, waitForAdminApi } from "../../services/auth.service";
 import { useAuthStore } from "../../store/useAuthStore";
 import { brandIdentity } from "../../theme/brand";
+import {
+  createDemoAdminToken,
+  DEMO_ADMIN_EMAIL,
+  DEMO_ADMIN_PASSWORD,
+  DEMO_ADMIN_USER_ID,
+  getDemoAdminUser,
+  isDemoAdminCredential,
+} from "../../utils/demoAdminAuth";
 
 function isTokenValid(token) {
   try {
@@ -66,9 +74,29 @@ function SignIn() {
     }
 
     setLoading(true);
-    setLoadingText("Waking server");
+    setLoadingText("Signing in");
 
     try {
+      if (isDemoAdminCredential(email, password)) {
+        login(
+          createDemoAdminToken("access"),
+          DEMO_ADMIN_USER_ID,
+          createDemoAdminToken("refresh"),
+          getDemoAdminUser()
+        );
+
+        toast({
+          title: "Demo admin login successful",
+          status: "success",
+          duration: 2000,
+          isClosable: true,
+        });
+
+        history.push("/admin/dashboard");
+        return;
+      }
+
+      setLoadingText("Waking server");
       await waitForAdminApi();
       setLoadingText("Signing in");
 
@@ -350,6 +378,9 @@ function SignIn() {
                   </Heading>
                   <Text color="#8A95A3" fontSize="14px">
                     Sign in with your TrueTransit admin credentials
+                  </Text>
+                  <Text color="#607397" fontSize="12px" mt="10px" lineHeight="1.6">
+                    Demo: {DEMO_ADMIN_EMAIL} / {DEMO_ADMIN_PASSWORD}
                   </Text>
                 </Box>
 

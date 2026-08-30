@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isDemoAdminSession } from "../utils/demoAdminAuth";
 
 const DEFAULT_API_BASE_URL = "/api";
 const LEGACY_RAILWAY_API_HOST = ["choice", "me-backend-production.up.railway.app"].join("");
@@ -111,6 +112,10 @@ api.interceptors.response.use(
     }
 
     const refreshToken = localStorage.getItem("refreshToken");
+    if (isDemoAdminSession()) {
+      return Promise.reject(error);
+    }
+
     if (!refreshToken) {
       clearStoredAuth();
       redirectToSignIn();
