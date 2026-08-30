@@ -161,25 +161,29 @@ function HeroVisual() {
       <div className="orbit orbit-one" />
       <div className="orbit orbit-two" />
       <div className="parcel">
-        <div className="parcel-top"><span>Manifest</span><strong>TT-4928</strong></div>
+        <div className="parcel-top"><span>Sample view</span><strong>TT-XXXX</strong></div>
         <div className="parcel-side"><span /><span /><span /></div>
         <div className="parcel-front">
           <div className="label-head">
             <span className="mini-brand">TT</span>
-            <div><small>Priority shipment</small><strong>HYD - BLR</strong></div>
+            <div><small>Demo shipment</small><strong>Lane hidden</strong></div>
           </div>
-          <div className="barcode" />
-          <div className="label-meta"><span>2.4 kg</span><span>Express</span><span>Insured</span></div>
+          <div className="barcode masked-barcode" aria-hidden="true" />
+          <div className="label-meta">
+            <span>Weight hidden</span>
+            <span>Service hidden</span>
+            <span>Details masked</span>
+          </div>
         </div>
       </div>
       <div className="float-card status-card">
         <span className="status-dot" />
-        <div><small>Package status</small><strong>Out for delivery</strong></div>
+        <div><small>Sample status</small><strong>Masked preview</strong></div>
         <Check />
       </div>
       <div className="float-card rate-card">
         <TrendingDown />
-        <div><small>Average savings</small><strong>31.8%</strong></div>
+        <div><small>Sample saving</small><strong>Range hidden</strong></div>
       </div>
       <div className="route-dot route-a" />
       <div className="route-dot route-b" />
@@ -247,12 +251,12 @@ function ShipmentFlow() {
           <div className="flow-toolbar">
             <div>
               <strong>Transit command map</strong>
-              <span>Hyderabad network live</span>
+              <span>Demo network view</span>
             </div>
             <div>
               <small>12 carrier links</small>
               <small>97.8% SLA</small>
-              <small>23 exceptions</small>
+              <small>Sample exceptions</small>
             </div>
           </div>
           <div className="flow-node flow-system flow-oms"><Tag /><span>Order system</span></div>
@@ -281,14 +285,14 @@ function ShipmentFlow() {
           <span className="flow-packet packet-two" />
           <span className="flow-packet packet-three" />
           <div className="flow-status">
-            <span>Live shipment</span>
-            <strong>TT-4928</strong>
-            <small>Label created - tracking live</small>
+            <span>Sample shipment</span>
+            <strong>TT-XXXX</strong>
+            <small>Tracking details masked</small>
           </div>
           <div className="flow-footer">
             <span><CircleCheck /> API connected</span>
             <span><Truck /> Carrier sync active</span>
-            <span><Radar /> Customer alerts queued</span>
+            <span><Radar /> Customer alerts masked</span>
           </div>
         </figure>
       </div>
@@ -378,9 +382,9 @@ function SuiteSection({ onNavigate }) {
               <div className="code-dots"><span /><span /><span /><small>API request</small></div>
               <code><b>POST</b> /v1/shipments</code>
               <div className="api-lines">
-                <p><span>carrier</span><strong>BlueDart</strong></p>
-                <p><span>service</span><strong>Express</strong></p>
-                <p><span>status</span><strong>Label ready</strong></p>
+                <p><span>carrier</span><strong>Carrier A</strong></p>
+                <p><span>service</span><strong>Sample</strong></p>
+                <p><span>status</span><strong>Demo label</strong></p>
               </div>
             </div>
             <h3>Shipping API</h3>
@@ -392,11 +396,11 @@ function SuiteSection({ onNavigate }) {
             <div className="suite-icon"><Route /></div>
             <span className="card-number">02</span>
             <div className="map-visual">
-              <div className="track-head"><span>TT-4928</span><strong>Out for delivery</strong></div>
+              <div className="track-head"><span>TT-XXXX</span><strong>Status masked</strong></div>
               <span className="map-pin pin-one"><Package /></span>
               <span className="map-pin pin-two"><Truck /></span>
               <svg viewBox="0 0 400 180" aria-hidden="true"><path d="M42,121 C104,20 179,165 236,77 S336,35 365,92" /></svg>
-              <div className="map-status"><small>ETA window</small><strong>2:15-4:15 PM</strong></div>
+              <div className="map-status"><small>ETA window</small><strong>Hidden</strong></div>
             </div>
             <h3>Predictive tracking</h3>
             <p>Give customers accurate delivery windows and keep your team ahead of exceptions before support tickets arrive.</p>
@@ -410,7 +414,7 @@ function SuiteSection({ onNavigate }) {
               <ShieldCheck />
               <div className="coverage-card">
                 <span>Coverage active</span>
-                <strong>$250.00</strong>
+                <strong>Masked</strong>
                 <small>Claim SLA under 48 hours</small>
                 <p><Check /> Auto-approved for eligible packages</p>
               </div>
@@ -515,7 +519,7 @@ function LogisticsIndustries() {
       status: 'COD ready',
       metric: '2.4k',
       label: 'orders today',
-      route: 'HYD -> BLR',
+      route: 'Lane hidden',
       progress: '82%',
     },
     {
@@ -526,7 +530,7 @@ function LogisticsIndustries() {
       status: 'Live rates',
       metric: '14',
       label: 'active partners',
-      route: 'Delhivery + DTDC',
+      route: 'Partner set',
       progress: '68%',
     },
     {
@@ -537,7 +541,7 @@ function LogisticsIndustries() {
       status: 'Scan sync',
       metric: '96%',
       label: 'handover done',
-      route: 'Dock A -> Hub 03',
+      route: 'Zone A -> Hub',
       progress: '74%',
     },
     {
@@ -548,7 +552,7 @@ function LogisticsIndustries() {
       status: 'RTO watch',
       metric: '31',
       label: 'returns queued',
-      route: 'Customer -> WH',
+      route: 'Return lane',
       progress: '56%',
     },
     {
@@ -559,7 +563,7 @@ function LogisticsIndustries() {
       status: 'Rate lock',
       metric: '18%',
       label: 'cost saved',
-      route: 'North lane',
+      route: 'Regional lane',
       progress: '88%',
     },
     {
@@ -570,7 +574,7 @@ function LogisticsIndustries() {
       status: 'Alerts sent',
       metric: '99.1%',
       label: 'SMS delivered',
-      route: 'Pickup -> Doorstep',
+      route: 'Notification flow',
       progress: '91%',
     },
   ];
@@ -713,9 +717,26 @@ function BusinessDetails() {
   );
 }
 
+function PageDetailBand({ tone = '', items }) {
+  return (
+    <section className={`page-detail-band${tone}`} aria-label="Page highlights">
+      <div className="container detail-band-grid">
+        {items.map(([Icon, label, title, copy]) => (
+          <article className="detail-band-card reveal" key={title}>
+            <span><Icon /></span>
+            <small>{label}</small>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function TrackingPage() {
-  const [trackingId, setTrackingId] = useState('TT-4928');
-  const cleanId = trackingId.trim() || 'TT-4928';
+  const [trackingId, setTrackingId] = useState('TT-XXXX');
+  const cleanId = trackingId.trim() || 'TT-XXXX';
 
   return (
     <>
@@ -724,107 +745,212 @@ function TrackingPage() {
           <div className="reveal">
             <p className="eyebrow"><span /> Tracking</p>
             <h1>Track every shipment with confidence.</h1>
-            <p>Enter a TrueTransit tracking ID to view delivery status, checkpoints, and expected movement in one clean page.</p>
+            <p>Enter a TrueTransit tracking ID to view masked delivery status, checkpoint health, and operational notes in one clean page.</p>
           </div>
-          <div className="tracking-card reveal">
-            <label>
-              <span>Tracking number</span>
-              <input value={trackingId} onChange={(event) => setTrackingId(event.target.value)} placeholder="TT-4928" />
-            </label>
-            <button className="button button-dark" type="button">Track shipment <ArrowUpRight /></button>
-            <div className="tracking-result">
-              <small>Current status</small>
-              <strong>Out for delivery</strong>
-              <p>{cleanId} is moving through the Hyderabad delivery network and is expected today.</p>
+          <div className="tracking-workspace reveal">
+            <div className="tracking-search-row">
+              <label>
+                <span>Tracking number</span>
+                <input value={trackingId} onChange={(event) => setTrackingId(event.target.value)} placeholder="TT-XXXX" />
+              </label>
+              <button className="button button-dark" type="button">Track <ArrowUpRight /></button>
+            </div>
+            <div className="tracking-hero-result">
+              <div>
+                <small>Current status</small>
+                <strong>Demo status</strong>
+                <p>{cleanId} is a masked sample ID. Route, recipient, carrier, and ETA details stay hidden in this preview.</p>
+              </div>
+              <span><ShieldCheck /></span>
+            </div>
+            <div className="tracking-mini-grid">
+              <article><small>Route privacy</small><strong>Masked</strong></article>
+              <article><small>Carrier view</small><strong>Hidden</strong></article>
+              <article><small>ETA</small><strong>Private</strong></article>
             </div>
           </div>
         </div>
       </section>
-      <section className="tool-section">
+      <section className="tool-section spacious-tools">
         <div className="container tool-grid">
           <article className="tool-panel">
             <small>Shipment timeline</small>
             <div className="track-steps">
-              {['Label generated', 'Carrier pickup confirmed', 'In transit', 'Out for delivery'].map((step, index) => (
-                <p className={index < 4 ? 'done' : ''} key={step}><span />{step}<b>{index === 3 ? 'Today' : `${index + 1}:20 PM`}</b></p>
+              {['Sample label created', 'Carrier hidden', 'Route masked', 'ETA hidden'].map((step, index) => (
+                <p className={index < 4 ? 'done' : ''} key={step}><span />{step}<b>{index === 3 ? 'Hidden' : `Step ${index + 1}`}</b></p>
               ))}
             </div>
           </article>
           <article className="tool-panel accent">
             <small>Delivery promise</small>
-            <strong>Today, 2:15-4:15 PM</strong>
-            <p>Live updates stay consistent across customer support, operations, and customer-facing tracking pages.</p>
+            <strong>Details masked</strong>
+            <p>Public previews show the product experience without exposing any real route, recipient, or delivery detail.</p>
           </article>
         </div>
       </section>
+      <PageDetailBand
+        items={[
+          [ScanSearch, 'Checkpoint clarity', 'A cleaner operations view', 'Teams can review label, pickup, transit, and delivery states without exposing customer-level data.'],
+          [Bell, 'Support ready', 'Better customer updates', 'Status copy stays consistent across internal tools and customer-facing tracking pages.'],
+          [ShieldCheck, 'Privacy first', 'Sensitive shipment fields stay masked', 'Public previews keep IDs, addresses, carrier names, and ETA windows out of sight.'],
+        ]}
+      />
     </>
   );
 }
 
 function RateCalculatorPage() {
-  const [weight, setWeight] = useState(2.5);
-  const [distance, setDistance] = useState(850);
-  const [speed, setSpeed] = useState('standard');
-  const multiplier = speed === 'express' ? 1.55 : speed === 'priority' ? 1.25 : 1;
-  const estimate = Math.max(99, Math.round((85 + Number(weight || 0) * 32 + Number(distance || 0) * 0.18) * multiplier));
+  const defaultRate = {
+    pickup: '',
+    delivery: '',
+    actualWeight: '',
+    length: '',
+    width: '',
+    height: '',
+    shipmentValue: '',
+    paymentType: 'prepaid',
+  };
+  const [form, setForm] = useState(defaultRate);
+  const [calculated, setCalculated] = useState(false);
+  const updateForm = (field) => (event) => {
+    setForm((value) => ({ ...value, [field]: event.target.value }));
+    setCalculated(false);
+  };
+  const actualKg = Number(form.actualWeight || 0) / 1000;
+  const volumetricKg = (Number(form.length || 0) * Number(form.width || 0) * Number(form.height || 0)) / 5000;
+  const chargeableKg = Math.max(actualKg, volumetricKg);
+  const pickupZone = form.pickup.trim().slice(0, 2);
+  const deliveryZone = form.delivery.trim().slice(0, 2);
+  const laneFee = pickupZone && deliveryZone && pickupZone !== deliveryZone ? 42 : 24;
+  const paymentFee = form.paymentType === 'cod' ? 45 : 0;
+  const valueCover = Number(form.shipmentValue || 0) * 0.002;
+  const estimate = Math.max(0, Math.round(59 + laneFee + chargeableKg * 54 + paymentFee + valueCover));
+  const canShowRate = calculated && chargeableKg > 0;
+
+  function resetRate() {
+    setForm(defaultRate);
+    setCalculated(false);
+  }
 
   return (
     <>
-      <section className="page-hero rate-page">
-        <div className="container page-hero-inner">
-          <div className="reveal">
+      <section className="page-hero rate-page calculator-page">
+        <div className="container calculator-layout">
+          <div className="calculator-intro reveal">
             <p className="eyebrow"><span /> Rate calculator</p>
             <h1>Calculate courier rates before you book.</h1>
-            <p>Estimate delivery cost with weight, service speed, and distance. The layout matches the TrueTransit landing page so the experience feels connected.</p>
+            <p>Check guest courier estimates with pickup, delivery, weight, carton size, shipment value, and payment type.</p>
           </div>
-          <div className="calculator-card reveal">
-            <label><span>Chargeable weight (kg)</span><input type="number" min="0" step="0.1" value={weight} onChange={(event) => setWeight(event.target.value)} /></label>
-            <label><span>Approx distance (km)</span><input type="number" min="0" step="10" value={distance} onChange={(event) => setDistance(event.target.value)} /></label>
-            <label><span>Service type</span><select value={speed} onChange={(event) => setSpeed(event.target.value)}><option value="standard">Standard</option><option value="priority">Priority</option><option value="express">Express</option></select></label>
-            <div className="estimate-box"><small>Estimated rate</small><strong>Rs. {estimate}</strong><span>Includes handling and network estimate</span></div>
+          <div className="calculator-panel reveal">
+            <div className="calculator-heading">
+              <div>
+                <span className="calculator-icon"><BadgePercent /></span>
+                <div>
+                  <h2>Rate Calculator</h2>
+                  <p>Use your shipment inputs to estimate chargeable weight and a guest shipping rate.</p>
+                </div>
+              </div>
+              <button type="button" className="reset-button" onClick={resetRate}>Reset</button>
+            </div>
+            <div className="form-grid two-col">
+              <label><span>Pick-up Area Pincode</span><input value={form.pickup} onChange={updateForm('pickup')} inputMode="numeric" placeholder="Enter pickup pincode" /></label>
+              <label><span>Delivery Area Pincode</span><input value={form.delivery} onChange={updateForm('delivery')} inputMode="numeric" placeholder="Enter delivery pincode" /></label>
+              <label className="with-unit"><span>Actual Weight</span><input type="number" min="0" value={form.actualWeight} onChange={updateForm('actualWeight')} placeholder="Enter actual weight" /><b>GM</b></label>
+              <label className="with-unit"><span>Length</span><input type="number" min="0" value={form.length} onChange={updateForm('length')} placeholder="Enter length" /><b>CM</b></label>
+              <label className="with-unit"><span>Width</span><input type="number" min="0" value={form.width} onChange={updateForm('width')} placeholder="Enter width" /><b>CM</b></label>
+              <label className="with-unit"><span>Height</span><input type="number" min="0" value={form.height} onChange={updateForm('height')} placeholder="Enter height" /><b>CM</b></label>
+              <label className="with-unit"><span>Shipment Value</span><input type="number" min="0" value={form.shipmentValue} onChange={updateForm('shipmentValue')} placeholder="Enter shipment value" /><b>RS</b></label>
+              <label><span>Payment Type</span><select value={form.paymentType} onChange={updateForm('paymentType')}><option value="prepaid">Prepaid</option><option value="cod">COD</option></select></label>
+            </div>
+            <button className="calculate-button" type="button" onClick={() => setCalculated(true)}>Calculate</button>
+            <div className="calculator-results">
+              <div>
+                <small>Volumetric weight</small>
+                <strong>{volumetricKg.toFixed(2)} kg</strong>
+              </div>
+              <div>
+                <small>Chargeable weight</small>
+                <strong>{chargeableKg.toFixed(2)} kg</strong>
+              </div>
+              <div>
+                <small>{calculated ? 'Estimated rate' : 'Rate preview'}</small>
+                <strong>{canShowRate ? `Rs. ${estimate}` : 'Fill details'}</strong>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <section className="tool-section">
-        <div className="container page-grid compact">
+      <section className="tool-section spacious-tools">
+        <div className="container page-grid feature-three">
           <div className="page-card"><span><BadgePercent /></span><small>Transparent estimate</small><h2>No surprise math.</h2><p>Rates are calculated with chargeable weight, distance, and service level so operators can compare options quickly.</p></div>
           <div className="page-card accent-blue"><span><Truck /></span><small>Network ready</small><h2>Built for Indian routes.</h2><p>Use this as a polished customer-facing calculator page inside the same TrueTransit experience.</p></div>
+          <div className="page-card accent-lime"><span><ShieldCheck /></span><small>Billing inputs</small><h2>Value and payment aware.</h2><p>Shipment value and payment type are included in the estimate so the preview feels closer to a real checkout flow.</p></div>
         </div>
       </section>
+      <PageDetailBand
+        items={[
+          [MapPinCheck, 'Pincode lane', 'Pickup and delivery are separate', 'Operators can enter both sides of the movement before checking a rate preview.'],
+          [PackageOpen, 'Chargeable weight', 'Actual and volumetric weight included', 'The form computes chargeable weight from grams and carton dimensions before showing a rate.'],
+          [BadgePercent, 'Guest rate', 'Clear estimated amount', 'The estimate appears only after calculation and avoids exposing any real carrier quote.'],
+        ]}
+      />
     </>
   );
 }
 
 function WeightCalculatorPage() {
-  const [length, setLength] = useState(30);
-  const [width, setWidth] = useState(20);
-  const [height, setHeight] = useState(15);
-  const [actual, setActual] = useState(2);
-  const volumetric = Math.round(((Number(length || 0) * Number(width || 0) * Number(height || 0)) / 5000) * 10) / 10;
-  const chargeable = Math.max(Number(actual || 0), volumetric);
+  const defaultWeight = { length: '40', width: '32', height: '28', divisor: '5000' };
+  const [form, setForm] = useState(defaultWeight);
+  const updateForm = (field) => (event) => setForm((value) => ({ ...value, [field]: event.target.value }));
+  const divisor = Math.max(1, Number(form.divisor || 5000));
+  const volumetric = (Number(form.length || 0) * Number(form.width || 0) * Number(form.height || 0)) / divisor;
+
+  function resetWeight() {
+    setForm(defaultWeight);
+  }
 
   return (
     <>
-      <section className="page-hero weight-page">
-        <div className="container page-hero-inner">
-          <div className="reveal">
+      <section className="page-hero weight-page calculator-page">
+        <div className="container calculator-layout">
+          <div className="calculator-intro reveal">
             <p className="eyebrow"><span /> Weight calculator</p>
             <h1>Find chargeable weight in seconds.</h1>
-            <p>Calculate volumetric weight and compare it with actual package weight before booking a shipment.</p>
+            <p>Work out volumetric and billable weight using carton dimensions and your preferred divisor.</p>
           </div>
-          <div className="calculator-card reveal">
-            <div className="dimension-grid">
-              <label><span>Length (cm)</span><input type="number" min="0" value={length} onChange={(event) => setLength(event.target.value)} /></label>
-              <label><span>Width (cm)</span><input type="number" min="0" value={width} onChange={(event) => setWidth(event.target.value)} /></label>
-              <label><span>Height (cm)</span><input type="number" min="0" value={height} onChange={(event) => setHeight(event.target.value)} /></label>
+          <div className="calculator-panel reveal">
+            <div className="calculator-heading">
+              <div>
+                <span className="calculator-icon blue"><Package /></span>
+                <div>
+                  <h2>Weight Calculator</h2>
+                  <p>Calculate volumetric weight using length, width, height, and divisor.</p>
+                </div>
+              </div>
+              <button type="button" className="reset-button" onClick={resetWeight}>Reset</button>
             </div>
-            <label><span>Actual weight (kg)</span><input type="number" min="0" step="0.1" value={actual} onChange={(event) => setActual(event.target.value)} /></label>
-            <div className="estimate-box"><small>Chargeable weight</small><strong>{chargeable.toFixed(1)} kg</strong><span>Volumetric: {volumetric.toFixed(1)} kg</span></div>
+            <div className="form-grid four-col">
+              <label><span>Length (cm)</span><input type="number" min="0" value={form.length} onChange={updateForm('length')} /></label>
+              <label><span>Width (cm)</span><input type="number" min="0" value={form.width} onChange={updateForm('width')} /></label>
+              <label><span>Height (cm)</span><input type="number" min="0" value={form.height} onChange={updateForm('height')} /></label>
+              <label><span>Divisor</span><input type="number" min="1" value={form.divisor} onChange={updateForm('divisor')} /></label>
+            </div>
+            <div className="weight-output">
+              <div className="weight-value">
+                <small>Volumetric weight</small>
+                <strong>{volumetric.toFixed(2)} <span>kg</span></strong>
+              </div>
+              <div className="weight-note">
+                <small>Billable weight note</small>
+                <strong>(L x W x H) / divisor</strong>
+                <p>Shipping billing usually compares actual weight against dimensional weight and uses the higher figure.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-      <section className="tool-section">
-        <div className="container tool-grid">
+      <section className="tool-section spacious-tools">
+        <div className="container page-grid feature-three">
           <article className="tool-panel">
             <small>Formula</small>
             <strong>L x W x H / 5000</strong>
@@ -835,23 +961,45 @@ function WeightCalculatorPage() {
             <strong>Compact packaging saves cost.</strong>
             <p>Reducing empty space can lower volumetric weight and improve route efficiency.</p>
           </article>
+          <article className="tool-panel accent-blue">
+            <small>Divisor control</small>
+            <strong>Flexible billing rules.</strong>
+            <p>Teams can adjust the divisor to match courier billing rules without changing the page layout.</p>
+          </article>
         </div>
       </section>
+      <PageDetailBand
+        items={[
+          [Package, 'Carton dimensions', 'Length, width, and height stay visible', 'The core fields remain front and center so teams can calculate weight without hunting through the page.'],
+          [Settings2, 'Divisor', 'Courier-ready formula control', 'Use 5000 by default or change the divisor for different carrier rules.'],
+          [ChartNoAxesCombined, 'Billable note', 'Clear output context', 'The result explains why dimensional weight matters for final shipping charges.'],
+        ]}
+      />
     </>
   );
 }
 
 function ContactPage({ showToast }) {
   return (
-    <section className="contact-section standalone-contact">
-      <div className="container contact-inner">
-        <div>
-          <div className="contact-copy reveal"><p className="eyebrow light-eye"><span /> Contact</p><h2>{businessInfo.shortName}<br /><em>official details.</em></h2><p>Business information, office address, support placeholder, and email are shown clearly for customers.</p></div>
-          <BusinessDetails />
+    <>
+      <section className="contact-section standalone-contact">
+        <div className="container contact-inner">
+          <div>
+            <div className="contact-copy reveal"><p className="eyebrow light-eye"><span /> Contact</p><h2>{businessInfo.shortName}<br /><em>official details.</em></h2><p>Business information, office address, support placeholder, and email are shown clearly for customers.</p></div>
+            <BusinessDetails />
+          </div>
+          <ContactForm showToast={showToast} />
         </div>
-        <ContactForm showToast={showToast} />
-      </div>
-    </section>
+      </section>
+      <PageDetailBand
+        tone=" light"
+        items={[
+          [Bell, 'Response flow', 'Clear inquiry routing', 'Lead capture stays simple for rate questions, integrations, operations, and support follow-up.'],
+          [Home, 'Business details', 'Official information visible', 'Company name, office address, email, and support placeholder are kept together for trust.'],
+          [ShieldCheck, 'Customer trust', 'No private shipment fields', 'The contact page stays business-focused and does not expose shipment-level data.'],
+        ]}
+      />
+    </>
   );
 }
 
@@ -1039,6 +1187,13 @@ function ProductsPage({ onNavigate }) {
       <section className="page-section">
         <div className="container page-grid"><ProductCards /></div>
       </section>
+      <PageDetailBand
+        items={[
+          [PackageOpen, 'Labels', 'Production-ready label flow', 'Create labels, validate addresses, and keep shipping data structured across the stack.'],
+          [Radar, 'Tracking', 'Consistent event visibility', 'Normalize carrier events into one status model for support and customer updates.'],
+          [Shield, 'Protection', 'Coverage without friction', 'Add coverage and claims support as part of the shipping journey.'],
+        ]}
+      />
     </>
   );
 }
@@ -1068,6 +1223,14 @@ function SolutionsPage({ onNavigate }) {
           {items.map(([Icon, title, copy]) => <article key={title}><Icon /><div><h2>{title}</h2><p>{copy}</p></div></article>)}
         </div>
       </section>
+      <PageDetailBand
+        tone=" blue"
+        items={[
+          [Truck, 'Operations', 'Dispatch teams get cleaner handoffs', 'Teams can compare service levels, reduce manual checks, and keep routes moving.'],
+          [ChartNoAxesCombined, 'Leadership', 'Better cost visibility', 'Spend, service levels, and exceptions can be reviewed in one operational layer.'],
+          [Bell, 'Customers', 'Updates stay consistent', 'Status communication remains calm, predictable, and aligned across channels.'],
+        ]}
+      />
     </>
   );
 }
@@ -1092,6 +1255,13 @@ function DevelopersPage({ onNavigate }) {
           <div className="page-card accent-blue" id="status"><span><ShieldCheck /></span><small>Status</small><h2>99.99% API uptime</h2><p>Regional redundancy, clear rate limits, and operational alerts your team can trust.</p></div>
         </div>
       </section>
+      <PageDetailBand
+        items={[
+          [Braces, 'API design', 'Clean request structure', 'Labels, parcels, rates, tracking, and returns can be handled through predictable endpoints.'],
+          [Settings2, 'Sandbox', 'Test before production', 'Developers can validate rate and weight logic before real shipping workflows are connected.'],
+          [ShieldCheck, 'Reliability', 'Operational safeguards included', 'Retries, webhook verification, and status handling keep integrations stable.'],
+        ]}
+      />
     </>
   );
 }
@@ -1110,6 +1280,13 @@ function CustomersPage({ onNavigate }) {
         </div>
       </section>
       <div className="page-stories"><Stories /></div>
+      <PageDetailBand
+        items={[
+          [BadgePercent, 'Savings', 'Rate comparison at scale', 'Teams can spot better courier choices without slowing down daily dispatch work.'],
+          [Route, 'Movement', 'Every handoff becomes easier to see', 'Operations teams get a cleaner view of pickup, transit, exceptions, and delivery.'],
+          [WandSparkles, 'Insights', 'Smarter decisions over time', 'Patterns from rate, weight, and tracking events can turn into practical next actions.'],
+        ]}
+      />
     </>
   );
 }
@@ -1143,6 +1320,14 @@ function PricingPage({ onNavigate, showToast }) {
           ))}
         </div>
       </section>
+      <PageDetailBand
+        tone=" light"
+        items={[
+          [BadgePercent, 'Usage based', 'Start with the volume you have', 'Plans can support early label creation as well as higher-volume operations.'],
+          [Package, 'Tools included', 'Rate, tracking, and weight pages connect', 'Calculator tools sit beside the broader shipping and operations platform.'],
+          [ShieldCheck, 'Scale support', 'Operational review ready', 'Security, limits, and support can grow with larger shipping teams.'],
+        ]}
+      />
     </>
   );
 }
