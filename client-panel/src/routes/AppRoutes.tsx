@@ -223,16 +223,8 @@ function RouteAssetRecovery() {
   return null
 }
 
-function isTrueTransitAppHost() {
-  if (typeof window === 'undefined') return false
-
-  return window.location.hostname.toLowerCase() === 'truetransit-2.onrender.com'
-}
-
 function RootRoute() {
-  if (isTrueTransitAppHost()) return <Navigate to="/login" replace />
-
-  return <TrueTransitLanding />
+  return <Navigate to="/login" replace />
 }
 
 function RoutedApp() {
