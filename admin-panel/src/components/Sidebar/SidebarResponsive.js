@@ -22,11 +22,18 @@ function SidebarResponsive(props) {
   const location = useLocation()
   const mainPanel = React.useRef()
 
-  const activeRoute = (routeName) => (location.pathname === routeName ? 'active' : '')
+  const activeRoute = (routeName) =>
+    location.pathname === routeName || location.pathname.startsWith(`${routeName}/`) ? 'active' : ''
 
-  const drawerBg = useColorModeValue('rgba(255,255,255,0.98)', 'rgba(13, 27, 77, 0.98)')
-  const activeBg = useColorModeValue('rgba(20, 155, 109, 0.12)', 'rgba(143, 212, 255, 0.16)')
-  const hoverBg = useColorModeValue('rgba(216, 236, 238, 0.44)', 'rgba(255, 255, 255, 0.08)')
+  const drawerBg = useColorModeValue(
+    'linear-gradient(180deg, #F8FBFF 0%, #FFFFFF 46%, #F4F8FB 100%)',
+    'linear-gradient(180deg, #111827 0%, #161B22 52%, #101722 100%)',
+  )
+  const activeBg = useColorModeValue(
+    'linear-gradient(135deg, rgba(20,155,109,0.16) 0%, rgba(255,255,255,0.95) 100%)',
+    'linear-gradient(135deg, rgba(20,155,109,0.24) 0%, rgba(20,43,79,0.28) 100%)',
+  )
+  const hoverBg = useColorModeValue('rgba(216, 236, 238, 0.42)', 'rgba(255, 255, 255, 0.065)')
   const textColor = useColorModeValue('gray.700', 'gray.100')
   const iconColor = useColorModeValue('gray.500', 'gray.300')
   const activeTextColor = brand.ink
@@ -63,14 +70,15 @@ function SidebarResponsive(props) {
               justifyContent="flex-start"
               alignItems="center"
               bg={isActive ? activeBg : 'transparent'}
-              mb="10px"
-              px="14px"
-              py="13px"
-              borderRadius="10px"
+              mb="8px"
+              px="12px"
+              py="11px"
+              borderRadius="14px"
               w="100%"
               border="1px solid"
-              borderColor={isActive ? 'rgba(20, 155, 109, 0.22)' : 'transparent'}
-              _hover={{ bg: hoverBg, transform: 'translateX(2px)' }}
+              borderColor={isActive ? 'rgba(20, 155, 109, 0.30)' : 'transparent'}
+              boxShadow={isActive ? '0 12px 28px rgba(20,43,79,0.075)' : 'none'}
+              _hover={{ bg: hoverBg, borderColor: 'rgba(20,43,79,0.08)', transform: 'translateX(2px)' }}
               _active={{ bg: 'inherit', transform: 'none' }}
               _focus={{ boxShadow: 'none' }}
               transition="all 0.2s ease"
@@ -82,7 +90,7 @@ function SidebarResponsive(props) {
                   h="34px"
                   w="34px"
                   me="12px"
-                  borderRadius="10px"
+                  borderRadius="12px"
                 >
                   {prop.icon}
                 </IconBox>

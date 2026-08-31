@@ -213,9 +213,14 @@ const sidebarItems = [
   },
 ];
 
+const pathMatches = (pathname, targetPath) => {
+  if (!targetPath) return false;
+  return pathname === targetPath || pathname.startsWith(`${targetPath}/`);
+};
+
 const isItemActive = (pathname, item) => {
-  if (item.path) return pathname.startsWith(item.path);
-  return item.children?.some((child) => pathname.startsWith(child.path));
+  if (item.path) return pathMatches(pathname, item.path);
+  return item.children?.some((child) => pathMatches(pathname, child.path));
 };
 
 const SidebarContent = ({
@@ -228,19 +233,41 @@ const SidebarContent = ({
 }) => {
   const location = useLocation();
   const [openGroups, setOpenGroups] = React.useState({});
-  const sidebarBg = useColorModeValue("#ffffff", "#161B22");
-  const borderColor = useColorModeValue("#DFE8F5", "#30363D");
+  const sidebarBg = useColorModeValue(
+    "linear-gradient(180deg, #F8FBFF 0%, #FFFFFF 46%, #F4F8FB 100%)",
+    "linear-gradient(180deg, #111827 0%, #161B22 52%, #101722 100%)"
+  );
+  const sidebarSurface = useColorModeValue(
+    "rgba(255,255,255,0.76)",
+    "rgba(255,255,255,0.025)"
+  );
+  const borderColor = useColorModeValue("rgba(20,43,79,0.10)", "rgba(255,255,255,0.10)");
+  const softBorderColor = useColorModeValue("rgba(20,43,79,0.075)", "rgba(255,255,255,0.08)");
   const logoColor = useColorModeValue(brand.ink, "#E6EDF3");
-  const itemColor = useColorModeValue("#586B8A", "#8B949E");
-  const itemHoverBg = useColorModeValue("#EAF4F2", "#21262D");
+  const itemColor = useColorModeValue("#506481", "#B6C3D6");
+  const itemHoverBg = useColorModeValue("rgba(216,236,238,0.42)", "rgba(255,255,255,0.065)");
   const itemHoverColor = useColorModeValue(brand.ink, "#E6EDF3");
-  const itemActiveBg = useColorModeValue("#EAF8F3", "rgba(20,155,109,0.18)");
+  const itemActiveBg = useColorModeValue(
+    "linear-gradient(135deg, rgba(20,155,109,0.16) 0%, rgba(255,255,255,0.95) 100%)",
+    "linear-gradient(135deg, rgba(20,155,109,0.24) 0%, rgba(20,43,79,0.28) 100%)"
+  );
   const itemActiveColor = useColorModeValue(brand.accent, "#BFE8D7");
-  const iconColor = useColorModeValue("#94A3B8", "#8B949E");
-  const childColor = useColorModeValue("#586B8A", "#8B949E");
-  const childActiveBg = useColorModeValue("#EAF8F3", "rgba(20,155,109,0.18)");
+  const iconColor = useColorModeValue("rgba(20,43,79,0.58)", "#91A7C3");
+  const iconTileBg = useColorModeValue("rgba(20,43,79,0.055)", "rgba(255,255,255,0.04)");
+  const iconTileActiveBg = useColorModeValue("rgba(255,255,255,0.92)", "rgba(20,155,109,0.18)");
+  const childColor = useColorModeValue("#506481", "#B6C3D6");
+  const childActiveBg = useColorModeValue("rgba(20,155,109,0.11)", "rgba(20,155,109,0.18)");
   const childActiveColor = useColorModeValue(brand.accent, "#BFE8D7");
-  const scrollbarThumb = useColorModeValue("#CBD5E1", "#6E7681");
+  const scrollbarThumb = useColorModeValue("rgba(20,43,79,0.24)", "rgba(145,167,195,0.42)");
+  const activeShadow = useColorModeValue(
+    "0 12px 28px rgba(20,43,79,0.075)",
+    "none"
+  );
+  const hoverShadow = useColorModeValue(
+    "0 10px 24px rgba(20,43,79,0.06)",
+    "none"
+  );
+  const sidebarShadow = useColorModeValue("18px 0 38px rgba(20,43,79,0.045)", "none");
 
   React.useEffect(() => {
     const nextOpen = {};
@@ -263,9 +290,18 @@ const SidebarContent = ({
       alignItems="center"
       justifyContent="center"
       flexShrink={0}
-      w="22px"
+      w={isCollapsed ? "40px" : "34px"}
+      h={isCollapsed ? "40px" : "34px"}
+      borderRadius="12px"
+      bg={active ? iconTileActiveBg : iconTileBg}
+      boxShadow={
+        active
+          ? "inset 0 0 0 1px rgba(20,155,109,0.18)"
+          : "none"
+      }
+      transition="background-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease"
     >
-      <Icon size={18} strokeWidth={1.65} />
+      <Icon size={19} strokeWidth={2.1} />
     </Box>
   );
 
@@ -279,33 +315,36 @@ const SidebarContent = ({
       position={position}
       left={position === "fixed" ? "0" : undefined}
       top={position === "fixed" ? "0" : undefined}
+      boxShadow={sidebarShadow}
       overflowY="auto"
       overflowX="hidden"
       css={{
         scrollbarWidth: "thin",
-        "&::-webkit-scrollbar": { width: "11px" },
-        "&::-webkit-scrollbar-track": { background: sidebarBg },
+        "&::-webkit-scrollbar": { width: "8px" },
+        "&::-webkit-scrollbar-track": { background: "transparent" },
         "&::-webkit-scrollbar-thumb": {
           background: scrollbarThumb,
           borderRadius: "999px",
-          border: `3px solid ${sidebarBg}`,
+          border: "2px solid transparent",
+          backgroundClip: "padding-box",
         },
       }}
     >
       <Flex
-        h="58px"
-        px={isCollapsed ? "10px" : "20px"}
+        h="68px"
+        px={isCollapsed ? "10px" : "18px"}
         align="center"
         justify={isCollapsed ? "center" : "flex-start"}
         gap="10px"
         borderBottom="1px solid"
         borderColor={borderColor}
+        bg={sidebarSurface}
       >
         <Box
           as="img"
           src={brandIdentity.logoPath}
           alt={brandIdentity.name}
-          w={isCollapsed ? "46px" : "92px"}
+          w={isCollapsed ? "46px" : "96px"}
           h={isCollapsed ? "32px" : "42px"}
           objectFit="contain"
           flexShrink="0"
@@ -313,16 +352,17 @@ const SidebarContent = ({
         {!isCollapsed ? (
           <Text
             color={logoColor}
-            fontSize="16px"
+            fontSize="17px"
             fontWeight="800"
             letterSpacing="0"
+            noOfLines={1}
           >
             {logoText || "Admin Panel"}
           </Text>
         ) : null}
       </Flex>
 
-      <Stack spacing="5px" px={isCollapsed ? "10px" : "12px"} py="16px">
+      <Stack spacing="6px" px={isCollapsed ? "10px" : "12px"} py="14px">
         {sidebarItems.map((item) => {
           const active = isItemActive(location.pathname, item);
           const Icon = item.icon || IconTruck;
@@ -338,18 +378,40 @@ const SidebarContent = ({
               >
                 <NavLink to={item.path} onClick={onNavigate}>
                   <Flex
-                    h="38px"
-                    px={isCollapsed ? "0" : "13px"}
+                    minH="44px"
+                    px={isCollapsed ? "0" : "12px"}
                     align="center"
                     justify={isCollapsed ? "center" : "flex-start"}
-                    gap="9px"
-                    borderRadius="8px"
+                    gap="10px"
+                    borderRadius="14px"
+                    border="1px solid"
+                    borderColor={active ? "rgba(20,155,109,0.30)" : "transparent"}
                     bg={active ? itemActiveBg : "transparent"}
+                    boxShadow={active ? activeShadow : "none"}
                     color={active ? itemActiveColor : itemColor}
+                    position="relative"
+                    overflow="hidden"
+                    _before={
+                      active
+                        ? {
+                            content: '""',
+                            position: "absolute",
+                            left: "7px",
+                            top: "10px",
+                            bottom: "10px",
+                            w: "4px",
+                            borderRadius: "999px",
+                            bg: itemActiveColor,
+                          }
+                        : undefined
+                    }
                     _hover={{
                       bg: active ? itemActiveBg : itemHoverBg,
+                      borderColor: active ? "rgba(20,155,109,0.30)" : softBorderColor,
                       color: itemHoverColor,
+                      boxShadow: active ? activeShadow : hoverShadow,
                     }}
+                    _focus={{ boxShadow: active ? activeShadow : "none" }}
                     transition="all 0.16s ease"
                   >
                     {renderIcon(Icon, active)}
@@ -358,6 +420,7 @@ const SidebarContent = ({
                         fontSize="15px"
                         fontWeight={active ? "700" : "500"}
                         lineHeight="1.15"
+                        noOfLines={1}
                       >
                         {item.label}
                       </Text>
@@ -385,29 +448,52 @@ const SidebarContent = ({
                       ? onCollapsedGroupClick?.()
                       : toggleGroup(item.label)
                   }
-                  minH="38px"
+                  minH="44px"
                   w="100%"
-                  px={isCollapsed ? "0" : "13px"}
+                  px={isCollapsed ? "0" : "12px"}
                   py="0"
                   justifyContent={isCollapsed ? "center" : "space-between"}
-                  borderRadius="8px"
+                  borderRadius="14px"
+                  border="1px solid"
+                  borderColor={active ? "rgba(20,155,109,0.30)" : "transparent"}
                   bg={active ? itemActiveBg : "transparent"}
+                  boxShadow={active ? activeShadow : "none"}
                   color={active ? itemActiveColor : itemColor}
                   fontWeight="500"
+                  position="relative"
+                  overflow="hidden"
+                  _before={
+                    active
+                      ? {
+                          content: '""',
+                          position: "absolute",
+                          left: "7px",
+                          top: "10px",
+                          bottom: "10px",
+                          w: "4px",
+                          borderRadius: "999px",
+                          bg: itemActiveColor,
+                        }
+                      : undefined
+                  }
                   _hover={{
                     bg: active ? itemActiveBg : itemHoverBg,
+                    borderColor: active ? "rgba(20,155,109,0.30)" : softBorderColor,
                     color: itemHoverColor,
+                    boxShadow: active ? activeShadow : hoverShadow,
                   }}
                   _active={{ bg: itemActiveBg }}
+                  _focus={{ boxShadow: active ? activeShadow : "none" }}
                 >
-                  <Flex align="center" gap="9px" minW={0}>
+                  <Flex align="center" gap="10px" minW={0}>
                     {renderIcon(Icon, active)}
                     {!isCollapsed ? (
                       <Text
                         fontSize="15px"
-                        whiteSpace="normal"
+                        noOfLines={1}
                         textAlign="left"
                         lineHeight="1.25"
+                        fontWeight={active ? "700" : "500"}
                       >
                         {item.label}
                       </Text>
@@ -425,13 +511,14 @@ const SidebarContent = ({
               </Tooltip>
               <Collapse in={!isCollapsed && open} animateOpacity>
                 <Stack
-                  spacing="5px"
-                  mt="6px"
-                  mb="7px"
-                  ml="22px"
-                  pl="14px"
+                  spacing="4px"
+                  mt="7px"
+                  mb="8px"
+                  ml="29px"
+                  mr="4px"
+                  pl="12px"
                   borderLeft="1px solid"
-                  borderColor={borderColor}
+                  borderColor={softBorderColor}
                 >
                   {item.children.map((child) => {
                     const childActive = location.pathname.startsWith(
@@ -446,28 +533,42 @@ const SidebarContent = ({
                       >
                         <Flex
                           align="center"
-                          gap="8px"
-                          minH="32px"
-                          px="12px"
+                          gap="9px"
+                          minH="36px"
+                          px="11px"
                           py="5px"
-                          borderRadius="7px"
+                          borderRadius="11px"
+                          border="1px solid"
+                          borderColor={
+                            childActive ? "rgba(20,155,109,0.22)" : "transparent"
+                          }
                           color={childActive ? childActiveColor : childColor}
                           bg={childActive ? childActiveBg : "transparent"}
                           _hover={{
-                            bg: childActiveBg,
+                            bg: childActive ? childActiveBg : itemHoverBg,
                             color: childActiveColor,
+                            borderColor: softBorderColor,
                           }}
+                          transition="all 0.16s ease"
                         >
                           <Box
                             flexShrink={0}
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            w="24px"
+                            h="24px"
+                            borderRadius="8px"
+                            bg={childActive ? iconTileActiveBg : iconTileBg}
                             color={childActive ? childActiveColor : iconColor}
                           >
-                            <ChildIcon size={15} strokeWidth={1.65} />
+                            <ChildIcon size={15} strokeWidth={2} />
                           </Box>
                           <Text
                             fontSize="13px"
                             fontWeight={childActive ? "700" : "500"}
                             lineHeight="1.22"
+                            noOfLines={1}
                           >
                             {child.label}
                           </Text>

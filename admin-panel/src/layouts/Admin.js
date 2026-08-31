@@ -23,7 +23,7 @@ export default function Dashboard(props) {
   const { ...rest } = props
   const location = useLocation()
   const [sidebarVariant, setSidebarVariant] = useState('transparent')
-  const expandedSidebarWidth = 260
+  const expandedSidebarWidth = 284
   const collapsedSidebarWidth = 76
   const [sidebarWidth, setSidebarWidth] = useState(expandedSidebarWidth)
   const mainBg = useColorModeValue('#FAFBFE', '#0D1117')
