@@ -53,11 +53,6 @@ export default function PasswordLoginForm({ setStep, step }: IPasswordFormProps)
 
   const [keepMeSignedIn, setKeepMeSignedIn] = useState(false)
 
-  const handleSignupRedirect = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
-    navigate('/signup')
-  }
-
   const handleForgotPasswordRedirect = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     navigate('/forgot-password')
@@ -246,16 +241,6 @@ export default function PasswordLoginForm({ setStep, step }: IPasswordFormProps)
           sx={{ color: DE_AMBER, fontWeight: 800, mr: 0.5 }}
         >
           Forgot password?
-        </Link>
-        {'  '}
-        New users?{' '}
-        <Link
-          href="/signup"
-          underline="always"
-          onClick={handleSignupRedirect}
-          sx={{ color: DE_AMBER, fontWeight: 800 }}
-        >
-          Create Account here
         </Link>
       </Typography>
 

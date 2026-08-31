@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, Link, Stack, Typography } from '@mui/material'
+import { Box, FormControlLabel, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { useMemo, useState } from 'react'
 import { FiArrowRight, FiMail } from 'react-icons/fi'
@@ -34,7 +34,6 @@ type AuthResponse = Record<string, unknown> & {
 }
 
 const AUTH_NAVY = brand.ink
-const AUTH_ORANGE = brand.warning
 const isDemoLogin = isDemoLoginEnabled()
 
 const loginButtonStyles = {
@@ -71,11 +70,6 @@ export default function OtpLoginPanel({
 
   const { mutate: requestOtp, isPending: requesting } = useRequestOtp()
   const { mutate: verifyOtp, isPending: verifying } = useVerifyOtp()
-
-  const handleSignupRedirect = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
-    navigate('/signup')
-  }
 
   const emailError = useMemo(() => {
     if (!email) return 'Email is required.'
@@ -232,25 +226,6 @@ export default function OtpLoginPanel({
             endIconNode={compactLogin ? <FiArrowRight size={22} /> : undefined}
           />
 
-          <Typography
-            sx={{
-              color: brand.inkSoft,
-              textAlign: 'center',
-              fontSize: '0.8rem',
-              lineHeight: 1.5,
-              mt: 0.35,
-            }}
-          >
-            New users?{' '}
-            <Link
-              href="/signup"
-              underline="always"
-              onClick={handleSignupRedirect}
-              sx={{ color: AUTH_ORANGE, fontWeight: 800 }}
-            >
-              Create Account here
-            </Link>
-          </Typography>
         </Box>
       ) : (
         <Stack component="form" onSubmit={handleVerify} spacing={2}>

@@ -83,11 +83,6 @@ export default function CredentialAuthForm({
   const { mutate: verifyEmailOtp, isPending: verifying } = useVerifyEmailOtp()
   const authFlow = mode === 'signup' ? 'signup' : 'login'
 
-  const handleSignupRedirect = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
-    navigate('/signup')
-  }
-
   const handleForgotPasswordRedirect = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     navigate('/forgot-password')
@@ -407,7 +402,7 @@ export default function CredentialAuthForm({
             }}
           >
             {mode === 'login' ? (
-              <>
+              <Box component="span">
                 <Link
                   href="/forgot-password"
                   underline="always"
@@ -416,26 +411,8 @@ export default function CredentialAuthForm({
                 >
                   Forgot password?
                 </Link>
-                <Box component="span" sx={{ mx: 0.75 }}>
-                  •
-                </Box>
-              </>
+              </Box>
             ) : null}
-            {mode === 'signup' ? (
-              'New users create an account here and continue to onboarding.'
-            ) : (
-              <>
-                New users?{' '}
-                <Link
-                  href="/signup"
-                  underline="always"
-                  onClick={handleSignupRedirect}
-                  sx={{ color: AUTH_ORANGE, fontWeight: 800 }}
-                >
-                  Create Account here
-                </Link>
-              </>
-            )}
           </Typography>
         </Stack>
       ) : (
