@@ -93,15 +93,15 @@ export default function AuthShell({
           sx={{
             position: 'absolute',
             zIndex: 0,
-            inset: { xs: '18px -44% 18px -30%', lg: '12px 6% 12px 7%' },
+            inset: { xs: '18px -44% 18px -30%', lg: '44px 5% 44px 5%' },
             bgcolor: authPalette.blob,
             background: `linear-gradient(145deg, ${authPalette.blob} 0%, #F8FBFF 48%, ${authPalette.blobEdge} 100%)`,
             boxShadow: `inset 0 1px 0 rgba(255,255,255,0.76), 0 36px 90px ${alpha(authPalette.navy, 0.08)}`,
             borderRadius: {
               xs: '42% 58% 48% 52% / 12% 16% 84% 88%',
-              lg: '46% 54% 50% 50% / 16% 18% 82% 84%',
+              lg: '8px',
             },
-            transform: { xs: 'rotate(-1.5deg)', md: 'rotate(-2deg)' },
+            transform: { xs: 'rotate(-1.5deg)', md: 'none' },
           }}
         />
 
@@ -135,7 +135,7 @@ export default function AuthShell({
               <Stack
                 sx={{
                   width: '100%',
-                  minHeight: { lg: 610 },
+                  minHeight: { lg: 560 },
                   justifyContent: 'center',
                   alignItems: { xs: 'center', lg: 'flex-start' },
                   textAlign: { xs: 'center', lg: 'left' },
@@ -246,17 +246,10 @@ export default function AuthShell({
                         minWidth: 0,
                         overflowWrap: 'break-word',
                       },
-                      '& > span:last-of-type': {
-                        gridColumn: { xs: 'auto', sm: '1 / -1' },
-                        maxWidth: 470,
-                      },
                     }}
                   >
                     <Box component="span">{brandIdentity.supportEmail}</Box>
                     <Box component="span">{brandIdentity.supportPhone}</Box>
-                    <Box component="span" sx={{ color: alpha(authPalette.navy, 0.68), fontWeight: 700 }}>
-                      {brandIdentity.supportAddress}
-                    </Box>
                   </Stack>
                 </Stack>
 

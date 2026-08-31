@@ -29,8 +29,8 @@ export default function Login() {
   return (
     <AuthShell
       eyebrow="Client Auth"
-      title={'Ship Smarter.\nDeliver Faster.'}
-      subtitle="Track orders, compare courier options, and keep every delivery moving from one polished TrueTransit workspace."
+      title={'Move Every Shipment.\nWith Confidence.'}
+      subtitle="Manage pickups, rates, tracking, and delivery exceptions from one focused TrueTransit command center."
       helperTitle="Welcome Back to TrueTransit"
       helperText="Sign in to open your courier command center."
       showChrome
