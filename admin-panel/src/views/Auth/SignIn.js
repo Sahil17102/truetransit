@@ -50,8 +50,8 @@ function isTokenValid(token) {
 }
 
 function SignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(DEMO_ADMIN_EMAIL);
+  const [password, setPassword] = useState(DEMO_ADMIN_PASSWORD);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Signing in");

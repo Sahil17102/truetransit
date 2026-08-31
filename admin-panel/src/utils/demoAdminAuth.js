@@ -2,12 +2,6 @@ export const DEMO_ADMIN_EMAIL = "admin@truetransitmobility.com";
 export const DEMO_ADMIN_PASSWORD = "TrueTransit@123";
 export const DEMO_ADMIN_USER_ID = "truetransit-demo-admin";
 
-const DEMO_ADMIN_HOSTS = new Set([
-  "localhost",
-  "127.0.0.1",
-  "truetransitadmin.onrender.com",
-]);
-
 const encodeBase64Url = (value) =>
   window
     .btoa(value)
@@ -16,15 +10,13 @@ const encodeBase64Url = (value) =>
     .replace(/=+$/g, "");
 
 export const isDemoAdminEnabled = () =>
-  process.env.NODE_ENV === "development" ||
-  (typeof window !== "undefined" &&
-    DEMO_ADMIN_HOSTS.has(window.location.hostname.toLowerCase()) &&
-    String(process.env.REACT_APP_DEMO_ADMIN_ENABLED || "true").toLowerCase() !== "false");
+  typeof window !== "undefined" &&
+  String(process.env.REACT_APP_DEMO_ADMIN_ENABLED || "true").toLowerCase() !== "false";
 
 export const isDemoAdminCredential = (email, password) =>
   isDemoAdminEnabled() &&
   email.trim().toLowerCase() === DEMO_ADMIN_EMAIL &&
-  password === DEMO_ADMIN_PASSWORD;
+  password.trim() === DEMO_ADMIN_PASSWORD;
 
 export const createDemoAdminToken = (type = "access") => {
   const now = Math.floor(Date.now() / 1000);
