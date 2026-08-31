@@ -36,8 +36,8 @@ export const createAppTheme = (mode: PaletteMode = 'light') => {
     },
     primary: {
       main: brand.accent,
-      light: '#FFC58F',
-      dark: '#D96400',
+      light: '#BFE8D7',
+      dark: '#0E7A55',
       contrastText: '#FFFFFF',
     },
     secondary: {
@@ -53,8 +53,8 @@ export const createAppTheme = (mode: PaletteMode = 'light') => {
     },
     warning: {
       main: brand.warning,
-      light: '#FDE7C5',
-      dark: '#B45309',
+      light: '#F7D8C7',
+      dark: '#A54A22',
     },
     info: {
       main: '#60A5FA',
@@ -63,8 +63,8 @@ export const createAppTheme = (mode: PaletteMode = 'light') => {
     },
     success: {
       main: brand.success,
-      light: '#D6F5EC',
-      dark: '#1F7F68',
+      light: '#CFE4D2',
+      dark: '#0E7A55',
     },
     text: {
       primary: textPrimary,

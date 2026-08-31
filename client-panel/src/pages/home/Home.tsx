@@ -22,13 +22,14 @@ import { useAuth } from '../../context/auth/AuthContext'
 import { useMerchantDashboardStats } from '../../hooks/useDashboard'
 import { useLabelPreferences } from '../../hooks/useLabelPreferences'
 import { useMerchantReadiness } from '../../hooks/useMerchantReadiness'
+import { brand } from '../../theme/brand'
 
-const NAVY = '#0B3A78'
-const RED = '#E31B23'
+const NAVY = brand.ink
+const RED = brand.danger
 const PURPLE = NAVY
-const ORANGE = RED
-const BLUE = NAVY
-const GREEN = NAVY
+const ORANGE = brand.warning
+const BLUE = '#23758D'
+const GREEN = brand.accent
 
 const toLocalDateInput = (date = new Date()) => {
   const year = date.getFullYear()
@@ -71,26 +72,26 @@ export default function Home() {
   const [showKycBanner, setShowKycBanner] = useState(true)
   const [isHomeRefreshing, setIsHomeRefreshing] = useState(false)
   const isDark = theme.palette.mode === 'dark'
-  const pageBg = isDark ? '#0f141b' : '#f4f7fb'
+  const pageBg = isDark ? '#0f141b' : brand.page
   const cardBg = isDark ? '#151b23' : '#ffffff'
-  const nestedCardBg = isDark ? '#0f141b' : '#f8fafc'
-  const border = isDark ? '#2a313a' : alpha('#0f172a', 0.12)
-  const strongBorder = isDark ? alpha('#ffffff', 0.86) : alpha(PURPLE, 0.34)
-  const text = isDark ? '#f8fafc' : '#111827'
-  const muted = isDark ? '#9badc3' : '#5b6b82'
-  const dim = isDark ? '#7f8fa6' : '#64748b'
-  const progressTrack = isDark ? '#2a313a' : alpha('#0f172a', 0.1)
+  const nestedCardBg = isDark ? '#0f141b' : brand.cream
+  const border = isDark ? '#2a313a' : alpha(brand.ink, 0.13)
+  const strongBorder = isDark ? alpha('#ffffff', 0.72) : alpha(GREEN, 0.32)
+  const text = isDark ? '#f8fafc' : brand.ink
+  const muted = isDark ? '#9badc3' : brand.inkSoft
+  const dim = isDark ? '#7f8fa6' : brand.inkSoft
+  const progressTrack = isDark ? '#2a313a' : alpha(brand.ink, 0.1)
   const emptyStepBorder = isDark ? '#2d3744' : alpha('#64748b', 0.36)
-  const closeHoverBg = isDark ? alpha('#ffffff', 0.07) : alpha('#0f172a', 0.07)
+  const closeHoverBg = isDark ? alpha('#ffffff', 0.07) : alpha(brand.ink, 0.07)
   const cardSx = {
     border: `1px solid ${border}`,
     background: isDark
       ? 'linear-gradient(145deg, #171f29 0%, #121820 100%)'
-      : 'linear-gradient(145deg, #ffffff 0%, #fbfcff 100%)',
-    borderRadius: 3,
+      : 'linear-gradient(145deg, #ffffff 0%, #fbfcf8 100%)',
+    borderRadius: 2,
     boxShadow: isDark
       ? '0 18px 44px rgba(0, 0, 0, 0.18)'
-      : '0 18px 42px rgba(45, 55, 85, 0.07)',
+      : '0 18px 42px rgba(20, 43, 79, 0.07)',
   }
 
   const displayName = user?.companyInfo?.contactPerson || user?.name || 'Sahil Mittal'
@@ -246,16 +247,16 @@ export default function Home() {
               position: 'relative',
               overflow: 'hidden',
               background: isDark
-                ? `linear-gradient(120deg, ${alpha(ORANGE, 0.13)} 0%, ${cardBg} 48%, ${alpha(PURPLE, 0.1)} 100%)`
-                : `linear-gradient(120deg, ${alpha(ORANGE, 0.09)} 0%, #ffffff 48%, ${alpha(PURPLE, 0.07)} 100%)`,
+                ? `linear-gradient(120deg, ${alpha(GREEN, 0.13)} 0%, ${cardBg} 48%, ${alpha(PURPLE, 0.1)} 100%)`
+                : `linear-gradient(120deg, ${alpha(GREEN, 0.1)} 0%, #ffffff 48%, ${alpha(brand.aqua, 0.58)} 100%)`,
             }}
           >
             <Stack direction="row" spacing={1.5} alignItems="center" minWidth={0}>
-              <Box sx={{ color: ORANGE, display: 'grid', placeItems: 'center' }}>
+              <Box sx={{ color: GREEN, display: 'grid', placeItems: 'center' }}>
                 <TbShieldCheck size={22} />
               </Box>
               <Box sx={{ minWidth: 0 }}>
-                <Typography sx={{ color: ORANGE, fontWeight: 700, fontSize: { xs: '0.96rem', md: '0.88rem' } }}>
+                <Typography sx={{ color: GREEN, fontWeight: 700, fontSize: { xs: '0.96rem', md: '0.88rem' } }}>
                   Optional KYC Verification
                 </Typography>
                 <Typography sx={{ color: dim, fontWeight: 500, fontSize: { xs: '0.82rem', md: '0.76rem' }, lineHeight: 1.45 }}>
@@ -277,7 +278,8 @@ export default function Home() {
                 fontWeight: 700,
                 fontSize: '0.78rem',
                 textTransform: 'none',
-                '&:hover': { bgcolor: '#072B5B' },
+                boxShadow: `0 12px 24px ${alpha(PURPLE, 0.16)}`,
+                '&:hover': { bgcolor: '#0F3A4F' },
               }}
             >
               Add KYC Details
@@ -463,8 +465,8 @@ export default function Home() {
             position: 'relative',
             overflow: 'hidden',
             background: isDark
-              ? `linear-gradient(135deg, ${alpha(PURPLE, 0.1)} 0%, ${cardBg} 44%, ${alpha(ORANGE, 0.06)} 100%)`
-              : `linear-gradient(135deg, ${alpha(PURPLE, 0.055)} 0%, #ffffff 44%, ${alpha(ORANGE, 0.045)} 100%)`,
+              ? `linear-gradient(135deg, ${alpha(PURPLE, 0.1)} 0%, ${cardBg} 44%, ${alpha(GREEN, 0.06)} 100%)`
+              : `linear-gradient(135deg, ${alpha(PURPLE, 0.055)} 0%, #ffffff 44%, ${alpha(GREEN, 0.06)} 100%)`,
           }}
         >
           <Stack direction="row" justifyContent="space-between" alignItems="center" mb={{ xs: 1.8, md: 1.2 }}>
@@ -896,7 +898,7 @@ export default function Home() {
                 sx={{
                   mt: 2.2,
                   bgcolor: NAVY,
-                  borderLeft: `3px solid ${RED}`,
+                  borderLeft: `3px solid ${GREEN}`,
                   color: '#ffffff',
                   borderRadius: 2,
                   textTransform: 'none',
@@ -904,7 +906,7 @@ export default function Home() {
                   px: 2.6,
                   boxShadow: `0 12px 26px ${alpha(PURPLE, 0.24)}`,
                   '&:hover': {
-                    bgcolor: '#072B5B',
+                    bgcolor: '#0F3A4F',
                     boxShadow: `0 16px 32px ${alpha(PURPLE, 0.3)}`,
                   },
                 }}

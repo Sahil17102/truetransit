@@ -30,7 +30,7 @@ export default function ShipmentFlowChart({ todayOps, ChartComponent }: Shipment
 
   const chartOptions = {
     chart: { ...dashboardChartBase, type: 'bar' as const },
-    colors: [dashboardPalette.blue, dashboardPalette.red, '#315F9B', '#0B3A78'],
+    colors: [dashboardPalette.blue, dashboardPalette.amber, '#67847F', dashboardPalette.green],
     plotOptions: {
       bar: {
         horizontal: true,

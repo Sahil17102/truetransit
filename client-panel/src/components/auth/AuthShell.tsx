@@ -18,12 +18,12 @@ interface AuthShellProps {
 }
 
 const authPalette = {
-  navy: '#0D1B4D',
-  orange: '#E31B23',
-  text: '#111111',
-  muted: '#44546F',
-  blob: '#EEF5FF',
-  blobEdge: '#E5EDF8',
+  navy: brand.ink,
+  orange: brand.accent,
+  text: brand.ink,
+  muted: brand.inkSoft,
+  blob: '#EAF4F2',
+  blobEdge: brand.sky,
 }
 
 const deliveryArtwork = '/images/client-auth-delivery-van-theme.png'
@@ -52,11 +52,11 @@ export default function AuthShell({
         maxHeight: '100dvh',
         width: '100%',
         boxSizing: 'border-box',
-        bgcolor: '#F8FAFE',
+        bgcolor: brand.page,
         backgroundImage: `
-          linear-gradient(rgba(11, 58, 120, 0.045) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(11, 58, 120, 0.045) 1px, transparent 1px),
-          linear-gradient(180deg, #FFFFFF 0%, #F4F8FD 54%, #EEF4FB 100%)
+          linear-gradient(rgba(20, 43, 79, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(20, 43, 79, 0.045) 1px, transparent 1px),
+          linear-gradient(180deg, #FFFFFF 0%, #F7F8F5 54%, #EAF4F2 100%)
         `,
         backgroundSize: '40px 40px, 40px 40px, auto',
         color: authPalette.text,
@@ -204,7 +204,7 @@ export default function AuthShell({
                           color: index === titleLines.length - 1 ? 'transparent' : authPalette.navy,
                           background:
                             index === titleLines.length - 1
-                              ? `linear-gradient(90deg, ${authPalette.orange} 0%, ${authPalette.navy} 56%, #08A37A 100%)`
+                              ? `linear-gradient(90deg, ${brand.warning} 0%, ${authPalette.navy} 56%, ${authPalette.orange} 100%)`
                               : 'none',
                           WebkitBackgroundClip: index === titleLines.length - 1 ? 'text' : 'border-box',
                           backgroundClip: index === titleLines.length - 1 ? 'text' : 'border-box',

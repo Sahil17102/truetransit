@@ -1,23 +1,23 @@
 import { alpha } from '@mui/material/styles'
 
 export const brand = {
-  navy: '#0B3A78',
-  red: '#E31B23',
-  ink: '#0B3A78',
-  inkSoft: '#64748B',
-  page: '#FAFBFE',
-  cream: '#F8FAFE',
-  sky: '#E2E8F0',
-  aqua: '#EAF1FB',
-  accent: '#E31B23',
-  gold: '#0B3A78',
-  line: '#E2E8F0',
+  navy: '#142B4F',
+  red: '#C94A54',
+  ink: '#142B4F',
+  inkSoft: '#617287',
+  page: '#F7F8F5',
+  cream: '#FBFCF8',
+  sky: '#DFE8F5',
+  aqua: '#D8ECEE',
+  accent: '#149B6D',
+  gold: '#DCE8C7',
+  line: 'rgba(20, 43, 79, 0.16)',
   surface: '#FFFFFF',
   surfaceGlass: 'rgba(255,255,255,0.88)',
-  success: '#0B3A78',
-  warning: '#E31B23',
-  danger: '#E31B23',
-  shadow: '0 28px 60px rgba(68, 92, 138, 0.14)',
+  success: '#149B6D',
+  warning: '#D97842',
+  danger: '#C94A54',
+  shadow: '0 28px 60px rgba(20, 43, 79, 0.12)',
 }
 
 export const brandFonts = {
@@ -39,14 +39,14 @@ export const brandIdentity = {
 export const brandGradients = {
   page: `
     radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.96), transparent 30%),
-    radial-gradient(circle at 100% 0%, rgba(215, 226, 243, 0.72), transparent 32%),
-    linear-gradient(180deg, #E8EEF8 0%, #F6F8FC 52%, #EEF2FA 100%)
+    radial-gradient(circle at 100% 0%, rgba(216, 236, 238, 0.78), transparent 32%),
+    linear-gradient(180deg, #EDF3F8 0%, #F7F8F5 52%, #EAF4F2 100%)
   `,
-  button: '#0B3A78',
-  hero: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(234,240,249,0.94) 58%, rgba(216,226,241,0.9) 100%)',
+  button: 'linear-gradient(135deg, #142B4F 0%, #10475E 100%)',
+  hero: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(237,243,248,0.95) 58%, rgba(216,236,238,0.9) 100%)',
   surface: 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,254,0.98) 100%)',
-  softSurface: 'linear-gradient(180deg, rgba(250,252,255,0.98) 0%, rgba(240,245,252,0.98) 100%)',
-  analytics: 'linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(235,241,249,0.95) 56%, rgba(227,27,35,0.08) 100%)',
+  softSurface: 'linear-gradient(180deg, rgba(251,252,248,0.98) 0%, rgba(237,243,248,0.98) 100%)',
+  analytics: 'linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(234,244,242,0.95) 56%, rgba(207,228,210,0.36) 100%)',
 }
 
 export const brandEffects = {

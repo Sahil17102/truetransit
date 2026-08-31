@@ -78,7 +78,7 @@ export const DESKTOP_SIDEBAR_WIDTH = 260
 
 const STANDARD_ICON_SIZE = 21
 const ACTIVE = brand.navy
-const ACCENT = brand.red
+const ACCENT = brand.accent
 
 const navSections: NavSection[] = [
   {
@@ -237,18 +237,18 @@ export default function Sidebar({
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
   const isDark = theme.palette.mode === 'dark'
   const DARK_BG = isDark ? '#151b23' : '#ffffff'
-  const BORDER = isDark ? '#2a313a' : 'rgba(15, 23, 42, 0.1)'
+  const BORDER = isDark ? '#2a313a' : alpha(brand.ink, 0.12)
   const TEXT = isDark ? '#a9b8cc' : '#586b8a'
   const MUTED = isDark ? '#8798ad' : '#8492aa'
   const WHITE = isDark ? '#f8fafc' : '#11182d'
-  const itemHoverBg = isDark ? alpha('#ffffff', 0.035) : alpha('#11182d', 0.045)
+  const itemHoverBg = isDark ? alpha('#ffffff', 0.035) : alpha(brand.aqua, 0.34)
   const childHoverBg = isDark ? alpha('#ffffff', 0.045) : alpha(ACTIVE, 0.07)
-  const activeBg = isDark ? alpha(ACTIVE, 0.28) : alpha(ACTIVE, 0.075)
-  const childActiveBg = isDark ? alpha(ACTIVE, 0.24) : alpha(ACTIVE, 0.1)
+  const activeBg = isDark ? alpha(ACCENT, 0.2) : alpha(ACCENT, 0.1)
+  const childActiveBg = isDark ? alpha(ACCENT, 0.2) : alpha(ACCENT, 0.1)
   const iconMuted = isDark ? '#91a7c3' : alpha(ACTIVE, 0.58)
   const activeText = isDark ? '#d9e7fa' : ACTIVE
   const initialsBg = isDark ? alpha(ACTIVE, 0.34) : alpha(ACTIVE, 0.09)
-  const initialsBorder = isDark ? alpha('#ffffff', 0.1) : alpha(ACCENT, 0.28)
+  const initialsBorder = isDark ? alpha('#ffffff', 0.1) : alpha(ACCENT, 0.34)
   const initialsColor = isDark ? '#f8fafc' : ACTIVE
 
   useEffect(() => {

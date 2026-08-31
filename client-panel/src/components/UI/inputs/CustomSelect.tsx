@@ -15,6 +15,7 @@ import {
 import React, { useMemo, useRef, useState } from 'react'
 import { MdArrowDropDown } from 'react-icons/md'
 import CustomInput from './CustomInput'
+import { brand } from '../../../theme/brand'
 
 interface DropdownItem {
   key: string | boolean
@@ -39,8 +40,8 @@ interface DropdownMenuProps {
   searchable?: boolean
 }
 
-const NAVY = '#0C3B80'
-const ORANGE = '#E31B23'
+const NAVY = brand.ink
+const ORANGE = brand.accent
 export default function CustomSelect({
   label,
   items = [],
@@ -108,8 +109,8 @@ export default function CustomSelect({
                     sx={{
                       bgcolor: isDark ? '#151b23' : '#ffffff',
                       borderRadius: 2,
-                      border: `1px solid ${isDark ? alpha('#f8fafc', 0.12) : 'rgba(12,59,128,0.12)'}`,
-                      boxShadow: isDark ? '0 18px 36px rgba(0,0,0,0.34)' : '0 12px 24px rgba(12,59,128,0.12)',
+                      border: `1px solid ${isDark ? alpha('#f8fafc', 0.12) : alpha(NAVY, 0.12)}`,
+                      boxShadow: isDark ? '0 18px 36px rgba(0,0,0,0.34)' : `0 12px 24px ${alpha(NAVY, 0.12)}`,
                       width: anchorRef.current
                         ? anchorRef.current.getBoundingClientRect().width
                         : '100%',
@@ -143,7 +144,7 @@ export default function CustomSelect({
                               },
                               '&.Mui-selected': {
                                 bgcolor: alpha(isDark ? '#8b7cf6' : NAVY, isDark ? 0.18 : 0.08),
-                                border: `1px solid ${isDark ? alpha('#8b7cf6', 0.24) : 'rgba(12,59,128,0.12)'}`,
+                                border: `1px solid ${isDark ? alpha('#8b7cf6', 0.24) : alpha(NAVY, 0.12)}`,
                                 '&:hover': {
                                   bgcolor: alpha(isDark ? '#8b7cf6' : NAVY, isDark ? 0.24 : 0.1),
                                 },

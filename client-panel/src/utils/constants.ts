@@ -100,9 +100,9 @@ Contact and Grievance
 export const DRAWER_WIDTH = 300
 export const NAVBAR_HEIGHT = 80
 export const RADIUS = 8 // master corner radius
-export const ACTIVE_BG = 'rgba(10, 78, 163, 0.08)' // background behind selected item
-export const ACTIVE_BAR = '#E31B23' // TrueTransit red active indicator
-export const ACCENT = '#0A4EA3' // primary brand color accent
+export const ACTIVE_BG = 'rgba(20, 155, 109, 0.1)' // background behind selected item
+export const ACTIVE_BAR = '#149B6D' // TrueTransit active indicator
+export const ACCENT = '#142B4F' // primary brand color accent
 
 export const requiredKycDetails: Record<
   BusinessStructure,

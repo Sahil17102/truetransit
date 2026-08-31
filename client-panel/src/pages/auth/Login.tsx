@@ -9,9 +9,10 @@ import OtpLoginPanel from '../../components/auth/OtpLoginPanel'
 import FullScreenLoader from '../../components/UI/loader/FullScreenLoader'
 import { useAuth } from '../../context/auth/AuthContext'
 import { getPostAuthRedirect } from '../../utils/authRedirect'
+import { brand } from '../../theme/brand'
 
-const AUTH_NAVY = '#0D1B4D'
-const AUTH_ORANGE = '#E31B23'
+const AUTH_NAVY = brand.ink
+const AUTH_ORANGE = brand.accent
 
 export default function Login() {
   const { loading, isAuthenticated, user } = useAuth()
@@ -41,7 +42,7 @@ export default function Login() {
         <Box
           sx={{
             borderRadius: '7px',
-            backgroundColor: alpha('#0D1B4D', 0.045),
+            backgroundColor: alpha(AUTH_NAVY, 0.045),
             overflow: 'hidden',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',

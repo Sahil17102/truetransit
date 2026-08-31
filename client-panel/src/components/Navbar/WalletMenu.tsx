@@ -4,9 +4,10 @@ import { FaWallet } from 'react-icons/fa'
 import { useAuth } from '../../context/auth/AuthContext'
 import { useWalletBalance } from '../../hooks/useWalletBalance'
 import AddMoneyDialog from '../AddMoneyDialog'
+import { brand } from '../../theme/brand'
 
-const INK = '#0B3A78'
-const ACCENT = '#E31B23'
+const INK = brand.ink
+const ACCENT = brand.accent
 
 interface WalletMenuProps {
   compactLabel?: string
@@ -39,8 +40,8 @@ const WalletMenu = ({ compactLabel }: WalletMenuProps) => {
           px: compactLabel ? 1.35 : { xs: 0.95, sm: 1.05 },
           py: compactLabel ? 0 : 0.78,
           borderRadius: compactLabel ? 2 : 3,
-          border: compactLabel ? '1px solid #2a313a' : `1px solid ${alpha(INK, 0.08)}`,
-          bgcolor: compactLabel ? '#101720' : alpha('#FFFFFF', 0.84),
+          border: compactLabel ? `1px solid ${alpha(brand.ink, 0.18)}` : `1px solid ${alpha(INK, 0.08)}`,
+          bgcolor: compactLabel ? brand.ink : alpha('#FFFFFF', 0.84),
           minWidth: compactLabel ? 'auto' : { xs: 'auto', sm: 156 },
           boxShadow: compactLabel ? 'none' : `0 8px 18px ${alpha(INK, 0.05)}`,
           transition: 'all 0.2s ease',

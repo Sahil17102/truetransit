@@ -1,10 +1,12 @@
 import { Box, CircularProgress, Container, Drawer, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { useLocation, useOutlet } from 'react-router-dom'
 import { DRAWER_WIDTH } from '../../utils/constants'
 import Navbar from '../Navbar/Navbar'
 import KeyboardShortcuts from './keyboard/KeyboardShortcuts'
 import Sidebar, { COLLAPSED_WIDTH, DESKTOP_SIDEBAR_WIDTH } from './Sidebar'
+import { brand } from '../../theme/brand'
 
 function RouteContentLoader() {
   return (
@@ -18,7 +20,7 @@ function RouteContentLoader() {
       }}
     >
       <Stack alignItems="center" spacing={1.2}>
-        <CircularProgress size={30} thickness={4} sx={{ color: '#E31B23' }} />
+        <CircularProgress size={30} thickness={4} sx={{ color: brand.accent }} />
         <Typography sx={{ color: 'text.secondary', fontSize: '0.82rem', fontWeight: 500 }}>
           Loading workspace…
         </Typography>
@@ -37,7 +39,7 @@ export default function Layout() {
   const [pinned, setPinned] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
   const isDark = theme.palette.mode === 'dark'
-  const shellBg = isDark ? '#0f141b' : '#f6f8fc'
+  const shellBg = isDark ? '#0f141b' : brand.page
   const drawerBg = isDark ? '#151b23' : '#ffffff'
   const drawerText = isDark ? '#f8fafc' : '#11182d'
   const drawerBorder = isDark ? '#2a313a' : 'rgba(15, 23, 42, 0.1)'
@@ -161,7 +163,7 @@ export default function Layout() {
                 height: 2,
                 overflow: 'hidden',
                 pointerEvents: 'none',
-                bgcolor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(11,58,120,0.06)',
+                bgcolor: isDark ? 'rgba(255,255,255,0.04)' : alpha(brand.ink, 0.06),
               }}
             >
               <Box
@@ -171,8 +173,8 @@ export default function Layout() {
                   height: '100%',
                   transform: 'scaleX(0)',
                   transformOrigin: 'left center',
-                  background: isDark ? 'rgba(226,232,240,0.72)' : '#DDE7F5',
-                  boxShadow: '0 0 8px rgba(11, 58, 120, 0.12)',
+                  background: isDark ? 'rgba(226,232,240,0.72)' : brand.aqua,
+                  boxShadow: `0 0 8px ${alpha(brand.ink, 0.12)}`,
                   transition: 'transform 80ms linear',
                   willChange: 'transform',
                 }}

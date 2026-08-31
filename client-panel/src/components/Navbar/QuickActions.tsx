@@ -11,6 +11,7 @@ import {
 } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import { useMerchantReadiness } from '../../hooks/useMerchantReadiness'
+import { brand } from '../../theme/brand'
 
 type QuickAction = {
   name: string
@@ -24,31 +25,31 @@ const actions: QuickAction[] = [
   {
     name: 'Rate Calculator',
     icon: <TbCalculator />,
-    accent: '#0D3B8E',
+    accent: '#23758D',
     path: '/tools/rate_calculator',
   },
   {
     name: 'Add Warehouse',
     icon: <TbBuildingWarehouse />,
-    accent: '#C81E2B',
+    accent: brand.accent,
     path: '/settings/manage_pickups',
   },
   {
     name: 'Recharge Wallet',
     icon: <TbWallet />,
-    accent: '#103B5F',
+    accent: brand.ink,
     path: '/billing/passbook?recharge=true',
   },
   {
     name: 'Early COD',
     icon: <TbBuildingBank />,
-    accent: '#44616C',
+    accent: '#67847F',
     path: '/billing/cod-remittance',
   },
   {
     name: 'Book Order',
     icon: <TbPackageExport />,
-    accent: '#1D2842',
+    accent: '#10475E',
     path: '/orders/create',
     requiresMerchantReady: true,
   },
@@ -67,12 +68,12 @@ export default function QuickActions() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const open = Boolean(anchorEl)
   const isDark = theme.palette.mode === 'dark'
-  const ink = isDark ? '#f8fafc' : '#172033'
-  const muted = isDark ? '#9aa9bd' : '#66758d'
+  const ink = isDark ? '#f8fafc' : brand.ink
+  const muted = isDark ? '#9aa9bd' : brand.inkSoft
   const surface = isDark ? '#151b23' : '#ffffff'
-  const itemSurface = isDark ? '#101720' : '#fbfcfe'
-  const border = isDark ? '#2a313a' : alpha('#172033', 0.1)
-  const accent = '#E31B23'
+  const itemSurface = isDark ? '#101720' : brand.cream
+  const border = isDark ? '#2a313a' : alpha(brand.ink, 0.12)
+  const accent = brand.accent
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -146,12 +147,12 @@ export default function QuickActions() {
               width: { xs: 'calc(100vw - 24px)', sm: 600, md: 700 },
               maxWidth: 'calc(100vw - 24px)',
               borderRadius: '10px',
-              border: `1px solid ${isDark ? border : alpha('#0D3B8E', 0.16)}`,
+              border: `1px solid ${isDark ? border : alpha(brand.ink, 0.16)}`,
               bgcolor: surface,
               color: ink,
               boxShadow: isDark
                 ? '0 24px 54px rgba(0,0,0,0.38)'
-                : '0 22px 48px rgba(15,23,42,0.16)',
+                : '0 22px 48px rgba(20,43,79,0.14)',
               overflow: 'hidden',
             },
           },
@@ -203,7 +204,7 @@ export default function QuickActions() {
                 justifyContent: 'center',
                 gap: 0.8,
                 color: ink,
-                border: `1px solid ${isDark ? alpha('#FFFFFF', 0.1) : alpha('#0D3B8E', 0.12)}`,
+                border: `1px solid ${isDark ? alpha('#FFFFFF', 0.1) : alpha(brand.ink, 0.12)}`,
                 bgcolor: isDark ? alpha('#FFFFFF', 0.035) : '#FFFFFF',
                 transition:
                   'background-color 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease',
@@ -220,7 +221,7 @@ export default function QuickActions() {
                 '&:hover': {
                   bgcolor: alpha(action.accent, isDark ? 0.13 : 0.045),
                   borderColor: alpha(action.accent, isDark ? 0.42 : 0.24),
-                  boxShadow: isDark ? 'none' : `0 12px 26px ${alpha('#0D1B4D', 0.08)}`,
+                  boxShadow: isDark ? 'none' : `0 12px 26px ${alpha(brand.ink, 0.08)}`,
                   transform: 'translateY(-2px)',
                 },
                 '&:focus-visible': {

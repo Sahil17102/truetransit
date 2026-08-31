@@ -1,5 +1,6 @@
 import { Box } from '@mui/material'
 import Checkbox, { type CheckboxProps } from '@mui/material/Checkbox'
+import { brand } from '../../../theme/brand'
 
 // Compact tick stays inside the checkbox, so selected rows do not bleed into table edges.
 const CustomTick = ({ checked }: { checked?: boolean }) => (
@@ -61,18 +62,18 @@ export default function CustomCheckbox(props: CheckboxProps) {
             width: 20,
             height: 20,
             borderRadius: '6px',
-            border: '2px solid #0B3A78',
+            border: `2px solid ${brand.accent}`,
             boxSizing: 'border-box',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
-            backgroundColor: '#0B3A78',
+            backgroundColor: brand.accent,
             transition: 'all 0.2s ease',
             overflow: 'hidden',
             '&:hover': {
-              borderColor: '#0B3A78',
-              boxShadow: '0 0 0 3px rgba(11, 58, 120, 0.12)',
+              borderColor: brand.accent,
+              boxShadow: '0 0 0 3px rgba(20, 155, 109, 0.12)',
             },
           }}
         >

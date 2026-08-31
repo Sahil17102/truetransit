@@ -18,6 +18,7 @@ import GlobalSearch from './GlobalSearch'
 import QuickActions from './QuickActions'
 import WalletMenu from './WalletMenu'
 import UserMenu from './UserMenu'
+import { brand } from '../../theme/brand'
 
 interface NavbarProps {
   handleDrawerToggle: () => void
@@ -25,8 +26,8 @@ interface NavbarProps {
   name?: string
 }
 
-const ACTIVE = '#0B3A78'
-const ORANGE = '#E31B23'
+const ACTIVE = brand.ink
+const ORANGE = brand.accent
 
 const getSectionLabel = (pathname: string) =>
   (
@@ -59,11 +60,11 @@ export default function Navbar({ handleDrawerToggle, pinned }: NavbarProps) {
   const { mode, setMode } = useClientThemeMode()
   const isDark = theme.palette.mode === 'dark'
   const navBg = isDark ? '#151b23' : '#ffffff'
-  const panelBg = isDark ? '#101720' : '#f8fafc'
-  const borderColor = isDark ? '#2a313a' : alpha('#0f172a', 0.1)
-  const textColor = isDark ? '#f8fafc' : '#11182d'
-  const mutedColor = isDark ? '#93a4ba' : '#64748b'
-  const hoverBg = isDark ? alpha('#fff', 0.05) : alpha('#11182d', 0.055)
+  const panelBg = isDark ? '#101720' : brand.cream
+  const borderColor = isDark ? '#2a313a' : alpha(brand.ink, 0.12)
+  const textColor = isDark ? '#f8fafc' : brand.ink
+  const mutedColor = isDark ? '#93a4ba' : brand.inkSoft
+  const hoverBg = isDark ? alpha('#fff', 0.05) : alpha(brand.aqua, 0.4)
   const { data: notifications = [] } = useClientNotifications(isAuthenticated)
 
   const unreadCount = useMemo(
@@ -199,8 +200,8 @@ export default function Navbar({ handleDrawerToggle, pinned }: NavbarProps) {
             alignItems: 'center',
             p: 0.35,
             borderRadius: 999,
-            bgcolor: isDark ? '#211f4d' : alpha(ACTIVE, 0.08),
-            border: `1px solid ${alpha(ACTIVE, 0.18)}`,
+            bgcolor: isDark ? '#1f2f2c' : alpha(brand.aqua, 0.62),
+            border: `1px solid ${alpha(ACTIVE, 0.14)}`,
           }}
         >
           <IconButton
@@ -225,7 +226,7 @@ export default function Navbar({ handleDrawerToggle, pinned }: NavbarProps) {
             sx={{
               width: 28,
               height: 28,
-              color: mode === 'dark' ? '#9b8cff' : mutedColor,
+              color: mode === 'dark' ? brand.aqua : mutedColor,
               bgcolor: mode === 'dark' ? alpha(ACTIVE, 0.16) : 'transparent',
             }}
           >

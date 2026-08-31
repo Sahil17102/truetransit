@@ -8,14 +8,14 @@ export const dashboardPalette = {
   ink: 'var(--dashboard-ink)',
   muted: 'var(--dashboard-muted)',
   line: 'var(--dashboard-line)',
-  orange: brand.red,
-  orangeDark: '#B8141A',
-  orangeSoft: '#2b171a',
+  orange: brand.warning,
+  orangeDark: '#B85B2E',
+  orangeSoft: '#2a1c16',
   blue: brand.navy,
-  blueDark: '#072B5B',
-  green: brand.navy,
-  amber: brand.red,
-  red: brand.red,
+  blueDark: '#0F3A4F',
+  green: brand.accent,
+  amber: brand.warning,
+  red: brand.danger,
   track: 'var(--dashboard-track)',
 }
 
@@ -23,13 +23,13 @@ export const getDashboardCssVars = (mode: PaletteMode) => {
   const isDark = mode === 'dark'
 
   return {
-    '--dashboard-page': isDark ? '#0f141b' : '#f6f8fc',
+    '--dashboard-page': isDark ? '#0f141b' : '#f7f8f5',
     '--dashboard-surface': isDark ? '#151b23' : '#ffffff',
-    '--dashboard-tile': isDark ? '#0f141b' : '#f8fafc',
-    '--dashboard-ink': isDark ? '#f8fafc' : '#11182d',
-    '--dashboard-muted': isDark ? '#9badc3' : '#64748b',
-    '--dashboard-line': isDark ? '#2a313a' : 'rgba(15, 23, 42, 0.1)',
-    '--dashboard-track': isDark ? '#2a313a' : '#e8edf5',
+    '--dashboard-tile': isDark ? '#0f141b' : '#fbfcf8',
+    '--dashboard-ink': isDark ? '#f8fafc' : '#142b4f',
+    '--dashboard-muted': isDark ? '#9badc3' : '#617287',
+    '--dashboard-line': isDark ? '#2a313a' : 'rgba(20, 43, 79, 0.14)',
+    '--dashboard-track': isDark ? '#2a313a' : '#dfe8f5',
   } satisfies SxProps<Theme>
 }
 
@@ -40,12 +40,12 @@ export const dashboardCardSx = {
   position: 'relative',
   border: `1px solid ${dashboardPalette.line}`,
   background: dashboardPalette.surface,
-  boxShadow: '0 10px 28px rgba(15, 23, 42, 0.045)',
+  boxShadow: '0 14px 34px rgba(20, 43, 79, 0.055)',
   overflow: 'hidden',
   transition: 'border-color 160ms ease, box-shadow 160ms ease',
   '&:hover': {
     borderColor: alpha(dashboardPalette.blue, 0.2),
-    boxShadow: '0 12px 32px rgba(15, 23, 42, 0.06)',
+    boxShadow: '0 16px 38px rgba(20, 43, 79, 0.08)',
   },
 } satisfies SxProps<Theme>
 

@@ -33,8 +33,8 @@ type AuthResponse = Record<string, unknown> & {
   user?: AuthUser
 }
 
-const AUTH_NAVY = '#0D1B4D'
-const AUTH_ORANGE = '#E86F00'
+const AUTH_NAVY = brand.ink
+const AUTH_ORANGE = brand.warning
 const isDemoLogin = isDemoLoginEnabled()
 
 const loginButtonStyles = {
@@ -45,7 +45,7 @@ const loginButtonStyles = {
   color: '#FFFFFF',
   boxShadow: `0 10px 20px ${alpha(AUTH_NAVY, 0.28)}`,
   '&:hover': {
-    background: '#071643',
+    background: '#0F3A4F',
     transform: 'translateY(-1px)',
   },
   '&:disabled': {
