@@ -40,6 +40,7 @@ const businessInfo = {
 };
 
 const pageTitle = 'TrueTransit Mobility Pvt Ltd - Transit You Can Trust';
+const loginUrl = 'https://truetransit-2.onrender.com/login';
 
 function normalizePath(pathname = window.location.pathname) {
   const path = pathname.replace(/\/$/, '');
@@ -142,12 +143,13 @@ function Header({ path, onNavigate }) {
           <AppLink className={path === '/rate-calculator' ? 'active' : undefined} href="/rate-calculator" onNavigate={nav}>Rate calculator</AppLink>
           <AppLink className={path === '/weight-calculator' ? 'active' : undefined} href="/weight-calculator" onNavigate={nav}>Weight calculator</AppLink>
           <AppLink className={path === '/contact' ? 'active' : undefined} href="/contact" onNavigate={nav}>Contact</AppLink>
+          <AppLink className="mobile-login-link" href={loginUrl} onNavigate={nav}>Sign in <ArrowUpRight /></AppLink>
         </nav>
 
         <div className="header-actions">
           <AppLink className="text-link" href="/rate-calculator" onNavigate={nav}>Estimate rate</AppLink>
-          <AppLink className="button button-small button-dark" href="/tracking" onNavigate={nav}>
-            Track <ArrowUpRight />
+          <AppLink className="button button-small button-dark" href={loginUrl} onNavigate={nav}>
+            Sign in <ArrowUpRight />
           </AppLink>
         </div>
       </header>
