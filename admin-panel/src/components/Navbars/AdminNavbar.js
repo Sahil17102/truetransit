@@ -37,6 +37,7 @@ import { useHistory } from 'react-router-dom'
 import { getNotifications } from 'services/notification.service'
 import { useAuthStore } from 'store/useAuthStore'
 import { useNotificationsStore } from 'store/useNotificationsStore'
+import { brand } from 'theme/brand'
 
 export default function AdminNavbar(props) {
   const { onOpen, onToggleSidebar, isSidebarCollapsed = false, sidebarWidth = 260, brandText } = props
@@ -46,25 +47,25 @@ export default function AdminNavbar(props) {
   useSocket()
 
   const navBg = useColorModeValue('#FFFFFF', '#161B22')
-  const borderColor = useColorModeValue('#E2E8F0', '#30363D')
-  const titleColor = useColorModeValue('#0F172A', '#E6EDF3')
-  const iconColor = useColorModeValue('#64748B', '#8B949E')
-  const iconHoverBg = useColorModeValue('#F9FAFB', '#21262D')
-  const iconHoverColor = useColorModeValue('#0F172A', '#E6EDF3')
-  const notificationBg = useColorModeValue('#F9FAFB', '#21262D')
-  const notificationHoverBg = useColorModeValue('#EDE9FE', '#30363D')
-  const avatarBg = useColorModeValue('#EDE9FE', '#6C5CE7')
-  const avatarColor = useColorModeValue('#5A4BD1', '#FFFFFF')
+  const borderColor = useColorModeValue('#DFE8F5', '#30363D')
+  const titleColor = useColorModeValue(brand.ink, '#E6EDF3')
+  const iconColor = useColorModeValue(brand.inkSoft, '#8B949E')
+  const iconHoverBg = useColorModeValue('#EAF4F2', '#21262D')
+  const iconHoverColor = useColorModeValue(brand.ink, '#E6EDF3')
+  const notificationBg = useColorModeValue('#FBFCF8', '#21262D')
+  const notificationHoverBg = useColorModeValue('#D8ECEE', '#30363D')
+  const avatarBg = useColorModeValue('#EAF8F3', 'rgba(20,155,109,0.22)')
+  const avatarColor = useColorModeValue(brand.accent, '#FFFFFF')
   const menuBg = useColorModeValue('#FFFFFF', '#161B22')
   const menuText = useColorModeValue('#0F172A', '#E6EDF3')
   const menuMuted = useColorModeValue('#64748B', '#8B949E')
   const menuHoverBg = useColorModeValue('#F9FAFB', '#21262D')
-  const widgetBg = useColorModeValue('#F8FAFF', '#21262D')
-  const widgetBorder = useColorModeValue('#E5EAF3', '#30363D')
-  const widgetAccentBg = useColorModeValue('#EDE9FE', 'rgba(108, 92, 231, 0.18)')
-  const widgetAccent = useColorModeValue('#5A4BD1', '#B7AEFF')
+  const widgetBg = useColorModeValue('#FBFCF8', '#21262D')
+  const widgetBorder = useColorModeValue('#DFE8F5', '#30363D')
+  const widgetAccentBg = useColorModeValue('#EAF8F3', 'rgba(20, 155, 109, 0.18)')
+  const widgetAccent = useColorModeValue(brand.accent, '#BFE8D7')
   const liveBg = useColorModeValue('#E9FBF4', 'rgba(74, 222, 128, 0.14)')
-  const liveColor = useColorModeValue('#00A881', '#4ADE80')
+  const liveColor = useColorModeValue(brand.accent, '#4ADE80')
 
   const handleLogout = () => {
     logout()
@@ -191,7 +192,7 @@ export default function AdminNavbar(props) {
             bg={menuBg}
             borderColor={borderColor}
             color={menuText}
-            boxShadow="0 18px 42px rgba(15, 23, 42, 0.18)"
+            boxShadow="0 18px 42px rgba(20, 43, 79, 0.16)"
             minW="240px"
             zIndex="popover"
           >

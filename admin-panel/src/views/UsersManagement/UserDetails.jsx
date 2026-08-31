@@ -57,6 +57,7 @@ import { FaCube, FaUserCog } from 'react-icons/fa'
 import { FiMoreVertical, FiPlus, FiPower, FiRefreshCw, FiTrash } from 'react-icons/fi'
 import { MdOutlineHomeWork } from 'react-icons/md'
 import { Route, Switch, useHistory, useLocation, useParams } from 'react-router-dom'
+import { brand } from 'theme/brand'
 import BankAccountsTab from 'views/Dashboard/Profile/components/BankAccountsTab'
 import CompanyDetails from 'views/Dashboard/Profile/components/CompanyDetails'
 import ProfileInformation from 'views/Dashboard/Profile/components/ProfileInformation'
@@ -743,7 +744,7 @@ export default function UserDetails() {
   const userId = id ?? ''
 
   return (
-    <Flex p={{ base: 4, md: 6 }} pt={{ base: '100px', md: '75px' }} direction="column" width="100%" flex="1" bg="#F8FAFD">
+    <Flex p={{ base: 4, md: 6 }} pt={{ base: '100px', md: '75px' }} direction="column" width="100%" flex="1" bg={brand.page}>
       <SellerWorkspaceHeader
         user={{
           ...(profileData?.data || {}),
@@ -752,7 +753,7 @@ export default function UserDetails() {
         userId={userId}
       />
 
-      <Flex borderBottom="1px solid #E4EAF3" overflowX="auto" bg="#F8FAFD">
+      <Flex borderBottom="1px solid #DFE8F5" overflowX="auto" bg={brand.page}>
         {tabRoutes.map((tab) => {
           const isActive = activeTab?.path === tab.path
           return (
@@ -764,8 +765,8 @@ export default function UserDetails() {
               borderRadius="0"
               h="52px"
               px="14px"
-              color={isActive ? '#6C5CE7' : '#33415C'}
-              borderBottom={isActive ? '3px solid #6C5CE7' : '3px solid transparent'}
+              color={isActive ? brand.accent : '#33415C'}
+              borderBottom={isActive ? `3px solid ${brand.accent}` : '3px solid transparent'}
               onClick={() => handleTabClick(tab.path)}
             >
               {tab.name}

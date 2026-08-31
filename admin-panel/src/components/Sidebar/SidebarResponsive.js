@@ -25,12 +25,12 @@ function SidebarResponsive(props) {
   const activeRoute = (routeName) => (location.pathname === routeName ? 'active' : '')
 
   const drawerBg = useColorModeValue('rgba(255,255,255,0.98)', 'rgba(13, 27, 77, 0.98)')
-  const activeBg = useColorModeValue('rgba(255, 138, 40, 0.14)', 'rgba(143, 212, 255, 0.16)')
-  const hoverBg = useColorModeValue('rgba(13, 27, 77, 0.06)', 'rgba(255, 255, 255, 0.08)')
+  const activeBg = useColorModeValue('rgba(20, 155, 109, 0.12)', 'rgba(143, 212, 255, 0.16)')
+  const hoverBg = useColorModeValue('rgba(216, 236, 238, 0.44)', 'rgba(255, 255, 255, 0.08)')
   const textColor = useColorModeValue('gray.700', 'gray.100')
   const iconColor = useColorModeValue('gray.500', 'gray.300')
   const activeTextColor = brand.ink
-  const dividerColor = useColorModeValue('rgba(13, 27, 77, 0.1)', 'rgba(143, 212, 255, 0.18)')
+  const dividerColor = useColorModeValue('rgba(20, 43, 79, 0.1)', 'rgba(143, 212, 255, 0.18)')
   const hamburgerSurface = useColorModeValue('rgba(255,255,255,0.72)', 'rgba(16, 24, 40, 0.82)')
   const hamburgerBorder = useColorModeValue('rgba(12,59,128,0.12)', 'rgba(255,255,255,0.12)')
   const defaultHamburgerColor = useColorModeValue('gray.700', 'gray.200')
@@ -69,7 +69,7 @@ function SidebarResponsive(props) {
               borderRadius="10px"
               w="100%"
               border="1px solid"
-              borderColor={isActive ? 'rgba(255, 138, 40, 0.22)' : 'transparent'}
+              borderColor={isActive ? 'rgba(20, 155, 109, 0.22)' : 'transparent'}
               _hover={{ bg: hoverBg, transform: 'translateX(2px)' }}
               _active={{ bg: 'inherit', transform: 'none' }}
               _focus={{ boxShadow: 'none' }}
@@ -77,7 +77,7 @@ function SidebarResponsive(props) {
             >
               <Flex align="center">
                 <IconBox
-                  bg={isActive ? 'rgba(255, 138, 40, 0.16)' : 'rgba(13, 27, 77, 0.06)'}
+                  bg={isActive ? 'rgba(20, 155, 109, 0.16)' : 'rgba(20, 43, 79, 0.06)'}
                   color={isActive ? brand.accent : iconColor}
                   h="34px"
                   w="34px"

@@ -50,6 +50,7 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { PlansService } from 'services/plan.service'
+import { brand } from 'theme/brand'
 import {
   OTHER_WALLET_REASON,
   resolveWalletAdjustmentReason,
@@ -228,7 +229,7 @@ export default function SellerWorkspaceHeader({ user, userId }) {
       <Box bg="white" border="1px solid #E4EAF3" borderRadius="20px" p={{ base: 4, md: 6 }}>
         <Flex justify="space-between" gap={5} wrap="wrap">
           <HStack align="flex-start" spacing="16px">
-            <Avatar name={name} src={company.profilePicture} size="lg" bg="#F0EDFF" color="#6C5CE7" />
+            <Avatar name={name} src={company.profilePicture} size="lg" bg="#EAF8F3" color={brand.accent} />
             <Box>
               <Text fontSize={{ base: 'xl', md: '2xl' }} fontWeight="800" color="#111C33">
                 {name}
@@ -256,7 +257,7 @@ export default function SellerWorkspaceHeader({ user, userId }) {
                 Account approval
               </Text>
               <Switch
-                colorScheme="purple"
+                colorScheme="accent"
                 size="lg"
                 isChecked={approved}
                 isDisabled={updateApproval.isPending}
@@ -276,7 +277,7 @@ export default function SellerWorkspaceHeader({ user, userId }) {
                     size="sm"
                     w="100%"
                     variant="outline"
-                    borderColor="#B9AAFF"
+                    borderColor="#B9D7D5"
                     borderRadius="9px"
                     textAlign="left"
                     leftIcon={<IconCrown size={17} color="#F59E0B" />}
@@ -292,7 +293,7 @@ export default function SellerWorkspaceHeader({ user, userId }) {
                         <MenuItem
                           key={plan.id}
                           borderRadius="8px"
-                          bg={selected ? '#F0EDFF' : 'transparent'}
+                          bg={selected ? '#EAF8F3' : 'transparent'}
                           fontWeight={selected ? '800' : '600'}
                           onClick={() => {
                             if (selected) return
@@ -319,7 +320,7 @@ export default function SellerWorkspaceHeader({ user, userId }) {
 
         <Flex justify="space-between" align="center" gap={4} wrap="wrap">
           <HStack spacing="10px">
-            <IconWallet size={21} color="#6C5CE7" />
+            <IconWallet size={21} color={brand.accent} />
             <Text color="#536786">Wallet Balance:</Text>
             <Text fontWeight="800" color="#111C33">
               {walletLoading ? 'Loading...' : money(wallet?.balance)}
@@ -460,7 +461,7 @@ export default function SellerWorkspaceHeader({ user, userId }) {
               {tempPassword}
             </Box>
           </ModalBody>
-          <ModalFooter><Button colorScheme="purple" onClick={passwordModal.onClose}>Done</Button></ModalFooter>
+          <ModalFooter><Button colorScheme="accent" onClick={passwordModal.onClose}>Done</Button></ModalFooter>
         </ModalContent>
       </Modal>
     </Stack>

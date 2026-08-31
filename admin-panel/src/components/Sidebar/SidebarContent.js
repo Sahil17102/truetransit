@@ -38,7 +38,7 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { brandIdentity } from "theme/brand";
+import { brand, brandIdentity } from "theme/brand";
 
 const sidebarItems = [
   {
@@ -229,17 +229,17 @@ const SidebarContent = ({
   const location = useLocation();
   const [openGroups, setOpenGroups] = React.useState({});
   const sidebarBg = useColorModeValue("#ffffff", "#161B22");
-  const borderColor = useColorModeValue("#E8EDF5", "#30363D");
-  const logoColor = useColorModeValue("#0F172A", "#E6EDF3");
+  const borderColor = useColorModeValue("#DFE8F5", "#30363D");
+  const logoColor = useColorModeValue(brand.ink, "#E6EDF3");
   const itemColor = useColorModeValue("#586B8A", "#8B949E");
-  const itemHoverBg = useColorModeValue("#F9FAFB", "#21262D");
-  const itemHoverColor = useColorModeValue("#0F172A", "#E6EDF3");
-  const itemActiveBg = useColorModeValue("#EDE9FE", "#242349");
-  const itemActiveColor = useColorModeValue("#5A4BD1", "#B7AEFF");
+  const itemHoverBg = useColorModeValue("#EAF4F2", "#21262D");
+  const itemHoverColor = useColorModeValue(brand.ink, "#E6EDF3");
+  const itemActiveBg = useColorModeValue("#EAF8F3", "rgba(20,155,109,0.18)");
+  const itemActiveColor = useColorModeValue(brand.accent, "#BFE8D7");
   const iconColor = useColorModeValue("#94A3B8", "#8B949E");
   const childColor = useColorModeValue("#586B8A", "#8B949E");
-  const childActiveBg = useColorModeValue("#EDE9FE", "#242349");
-  const childActiveColor = useColorModeValue("#5A4BD1", "#B7AEFF");
+  const childActiveBg = useColorModeValue("#EAF8F3", "rgba(20,155,109,0.18)");
+  const childActiveColor = useColorModeValue(brand.accent, "#BFE8D7");
   const scrollbarThumb = useColorModeValue("#CBD5E1", "#6E7681");
 
   React.useEffect(() => {

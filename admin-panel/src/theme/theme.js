@@ -9,13 +9,13 @@ import { badgeStyles } from "./components/badge";
 import { buttonStyles } from "./components/button";
 import { drawerStyles } from "./components/drawer";
 import { linkStyles } from "./components/link";
-import { brandFonts, brandGradients } from "./brand";
+import { brand, brandFonts, brandGradients } from "./brand";
 import { breakpoints } from "./foundations/breakpoints";
 import { globalStyles } from "./styles";
 
 const fieldBase = {
   borderRadius: "8px",
-  borderColor: "#E2E8F0",
+  borderColor: "#DFE8F5",
   bg: "#FFFFFF",
   fontWeight: "500",
   fontSize: "14px",
@@ -23,11 +23,11 @@ const fieldBase = {
     color: "gray.500",
   },
   _hover: {
-    borderColor: "#CBD5E1",
+    borderColor: "#B9D7D5",
   },
   _focusVisible: {
-    borderColor: "brand.500",
-    boxShadow: "0 0 0 3px rgba(13, 27, 77, 0.16)",
+    borderColor: "accent.500",
+    boxShadow: "0 0 0 3px rgba(20, 155, 109, 0.14)",
     bg: "#FFFFFF",
   },
   _dark: {
@@ -41,8 +41,8 @@ const fieldBase = {
       borderColor: "#3f4652",
     },
     _focusVisible: {
-      borderColor: "#0D1B4D",
-      boxShadow: "0 0 0 3px rgba(13, 27, 77, 0.22)",
+      borderColor: brand.accent,
+      boxShadow: "0 0 0 3px rgba(20, 155, 109, 0.22)",
       bg: "#161B22",
     },
   },
@@ -52,7 +52,7 @@ const dividerStyles = {
   components: {
     Divider: {
       baseStyle: {
-        borderColor: "rgba(13,27,77,0.1)",
+        borderColor: "rgba(20,43,79,0.1)",
         borderWidth: "1px",
       },
       defaultProps: {
@@ -127,7 +127,7 @@ const componentOverrides = {
           bg: "#FFFFFF",
           color: "#0F172A",
           borderColor: "#E2E8F0",
-          boxShadow: "0 18px 42px rgba(15, 23, 42, 0.14)",
+          boxShadow: "0 18px 42px rgba(20, 43, 79, 0.14)",
           _dark: {
             bg: "#161B22",
             color: "#E6EDF3",
@@ -171,8 +171,8 @@ const componentOverrides = {
                 fontWeight: "800",
                 fontSize: "12px",
                 color: "#93A0BA",
-                borderColor: "#E2E8F0",
-                bg: "#F4F1FF",
+                borderColor: "#DFE8F5",
+                bg: "#EAF4F2",
                 py: "13px",
                 _dark: {
                   color: "#8B949E",
@@ -186,7 +186,7 @@ const componentOverrides = {
             tr: {
               td: {
                 bg: "#FFFFFF",
-                borderColor: "#E2E8F0",
+                borderColor: "#DFE8F5",
                 fontSize: "14px",
                 color: "#0F172A",
                 py: "14px",
@@ -215,7 +215,7 @@ const componentOverrides = {
           _selected: {
             color: "gray.900",
             bg: "rgba(255,255,255,0.78)",
-            boxShadow: "0 12px 28px rgba(68,92,138,0.1)",
+            boxShadow: "0 12px 28px rgba(20,43,79,0.1)",
             _dark: {
               color: "#E6EDF3",
               bg: "#21262D",
@@ -227,8 +227,8 @@ const componentOverrides = {
           p: "6px",
           borderRadius: "12px",
           bg: "rgba(255,255,255,0.72)",
-          border: "1px solid rgba(13,27,77,0.08)",
-          boxShadow: "0 14px 28px rgba(68,92,138,0.06)",
+          border: "1px solid rgba(20,43,79,0.08)",
+          boxShadow: "0 14px 28px rgba(20,43,79,0.06)",
           _dark: {
             bg: "#161B22",
             borderColor: "#30363D",
@@ -242,8 +242,8 @@ const componentOverrides = {
         dialog: {
           borderRadius: "16px",
           borderWidth: "1px",
-          borderColor: "rgba(13,27,77,0.12)",
-          boxShadow: "0 34px 72px rgba(13,27,77,0.18)",
+          borderColor: "rgba(20,43,79,0.12)",
+          boxShadow: "0 34px 72px rgba(20,43,79,0.18)",
           bg: brandGradients.surface,
           overflow: "hidden",
           backdropFilter: "blur(16px)",
@@ -256,7 +256,7 @@ const componentOverrides = {
         header: {
           fontWeight: "800",
           fontFamily: brandFonts.display,
-          borderBottom: "1px solid rgba(13,27,77,0.08)",
+          borderBottom: "1px solid rgba(20,43,79,0.08)",
           pb: "18px",
           _dark: {
             borderColor: "#30363D",
@@ -270,7 +270,7 @@ const componentOverrides = {
           },
         },
         footer: {
-          borderTop: "1px solid rgba(13,27,77,0.08)",
+          borderTop: "1px solid rgba(20,43,79,0.08)",
           pt: "18px",
           _dark: {
             borderColor: "#30363D",

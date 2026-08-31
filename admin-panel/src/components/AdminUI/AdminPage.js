@@ -21,15 +21,16 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { IconSearch } from "@tabler/icons-react";
+import { brand } from "theme/brand";
 
 export const adminUi = {
   pageTop: { base: "96px", md: "64px" },
-  cardRadius: "16px",
-  purple: "#6C5CE7",
-  text: "#0F172A",
-  muted: "#607397",
-  border: "#E5EAF3",
-  headerBg: "#F4F1FF",
+  cardRadius: "14px",
+  purple: brand.accent,
+  text: brand.ink,
+  muted: brand.inkSoft,
+  border: "#DFE8F5",
+  headerBg: "#EAF4F2",
 };
 
 export function AdminStack({ children, ...props }) {
@@ -76,8 +77,8 @@ export function PageIntro({
               justify="center"
               w="40px"
               h="40px"
-              borderRadius="14px"
-              bg="#F0EDFF"
+              borderRadius="12px"
+              bg="#EAF8F3"
               color={adminUi.purple}
               flexShrink={0}
             >
@@ -125,11 +126,15 @@ export function SearchInput({
         placeholder={placeholder}
         h="36px"
         bg="#FFFFFF"
-        borderColor="#D6DEE9"
+        borderColor="#DFE8F5"
         color={adminUi.text}
         fontSize="14px"
         fontWeight="500"
         _placeholder={{ color: "#A7B0BE" }}
+        _focusVisible={{
+          borderColor: brand.accent,
+          boxShadow: "0 0 0 3px rgba(20,155,109,0.14)",
+        }}
       />
     </InputGroup>
   );
@@ -149,9 +154,13 @@ export function AdminSelect({
       h="36px"
       maxW={maxW}
       bg="#FFFFFF"
-      borderColor="#D6DEE9"
+      borderColor="#DFE8F5"
       fontSize="14px"
       fontWeight="500"
+      _focusVisible={{
+        borderColor: brand.accent,
+        boxShadow: "0 0 0 3px rgba(20,155,109,0.14)",
+      }}
       {...props}
     >
       {children}
@@ -269,7 +278,7 @@ export function DataTable({
                   _hover={onRowClick ? { bg: "#F8FAFD" } : undefined}
                   _focusVisible={
                     onRowClick
-                      ? { outline: "2px solid #6C5CE7", outlineOffset: "-2px" }
+                      ? { outline: `2px solid ${adminUi.purple}`, outlineOffset: "-2px" }
                       : undefined
                   }
                   onKeyDown={
@@ -348,7 +357,7 @@ export function DataTable({
   );
 }
 
-export function SoftBadge({ children, colorScheme = "purple", ...props }) {
+export function SoftBadge({ children, colorScheme = "accent", ...props }) {
   return (
     <Badge
       colorScheme={colorScheme}
@@ -368,7 +377,7 @@ export function SoftBadge({ children, colorScheme = "purple", ...props }) {
 export function PrimaryButton(props) {
   return (
     <Button
-      bg="linear-gradient(135deg, #7259E8 0%, #FF6B12 100%)"
+      bg="linear-gradient(135deg, #142B4F 0%, #10475E 100%)"
       color="#FFFFFF"
       h="46px"
       px="22px"

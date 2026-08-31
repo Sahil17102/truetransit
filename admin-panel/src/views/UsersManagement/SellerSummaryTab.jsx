@@ -20,6 +20,7 @@ import {
   IconWallet,
 } from '@tabler/icons-react'
 import { useSellerSummary } from 'hooks/useUser'
+import { brand } from 'theme/brand'
 
 const money = (value) =>
   new Intl.NumberFormat('en-IN', {
@@ -28,7 +29,7 @@ const money = (value) =>
     minimumFractionDigits: 2,
   }).format(Number(value || 0))
 
-const StatCard = ({ icon: icon, label, value, helper, color = '#6C5CE7' }) => {
+const StatCard = ({ icon: icon, label, value, helper, color = brand.accent }) => {
   const IconComponent = icon
   return (
     <Box bg="white" border="1px solid #E4EAF3" borderRadius="16px" p="20px">
@@ -82,10 +83,10 @@ export default function SellerSummaryTab({ userId }) {
   return (
     <Stack spacing="18px">
       <SimpleGrid columns={{ base: 1, md: 2, xl: 4 }} spacing="15px">
-        <StatCard icon={IconBox} label="Total Orders" value={total} helper={`${metrics.totalPrepaidOrders || 0} prepaid · ${metrics.totalCodOrders || 0} COD`} color="#2F80ED" />
-        <StatCard icon={IconCoinRupee} label="Total Revenue" value={money(financial.totalRevenue)} helper={`Freight ${money(financial.totalFreightCharges)}`} color="#00A881" />
-        <StatCard icon={IconWallet} label="Wallet Balance" value={money(financial.walletBalance)} helper="Current available balance" color="#6C5CE7" />
-        <StatCard icon={IconTruckDelivery} label="Delivery Rate" value={`${operational.deliverySuccessRate || 0}%`} helper={`${delivered} of ${total} delivered`} color="#31A66B" />
+        <StatCard icon={IconBox} label="Total Orders" value={total} helper={`${metrics.totalPrepaidOrders || 0} prepaid · ${metrics.totalCodOrders || 0} COD`} color="#23758D" />
+        <StatCard icon={IconCoinRupee} label="Total Revenue" value={money(financial.totalRevenue)} helper={`Freight ${money(financial.totalFreightCharges)}`} color={brand.accent} />
+        <StatCard icon={IconWallet} label="Wallet Balance" value={money(financial.walletBalance)} helper="Current available balance" color={brand.ink} />
+        <StatCard icon={IconTruckDelivery} label="Delivery Rate" value={`${operational.deliverySuccessRate || 0}%`} helper={`${delivered} of ${total} delivered`} color={brand.accent} />
       </SimpleGrid>
 
       <Box bg="white" border="1px solid #E4EAF3" borderRadius="16px" p="20px">
@@ -155,3 +156,4 @@ export default function SellerSummaryTab({ userId }) {
     </Stack>
   )
 }
+

@@ -42,7 +42,7 @@ import CardHeader from "components/Card/CardHeader";
 import { useDashboardStats } from "hooks/useDashboardStats";
 import { lazy, Suspense, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { brandIdentity } from "theme/brand";
+import { brand, brandIdentity } from "theme/brand";
 
 const CourierDistributionChart = lazy(() =>
   import("components/Charts/CourierDistributionChart")
@@ -582,48 +582,48 @@ export default function Dashboard() {
     paymentType: "all",
   });
   const dashboardVars = {
-    "--dash-page": useColorModeValue("#F4F7FC", "#0D1117"),
+    "--dash-page": useColorModeValue(brand.page, "#0D1117"),
     "--dash-surface": useColorModeValue("#FFFFFF", "#161B22"),
-    "--dash-surface-muted": useColorModeValue("#F7F9FC", "#21262D"),
-    "--dash-border": useColorModeValue("#E5EAF3", "#30363D"),
+    "--dash-surface-muted": useColorModeValue(brand.cream, "#21262D"),
+    "--dash-border": useColorModeValue("#DFE8F5", "#30363D"),
     "--dash-border-soft": useColorModeValue(
-      "#E5EAF3",
+      "rgba(20, 43, 79, 0.12)",
       "rgba(48, 54, 61, 0.72)"
     ),
-    "--dash-header-bg": useColorModeValue("#F2F5FA", "#1A2234"),
+    "--dash-header-bg": useColorModeValue("#EAF4F2", "#1A2234"),
     "--dash-progress-bg": useColorModeValue(
-      "#EEF2F7",
+      "#DFE8F5",
       "rgba(48, 54, 61, 0.42)"
     ),
-    "--dash-text": useColorModeValue("#0F172A", "#E6EDF3"),
-    "--dash-muted": useColorModeValue("#607397", "#8B949E"),
+    "--dash-text": useColorModeValue(brand.ink, "#E6EDF3"),
+    "--dash-muted": useColorModeValue(brand.inkSoft, "#8B949E"),
     "--dash-tertiary": useColorModeValue("#93A0BA", "#6E7681"),
-    "--dash-primary": useColorModeValue("#0D1B4D", "#8DA9DD"),
-    "--dash-primary-bg": useColorModeValue("#EDF2FA", "#202C49"),
-    "--dash-accent": useColorModeValue("#E31B2D", "#FF7180"),
+    "--dash-primary": useColorModeValue(brand.ink, "#8DA9DD"),
+    "--dash-primary-bg": useColorModeValue("#EDF3F8", "#202C49"),
+    "--dash-accent": useColorModeValue(brand.accent, "#7CE3B5"),
     "--dash-accent-bg": useColorModeValue(
-      "#FFF0F2",
-      "rgba(227, 27, 45, 0.14)"
+      "#EAF8F3",
+      "rgba(20, 155, 109, 0.14)"
     ),
-    "--dash-success": useColorModeValue("#00A881", "#4ADE80"),
+    "--dash-success": useColorModeValue(brand.success, "#4ADE80"),
     "--dash-success-bg": useColorModeValue(
       "#E9FBF4",
       "rgba(74, 222, 128, 0.14)"
     ),
-    "--dash-danger": useColorModeValue("#FF3D3D", "#F87171"),
+    "--dash-danger": useColorModeValue(brand.danger, "#F87171"),
     "--dash-danger-bg": useColorModeValue(
       "#FFF0F0",
       "rgba(248, 113, 113, 0.14)"
     ),
-    "--dash-blue": useColorModeValue("#407BFF", "#3B82F6"),
-    "--dash-blue-bg": useColorModeValue("#EEF5FF", "rgba(59, 130, 246, 0.14)"),
+    "--dash-blue": useColorModeValue("#23758D", "#3B82F6"),
+    "--dash-blue-bg": useColorModeValue("#D8ECEE", "rgba(59, 130, 246, 0.14)"),
     "--dash-amber-action-bg": useColorModeValue(
-      "#FFF1F3",
-      "rgba(227, 27, 45, 0.12)"
+      "#FBF0E9",
+      "rgba(217, 120, 66, 0.12)"
     ),
     "--dash-amber-action-border": useColorModeValue(
-      "#FFC8CE",
-      "rgba(227, 27, 45, 0.18)"
+      "#F0C9B3",
+      "rgba(217, 120, 66, 0.18)"
     ),
     "--dash-green-action-bg": useColorModeValue(
       "#DDFBEC",
@@ -633,7 +633,7 @@ export default function Dashboard() {
       "#B8F0D5",
       "rgba(74, 222, 128, 0.16)"
     ),
-    "--dash-badge-bg": useColorModeValue("#FFF0F2", "rgba(227, 27, 45, 0.16)"),
+    "--dash-badge-bg": useColorModeValue("#EAF8F3", "rgba(20, 155, 109, 0.16)"),
   };
   const {
     data: statsData,

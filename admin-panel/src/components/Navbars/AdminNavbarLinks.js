@@ -29,8 +29,8 @@ export default function HeaderLinks({ variant, children, fixed, secondary, onOpe
   const settingsRef = useRef()
   const { isLoggedIn, logout } = useAuthStore()
   const inputBg = useColorModeValue('rgba(255, 255, 255, 0.84)', 'rgba(20, 34, 56, 0.72)')
-  const inputBorder = useColorModeValue('rgba(13,27,77,0.14)', 'rgba(44,143,255,0.22)')
-  const hoverBg = useColorModeValue('rgba(255,138,40,0.1)', 'rgba(255, 255, 255, 0.08)')
+  const inputBorder = useColorModeValue('rgba(20,43,79,0.14)', 'rgba(44,143,255,0.22)')
+  const hoverBg = useColorModeValue('rgba(20,155,109,0.1)', 'rgba(255, 255, 255, 0.08)')
   const mainTextColor = useColorModeValue('gray.700', 'gray.100')
   const navbarIconColor = useColorModeValue('gray.600', 'gray.200')
   const searchIconColor = useColorModeValue('brand.500', 'blue.200')
@@ -63,7 +63,7 @@ export default function HeaderLinks({ variant, children, fixed, secondary, onOpe
         transition="all 0.2s ease"
         _focusWithin={{
           borderColor: styles.accent,
-          boxShadow: '0 0 0 3px rgba(255,138,40,0.16)',
+          boxShadow: '0 0 0 3px rgba(20,155,109,0.14)',
         }}
       >
         <InputLeftElement pointerEvents="none" pl="14px">
@@ -104,7 +104,7 @@ export default function HeaderLinks({ variant, children, fixed, secondary, onOpe
                   _hover={{
                     bg: styles.hoverBg,
                     color: styles.accentSecondary,
-                    borderColor: 'rgba(245,124,0,0.18)',
+                    borderColor: 'rgba(20,155,109,0.18)',
                   }}
                 >
                   <Text display={{ base: 'none', '2xl': 'flex' }}>Logout</Text>

@@ -32,6 +32,7 @@ import {
   SoftBadge,
   ToolbarCard,
 } from "components/AdminUI/AdminPage";
+import { brand } from "theme/brand";
 import {
   useCompleteMerchantReadiness,
   useUpdateUserApproval,
@@ -260,31 +261,31 @@ export default function UsersManagementPage() {
               icon={IconShieldCheck}
               value={summary.verified}
               label="KYC verified"
-              color="#00A881"
+              color={brand.accent}
             />
             <Metric
               icon={IconShieldX}
               value={summary.pending}
               label="KYC pending"
-              color="#FF7A1A"
+              color={brand.warning}
             />
             <Metric
               icon={IconWaveSine}
               value={summary.onboarded}
               label="onboarded"
-              color="#2F80ED"
+              color="#23758D"
             />
             <Metric
               icon={IconWaveSine}
               value={summary.active}
               label="active"
-              color="#FF7A1A"
+              color={brand.accent}
             />
             <Metric
               icon={IconUserX}
               value={summary.inactive}
               label="inactive"
-              color="#FF4D4F"
+              color={brand.danger}
             />
           </HStack>
         }
@@ -345,7 +346,7 @@ export default function UsersManagementPage() {
                 ))}
             </AdminSelect>
           </Box>
-          <Button variant="ghost" color="#6C5CE7" mt={{ base: 0, md: "27px" }}>
+          <Button variant="ghost" color={brand.accent} mt={{ base: 0, md: "27px" }}>
             More filters
           </Button>
           <Text ml="auto" color="#607397" fontSize="15px" alignSelf="center">
@@ -356,7 +357,7 @@ export default function UsersManagementPage() {
 
       <HStack
         spacing="38px"
-        borderBottom="1px solid #E5EAF3"
+        borderBottom={`1px solid ${brand.line}`}
         px="20px"
         overflowX="auto"
       >
@@ -377,15 +378,15 @@ export default function UsersManagementPage() {
             key={label}
             pb="15px"
             borderBottom={
-              active ? "2px solid #6C5CE7" : "2px solid transparent"
+              active ? `2px solid ${brand.accent}` : "2px solid transparent"
             }
-            color={active ? "#6C5CE7" : "#586B8A"}
+            color={active ? brand.accent : "#586B8A"}
             flexShrink={0}
             cursor="pointer"
             onClick={() => { onClick(); setPage(1); }}
           >
             <Text fontSize="18px">{label}</Text>
-            <SoftBadge colorScheme={active ? "purple" : "gray"}>
+            <SoftBadge colorScheme={active ? "accent" : "gray"}>
               {count}
             </SoftBadge>
           </HStack>
@@ -416,8 +417,8 @@ export default function UsersManagementPage() {
                   <Avatar
                     name={getInitials(name)}
                     size="sm"
-                    bg="#F0EDFF"
-                    color="#6C5CE7"
+                    bg="#EAF8F3"
+                    color={brand.accent}
                   />
                   <Box minW={0}>
                     <Text fontWeight="600" lineHeight="1.3">{name}</Text>
@@ -536,7 +537,7 @@ export default function UsersManagementPage() {
               <Button
                 size="xs"
                 leftIcon={ordersEnabled ? <IconShieldX size={14} /> : <IconShieldCheck size={14} />}
-                colorScheme={ordersEnabled ? "red" : "purple"}
+                colorScheme={ordersEnabled ? "red" : "accent"}
                 variant={ordersEnabled ? "outline" : "solid"}
                 isLoading={actionPending}
                 isDisabled={
@@ -548,12 +549,12 @@ export default function UsersManagementPage() {
                 {ordersEnabled ? "Disable Orders" : "Enable Orders"}
               </Button>
               <Switch
-                colorScheme="purple"
+                colorScheme="accent"
                 isChecked={accountApproved}
                 isDisabled={updateUserApprovalMutation.isPending}
                 onChange={(event) => handleApprovalChange(row.id, event.target.checked)}
               />
-              <Text textAlign="left" fontSize="11px" fontWeight="700" color={accountApproved ? "#009E72" : "#D97706"}>
+              <Text textAlign="left" fontSize="11px" fontWeight="700" color={accountApproved ? brand.accent : brand.warning}>
                 {accountApproved ? "Approved" : "Pending"}
               </Text>
             </HStack>
