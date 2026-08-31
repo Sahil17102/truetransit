@@ -8,7 +8,7 @@ services:
     autoDeployTrigger: commit
     envVars:
       - key: VITE_API_URL
-        value: /api
+        value: https://api.mydigivallet.com/api
     routes:
       - type: rewrite
         source: /*
@@ -23,7 +23,7 @@ services:
     autoDeployTrigger: commit
     envVars:
       - key: REACT_APP_API_BASE_URL
-        value: /api
+        value: https://api.mydigivallet.com/api
       - key: REACT_APP_CLIENT_URL
         value: https://truetransit-2.onrender.com
     routes:
