@@ -1,12 +1,12 @@
 :root {
   --ink: #071261;
   --paper: #fbfefe;
-  --yellow: #e7edfa;
-  --blue: #d8eee8;
-  --coral: #e8f7f2;
-  --green: #dff3eb;
-  --aqua: #eaf8f4;
-  --mist: #f0f6fb;
+  --yellow: #e8effd;
+  --blue: #dbe8fb;
+  --coral: #edf3fd;
+  --green: #e5edfb;
+  --aqua: #eef4ff;
+  --mist: #f3f7fe;
   --brand-navy: #071261;
   --brand-blue: #0c4aa0;
   --brand-green: #007d64;
@@ -1551,3 +1551,69 @@ h1 em, h2 em { color: var(--brand-green); }
   .footer-grid { padding-top: 30px; }
   .footer-brand .brand-logo-lockup { width: 122px; height: 84px; }
 }
+
+/* Blue-forward palette: green remains only as a compact trust/status accent. */
+.announcement a { color: #c9d9ff; }
+.main-nav > a::after { background: var(--brand-blue); }
+.main-nav > a:hover,
+.main-nav > a.active { color: var(--brand-blue); }
+.button-dark,
+.calculate-button,
+.tracking-search-row .button,
+.newsletter button { background: var(--brand-blue); border-color: var(--brand-blue); }
+.button-dark:hover,
+.calculate-button:hover,
+.tracking-search-row .button:hover { background: var(--brand-navy); border-color: var(--brand-navy); }
+.button-outline:hover { color: var(--brand-blue); border-color: var(--brand-blue); }
+.eyebrow { color: var(--brand-blue); }
+h1 em,
+h2 em { color: var(--brand-blue); }
+.hero::after { border-color: rgba(12,74,160,.16); background: repeating-radial-gradient(circle, rgba(12,74,160,.075) 0 1px, transparent 1px 42px); }
+.hero-visual::before { background: radial-gradient(circle at 50% 50%, rgba(12,74,160,.18), transparent 63%), radial-gradient(circle, rgba(7,18,97,.18) 1.2px, transparent 1.4px); background-size: 100% 100%, 12px 12px; }
+.orbit { border-color: rgba(12,74,160,.24); }
+.parcel-side span,
+.status-card > svg { background: var(--brand-blue); }
+.parcel-side span:nth-child(2) { background: var(--brand-navy); }
+.route-dot { border-color: var(--brand-blue); }
+.partner-logo:hover { border-color: rgba(12,74,160,.32); }
+.courier-section,
+.calculator-page { background: #f3f7fe; }
+.shipment-systems-section { background: linear-gradient(180deg, #fff 0%, #eef4ff 100%); }
+.carrier-row.active { background: #e4edfc; border-color: var(--brand-blue); }
+.hub-b,
+.page-card.accent-blue > span,
+.page-card.accent-lime > span,
+.page-card.accent-coral > span,
+.feature-item > span,
+.ad-card .ad-icon { background: var(--brand-blue); }
+.flow-path.hot,
+.flow-path.flow-b,
+.flow-path.flow-c { stroke: var(--brand-blue); }
+.ai-section h2 em,
+.contact-section h1 em,
+.contact-section h2 em { color: #91baff; }
+.suite-icon,
+.industry-icon,
+.footer-grid h4 { color: var(--brand-blue); }
+.card-yellow,
+.card-blue,
+.card-cream { background: #f1f6ff; }
+.readiness { background: var(--brand-blue); }
+.readiness-copy > p:nth-of-type(2) { color: #e1ebff; }
+.story-lime,
+.story-coral { background: #e2ebfb; }
+.product-page,
+.tracking-page,
+.pricing-page,
+.page-detail-band.blue { background: #eef4ff; }
+.tracking-search-row input:focus,
+.form-grid input:focus,
+.form-grid select:focus,
+.tracking-card input:focus,
+.calculator-card input:focus,
+.calculator-card select:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(12,74,160,.11); }
+.hero-note svg,
+.status-dot,
+.positive,
+.live-pill { color: var(--brand-green); }
+.status-dot { background: var(--brand-green); }
