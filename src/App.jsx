@@ -37,8 +37,8 @@ const businessInfo = {
   email: 'Hello@truetransitmobility.com',
   support: '+91 7416582587',
   supportHref: 'tel:+917416582587',
-  address: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
-  logoSrc: '/truetransit-logo.svg?v=stacked-20260901',
+  address: 'Arenesha Co-Working Studio, 6th floor, The District, Financial District, Nanakramguda, Hyderabad, Telangana, 500032',
+  logoSrc: '/truetransit-logo-transparent.png?v=original-20260901',
 };
 
 const pageTitle = 'TrueTransit Mobility Pvt Ltd - Transit You Can Trust';
@@ -143,15 +143,16 @@ function Header({ path, onNavigate }) {
         </button>
 
         <nav className="main-nav" aria-label="Main navigation">
+          <AppLink className={path === '/' ? 'active' : undefined} href="/" onNavigate={nav}>Home</AppLink>
+          <AppLink className={path === '/products' ? 'active' : undefined} href="/products" onNavigate={nav}>Platform</AppLink>
+          <AppLink className={path === '/solutions' ? 'active' : undefined} href="/solutions" onNavigate={nav}>Solutions</AppLink>
           <AppLink className={path === '/tracking' ? 'active' : undefined} href="/tracking" onNavigate={nav}>Tracking</AppLink>
           <AppLink className={path === '/rate-calculator' ? 'active' : undefined} href="/rate-calculator" onNavigate={nav}>Rate calculator</AppLink>
-          <AppLink className={path === '/weight-calculator' ? 'active' : undefined} href="/weight-calculator" onNavigate={nav}>Weight calculator</AppLink>
-          <AppLink className={path === '/contact' ? 'active' : undefined} href="/contact" onNavigate={nav}>Contact</AppLink>
           <AppLink className="mobile-login-link" href={loginUrl} onNavigate={nav}>Sign in <ArrowUpRight /></AppLink>
         </nav>
 
         <div className="header-actions">
-          <AppLink className="text-link" href="/rate-calculator" onNavigate={nav}>Estimate rate</AppLink>
+          <AppLink className="text-link" href="/contact" onNavigate={nav}>Talk to us</AppLink>
           <AppLink className="button button-small button-dark" href={loginUrl} onNavigate={nav}>
             Sign in <ArrowUpRight />
           </AppLink>
@@ -991,7 +992,7 @@ function ContactPage({ showToast }) {
       <section className="contact-section standalone-contact">
         <div className="container contact-inner">
           <div>
-            <div className="contact-copy reveal"><p className="eyebrow light-eye"><span /> Contact</p><h2>{businessInfo.shortName}<br /><em>official details.</em></h2><p>Business information, office address, support number, and email are shown clearly for customers.</p></div>
+            <div className="contact-copy reveal"><p className="eyebrow light-eye"><span /> Contact</p><h1>{businessInfo.shortName}<br /><em>official details.</em></h1><p>Business information, office address, support number, and email are shown clearly for customers.</p></div>
             <BusinessDetails />
           </div>
           <ContactForm showToast={showToast} />
@@ -1100,12 +1101,12 @@ function HomePage({ onNavigate, showToast }) {
         <div className="hero-grid" />
         <div className="container hero-inner">
           <div className="hero-copy reveal">
-            <p className="eyebrow"><span /> Transit You Can Trust</p>
-            <h1>Deliver Faster.<br /><em>Ship Smarter.</em></h1>
-            <p className="hero-lede">Fast shipping intelligence for labels, tracking, insurance, and smarter courier decisions - from first shipment to national scale.</p>
+            <p className="eyebrow"><span /> One platform. Every shipment.</p>
+            <h1>Simplify transit.<br /><em>Scale with trust.</em></h1>
+            <p className="hero-lede">TrueTransit connects your orders, courier partners, tracking, and shipping intelligence in one polished workspace—built for Indian businesses ready to move faster.</p>
             <div className="hero-actions">
-              <AppLink href="/tracking" className="button button-dark" onNavigate={onNavigate}>Track shipment <ArrowUpRight /></AppLink>
-              <AppLink href="/rate-calculator" className="button button-outline" onNavigate={onNavigate}>Calculate rate</AppLink>
+              <AppLink href="/rate-calculator" className="button button-dark" onNavigate={onNavigate}>Get an estimate <ArrowUpRight /></AppLink>
+              <AppLink href="/contact" className="button button-outline" onNavigate={onNavigate}>Talk to our team</AppLink>
             </div>
             <div className="hero-note"><CircleCheck /> Transit You Can Trust <span /> Hyderabad based mobility team</div>
           </div>
