@@ -542,7 +542,7 @@ function FeatureGrid({ onNavigate }) {
   ];
 
   return (
-    <section className="features" id="features">
+    <section className="features separated-features" id="features">
       <div className="container">
         <div className="features-heading reveal">
           <p className="eyebrow">Features</p>
@@ -1351,7 +1351,6 @@ function HomePage({ onNavigate, showToast }) {
 
       <Stories />
       <LogisticsAds />
-      <FeatureGrid onNavigate={onNavigate} />
 
       <section className="developer-section" id="developers">
         <div className="container developer-inner">
@@ -1364,6 +1363,8 @@ function HomePage({ onNavigate, showToast }) {
           <DeveloperTerminal />
         </div>
       </section>
+
+      <FeatureGrid onNavigate={onNavigate} />
 
       <section className="contact-section" id="contact">
         <div className="container contact-inner">
