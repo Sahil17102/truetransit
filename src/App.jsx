@@ -521,25 +521,65 @@ function Stories() {
 }
 
 function FeatureGrid({ onNavigate }) {
+  const [activeFeature, setActiveFeature] = useState(0);
   const features = [
-    [ChartNoAxesCombined, 'Unified dashboard', 'All your shipment data in one clean workspace.', true],
-    [Truck, 'Multiple carrier access', 'Connect with trusted courier partners quickly.'],
-    [MapPinCheck, 'Real-time tracking', 'Track every shipment from pickup to delivery.'],
-    [Settings2, 'Automated workflows', 'Save time with smarter dispatch rules.'],
-    [BadgePercent, 'Smart analytics', 'See rate, weight, and delivery trends clearly.'],
+    {
+      icon: ChartNoAxesCombined,
+      title: 'Unified dashboard',
+      copy: 'All your shipment data in one clean workspace.',
+      detail: 'Manage shipments, courier partners, rates, and performance metrics from a single intuitive dashboard.',
+      cta: '/rate-calculator',
+      ctaLabel: 'Get Started',
+      chartTitle: 'Shipment activity',
+      bullets: ['View shipments and delivery statuses in real time', 'Monitor courier performance and daily KPIs', 'Centralize orders across every pickup location', 'Filter, export, and review operations faster'],
+      metrics: [[Package, 'Total shipments', '2,458', '+12.5%'], [Truck, 'In transit', '1,245', '+8.7%'], [CircleCheck, 'Delivered', '1,150', '+15.2%'], [Bell, 'Exceptions', '63', '-4.3%']],
+    },
+    {
+      icon: Truck,
+      title: 'Multiple carrier access',
+      copy: 'Connect with trusted courier partners quickly.',
+      detail: 'Compare courier options, route parcels by service level, and keep partner choices consistent across daily dispatch.',
+      cta: '/rate-calculator',
+      ctaLabel: 'Compare Rates',
+      chartTitle: 'Carrier mix',
+      bullets: ['Review partner availability before dispatch', 'Compare service levels for each lane', 'Route prepaid and COD orders with less manual switching', 'Keep courier decisions visible to operations teams'],
+      metrics: [[Truck, 'Active carriers', '6', '+2'], [BadgePercent, 'Rate checks', '842', '+18%'], [Route, 'Service lanes', '128', '+9%'], [Bell, 'Blocked lanes', '11', '-6%']],
+    },
+    {
+      icon: MapPinCheck,
+      title: 'Real-time tracking',
+      copy: 'Track every shipment from pickup to delivery.',
+      detail: 'Bring shipment milestones into one customer-ready timeline so support teams can answer status questions faster.',
+      cta: '/tracking',
+      ctaLabel: 'Track Shipment',
+      chartTitle: 'Tracking events',
+      bullets: ['Normalize carrier scans into simple milestones', 'Mask private fields on public previews', 'Highlight delays and final-mile exceptions', 'Keep customers and internal teams aligned'],
+      metrics: [[ScanSearch, 'Live events', '9,204', '+21%'], [PackageOpen, 'Out delivery', '318', '+7%'], [CircleCheck, 'Delivered', '1,150', '+15%'], [Bell, 'Alerts', '42', '-8%']],
+    },
+    {
+      icon: Settings2,
+      title: 'Automated workflows',
+      copy: 'Save time with smarter dispatch rules.',
+      detail: 'Automate repeat decisions for shipping, exception handling, and support updates without making the team jump between tools.',
+      cta: '/contact',
+      ctaLabel: 'Plan Workflows',
+      chartTitle: 'Automation runs',
+      bullets: ['Trigger internal notes for delayed shipments', 'Apply preferred courier rules by route', 'Reduce repeated manual dispatch steps', 'Escalate exceptions to the right team'],
+      metrics: [[Settings2, 'Rules active', '32', '+14%'], [Check, 'Auto actions', '1,809', '+24%'], [TrendingDown, 'Manual work', '28%', '-12%'], [Bell, 'Escalations', '19', '-5%']],
+    },
+    {
+      icon: BadgePercent,
+      title: 'Smart analytics',
+      copy: 'See rate, weight, and delivery trends clearly.',
+      detail: 'Turn shipment, weight, rate, and tracking data into practical decisions for cost control and service improvement.',
+      cta: '/weight-calculator',
+      ctaLabel: 'Check Weight',
+      chartTitle: 'Savings view',
+      bullets: ['Spot expensive lanes and packaging gaps', 'Understand chargeable weight patterns', 'Track delivery performance by route', 'Share simple reports with leadership'],
+      metrics: [[BadgePercent, 'Savings found', '18%', '+6%'], [Package, 'Weight checks', '5,000', '+11%'], [ChartNoAxesCombined, 'Reports', '24', '+4'], [TrendingDown, 'Cost variance', '7%', '-3%']],
+    },
   ];
-  const metrics = [
-    [Package, 'Total shipments', '2,458', '+12.5%'],
-    [Truck, 'In transit', '1,245', '+8.7%'],
-    [CircleCheck, 'Delivered', '1,150', '+15.2%'],
-    [Bell, 'Exceptions', '63', '-4.3%'],
-  ];
-  const checklist = [
-    'View shipments and delivery statuses in real time',
-    'Monitor courier performance and daily KPIs',
-    'Centralize orders across every pickup location',
-    'Filter, export, and review operations faster',
-  ];
+  const selectedFeature = features[activeFeature];
 
   return (
     <section className="features separated-features" id="features">
@@ -550,33 +590,40 @@ function FeatureGrid({ onNavigate }) {
           <p>Everything you need to ship smarter, scale faster, and keep customers updated from one polished workspace.</p>
         </div>
         <div className="feature-showcase">
-          <div className="feature-list reveal">
-            {features.map(([Icon, title, copy, active]) => (
-              <article className={`feature-item${active ? ' active' : ''}`} key={title}>
+          <div className="feature-list reveal" role="tablist" aria-label="Feature previews">
+            {features.map(({ icon: Icon, title, copy }, index) => (
+              <button
+                className={`feature-item${index === activeFeature ? ' active' : ''}`}
+                type="button"
+                role="tab"
+                aria-selected={index === activeFeature}
+                onClick={() => setActiveFeature(index)}
+                key={title}
+              >
                 <span><Icon /></span>
                 <div><h3>{title}</h3><p>{copy}</p></div>
                 <ArrowRight />
-              </article>
+              </button>
             ))}
           </div>
           <article className="feature-detail reveal">
             <div className="feature-detail-title">
-              <span>01</span>
-              <h3>Unified dashboard</h3>
+              <span>{String(activeFeature + 1).padStart(2, '0')}</span>
+              <h3>{selectedFeature.title}</h3>
             </div>
-            <p>Manage shipments, courier partners, rates, and performance metrics from a single intuitive dashboard.</p>
+            <p>{selectedFeature.detail}</p>
             <ul>
-              {checklist.map((item) => (
+              {selectedFeature.bullets.map((item) => (
                 <li key={item}><CircleCheck /> {item}</li>
               ))}
             </ul>
-            <AppLink href="/rate-calculator" className="button button-dark" onNavigate={onNavigate}>
-              Get Started <ArrowRight />
+            <AppLink href={selectedFeature.cta} className="button button-dark" onNavigate={onNavigate}>
+              {selectedFeature.ctaLabel} <ArrowRight />
             </AppLink>
           </article>
           <article className="dashboard-preview reveal">
             <div className="preview-metrics">
-              {metrics.map(([Icon, label, value, trend]) => (
+              {selectedFeature.metrics.map(([Icon, label, value, trend]) => (
                 <div className="preview-metric" key={label}>
                   <span><Icon /></span>
                   <small>{label}</small>
@@ -587,7 +634,7 @@ function FeatureGrid({ onNavigate }) {
             </div>
             <div className="preview-chart-grid">
               <div className="mini-chart-card">
-                <h4>Shipment activity</h4>
+                <h4>{selectedFeature.chartTitle}</h4>
                 <svg viewBox="0 0 240 136" role="img" aria-label="Shipment activity chart">
                   <g>
                     <line x1="18" x2="222" y1="108" y2="108" />

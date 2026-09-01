@@ -579,13 +579,19 @@ h1 em, h2 em { font-family: inherit; font-style: normal; font-weight: 700; color
   overflow: hidden;
 }
 .feature-item {
+  width: 100%;
   min-height: 89px;
   padding: 16px 18px;
   display: grid;
   grid-template-columns: 54px 1fr 18px;
   align-items: center;
   gap: 18px;
+  border: 0;
   border-bottom: 1px solid rgba(7,18,97,.08);
+  background: #fff;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
   transition: background .2s, color .2s;
 }
 .feature-item:last-child {
@@ -615,6 +621,17 @@ h1 em, h2 em { font-family: inherit; font-style: normal; font-weight: 700; color
 }
 .feature-item > svg {
   color: var(--brand-green);
+  transition: transform .2s ease;
+}
+.feature-item:hover > svg,
+.feature-item.active > svg {
+  transform: translateX(4px);
+}
+.feature-item:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid rgba(12,74,160,.22);
+  outline-offset: -3px;
 }
 .feature-item h3 {
   margin: 0 0 6px;
