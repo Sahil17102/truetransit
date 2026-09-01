@@ -1350,8 +1350,8 @@ function HomePage({ onNavigate, showToast }) {
       <ReadinessSection onNavigate={onNavigate} />
 
       <Stories />
-      <FeatureGrid onNavigate={onNavigate} />
       <LogisticsAds />
+      <FeatureGrid onNavigate={onNavigate} />
 
       <section className="developer-section" id="developers">
         <div className="container developer-inner">
