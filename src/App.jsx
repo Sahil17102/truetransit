@@ -24,6 +24,7 @@ import {
   Shield,
   ShieldCheck,
   Sparkles,
+  Star,
   Tag,
   TrendingDown,
   Truck,
@@ -438,10 +439,10 @@ function SuiteSection({ onNavigate }) {
 
 function Stories() {
   const stories = [
-    ['story-dark', 'TIDELINE', '31%', 'lower shipping cost', "We switched the entire network in weeks and immediately found savings we couldn't see before.", 'MP', 'Maya Patel', 'VP Operations'],
-    ['story-lime', 'morrow', '4.2x', 'more daily volume', 'Peak season used to mean firefighting. Now every exception lands with the right team automatically.', 'JL', 'Jonas Lee', 'Head of Logistics'],
-    ['story-coral', 'PAPER & CO.', '1,640', 'hours saved yearly', 'The developer experience is fantastic, but the operations visibility is what changed our business.', 'SK', 'Samira Khan', 'COO'],
-    ['story-cream', 'ARCADIA', '99.4%', 'tracking coverage', 'Customers know exactly where orders are, and our support volume has never been lower.', 'EA', 'Eli Adams', 'Customer Experience'],
+    ['story-mint', 'TrendyMart', 'TrueTransit has completely transformed our shipping operations. One integration, multiple couriers, and live tracking that our team can actually trust.', 'JM', 'James Carter', 'Operations Manager', Package],
+    ['story-sky', 'LuxeHome', 'The platform is easy to use, reliable, and the support team is outstanding. It helped us reduce shipping costs without slowing dispatch.', 'SL', 'Sarah Lee', 'Founder', ShieldCheck],
+    ['story-cream', 'GearUp', 'From rate checks to everyday shipments, TrueTransit makes shipping feel simple and scalable. Our exceptions are easier to spot and resolve.', 'MB', 'Michael Brown', 'Co-founder', Truck],
+    ['story-mint', 'Northstar Goods', 'We stopped jumping between courier dashboards. The team now sees rates, pickups, and shipment movement in one clean workspace.', 'AR', 'Arjun Rao', 'Logistics Lead', Route],
   ];
   const [storyIndex, setStoryIndex] = useState(0);
   const [visible, setVisible] = useState(3);
@@ -464,7 +465,11 @@ function Stories() {
     <section className="stories" id="stories">
       <div className="container">
         <div className="stories-head reveal">
-          <div><p className="eyebrow"><span /> Customer stories</p><h2>Built for the<br /><em>real world.</em></h2></div>
+          <div>
+            <p className="eyebrow"><span /> Testimonials</p>
+            <h2>Trusted by growing<br /><em>businesses across India.</em></h2>
+            <p>See how teams are simplifying shipping, saving time, and growing with TrueTransit.</p>
+          </div>
           <div className="slider-controls">
             <button type="button" aria-label="Previous story" onClick={() => setStoryIndex((value) => (value <= 0 ? maxIndex : value - 1))}><ArrowLeft /></button>
             <button type="button" aria-label="Next story" onClick={() => setStoryIndex((value) => (value >= maxIndex ? 0 : value + 1))}><ArrowRight /></button>
@@ -472,16 +477,26 @@ function Stories() {
         </div>
         <div className="story-viewport reveal">
           <div className="story-track" style={{ transform: `translateX(-${storyIndex * (cardWidth + 18)}px)` }}>
-            {stories.map(([variant, brand, stat, title, quote, initials, name, role], index) => (
+            {stories.map(([variant, brand, quote, initials, name, role, Icon], index) => (
               <article className={`story-card ${variant}`} key={brand} ref={index === 0 ? firstCardRef : null}>
-                <span className="story-brand">{brand}</span>
-                <strong>{stat}</strong>
-                <h3>{title}</h3>
-                <p>"{quote}"</p>
-                <div className="story-person"><span>{initials}</span><div><b>{name}</b><small>{role}</small></div></div>
+                <span className="quote-mark" aria-hidden="true">"</span>
+                <p>{quote}</p>
+                <div className="story-stars" aria-label="5 out of 5 rating">
+                  {[0, 1, 2, 3, 4].map((star) => <Star key={star} />)}
+                </div>
+                <div className="story-person">
+                  <span>{initials}</span>
+                  <div><b>{name}</b><small>{role}</small></div>
+                </div>
+                <div className="story-brand"><Icon /><strong>{brand}</strong></div>
               </article>
             ))}
           </div>
+        </div>
+        <div className="story-dots" aria-hidden="true">
+          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+            <span className={index === storyIndex ? 'active' : undefined} key={index} />
+          ))}
         </div>
       </div>
     </section>
