@@ -1119,15 +1119,15 @@ function HomePage({ onNavigate, showToast }) {
           <p>Courier partners and logistics network</p>
           <div className="logo-row">
             {[
-              ['BlueDart', 'Express air', 'bd'],
-              ['Delhivery', 'Surface network', 'dl'],
-              ['DTDC', 'Pan India', 'dt'],
-              ['XpressBees', 'Ecommerce', 'xb'],
-              ['Ekart', 'Marketplace', 'ek'],
-              ['Shadowfax', 'Hyperlocal', 'sf'],
-            ].map(([name, label, tone]) => (
+              ['Delhivery', 'Surface network', 'dl', '/logo/integrations/delhivery.png'],
+              ['Blue Dart', 'Express air', 'bd', '/logo/integrations/bluedart.png'],
+              ['DTDC', 'Pan India', 'dt', '/logo/integrations/dtdc.png'],
+              ['XpressBees', 'Ecommerce', 'xb', '/logo/integrations/xpressbees.png'],
+              ['Ecom Express', 'Marketplace', 'ek', '/logo/integrations/ecomexpress.webp'],
+              ['Shadowfax', 'Hyperlocal', 'sf', '/logo/integrations/shadowfax.png'],
+            ].map(([name, label, tone, logo]) => (
               <span className={`partner-logo ${tone}`} key={name}>
-                <b>{name.slice(0, 2).toUpperCase()}</b>
+                <b><img src={logo} alt="" loading="lazy" decoding="async" /></b>
                 <span><strong>{name}</strong><small>{label}</small></span>
               </span>
             ))}
