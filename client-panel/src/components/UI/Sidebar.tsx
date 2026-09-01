@@ -527,7 +527,6 @@ export default function Sidebar({
           alignItems: 'center',
           justifyContent: isSidebarExpanded ? 'flex-start' : 'center',
           flexShrink: 0,
-          borderBottom: `1px solid ${BORDER}`,
           background: isDark ? alpha('#ffffff', 0.018) : alpha('#ffffff', 0.6),
         }}
       >

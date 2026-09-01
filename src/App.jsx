@@ -38,7 +38,7 @@ const businessInfo = {
   support: '+91 7416582587',
   supportHref: 'tel:+917416582587',
   address: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
-  logoSrc: '/truetransit-logo.svg',
+  logoSrc: '/truetransit-logo.svg?v=stacked-20260901',
 };
 
 const pageTitle = 'TrueTransit Mobility Pvt Ltd - Transit You Can Trust';

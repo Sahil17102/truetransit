@@ -37,7 +37,6 @@ function SidebarResponsive(props) {
   const textColor = useColorModeValue('gray.700', 'gray.100')
   const iconColor = useColorModeValue('gray.500', 'gray.300')
   const activeTextColor = brand.ink
-  const dividerColor = useColorModeValue('rgba(20, 43, 79, 0.1)', 'rgba(143, 212, 255, 0.18)')
   const hamburgerSurface = useColorModeValue('rgba(255,255,255,0.72)', 'rgba(16, 24, 40, 0.82)')
   const hamburgerBorder = useColorModeValue('rgba(12,59,128,0.12)', 'rgba(255,255,255,0.12)')
   const defaultHamburgerColor = useColorModeValue('gray.700', 'gray.200')
@@ -104,18 +103,14 @@ function SidebarResponsive(props) {
       })
   }
 
-  const { logoText, routes } = props
+  const { routes } = props
   const links = <>{createLinks(routes)}</>
 
   const brandHeader = (
     <Box pt="26px" mb="12px">
-      <Flex align="center" justify="center" gap="10px" mb="18px" fontWeight="bold" direction="column">
+      <Flex align="center" justify="center" gap="10px" mb="14px" fontWeight="bold" direction="column">
         <Box as="img" src={brandIdentity.logoPath} alt={brandIdentity.name} h="106px" w="136px" objectFit="contain" />
-        <Text fontSize="xs" color={textColor} fontWeight="700" textTransform="uppercase" letterSpacing="0.16em">
-          {logoText || brandIdentity.name}
-        </Text>
       </Flex>
-      <Box h="1px" bg={dividerColor} mx="6px" mb="14px" />
     </Box>
   )
 

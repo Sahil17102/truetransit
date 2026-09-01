@@ -3,7 +3,7 @@
   "name": "TrueTransit Admin Panel",
   "icons": [
     {
-      "src": "truetransit-logo.svg",
+      "src": "truetransit-logo.svg?v=stacked-20260901",
       "sizes": "760x600",
       "type": "image/svg+xml"
     }

@@ -224,7 +224,6 @@ const isItemActive = (pathname, item) => {
 };
 
 const SidebarContent = ({
-  logoText,
   sidebarWidth,
   position = "fixed",
   onNavigate,
@@ -243,7 +242,6 @@ const SidebarContent = ({
   );
   const borderColor = useColorModeValue("rgba(20,43,79,0.10)", "rgba(255,255,255,0.10)");
   const softBorderColor = useColorModeValue("rgba(20,43,79,0.075)", "rgba(255,255,255,0.08)");
-  const logoColor = useColorModeValue(brand.ink, "#E6EDF3");
   const itemColor = useColorModeValue("#506481", "#B6C3D6");
   const itemHoverBg = useColorModeValue("rgba(216,236,238,0.42)", "rgba(255,255,255,0.065)");
   const itemHoverColor = useColorModeValue(brand.ink, "#E6EDF3");
@@ -334,10 +332,7 @@ const SidebarContent = ({
         h="104px"
         px={isCollapsed ? "10px" : "18px"}
         align="center"
-        justify={isCollapsed ? "center" : "flex-start"}
-        gap="10px"
-        borderBottom="1px solid"
-        borderColor={borderColor}
+        justify="center"
         bg={sidebarSurface}
       >
         <Box
@@ -349,17 +344,6 @@ const SidebarContent = ({
           objectFit="contain"
           flexShrink="0"
         />
-        {!isCollapsed ? (
-          <Text
-            color={logoColor}
-            fontSize="17px"
-            fontWeight="800"
-            letterSpacing="0"
-            noOfLines={1}
-          >
-            {logoText || "Admin Panel"}
-          </Text>
-        ) : null}
       </Flex>
 
       <Stack spacing="6px" px={isCollapsed ? "10px" : "12px"} py="14px">

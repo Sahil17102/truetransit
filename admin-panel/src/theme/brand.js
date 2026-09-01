@@ -23,7 +23,7 @@ export const brandIdentity = {
   supportEmail: 'Hello@truetransitmobility.com',
   supportPhone: '+91 7416582587',
   supportAddress: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
-  logoPath: '/truetransit-logo.svg',
+  logoPath: '/truetransit-logo.svg?v=stacked-20260901',
 }
 
 export const brandFonts = {
