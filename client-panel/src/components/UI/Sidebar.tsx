@@ -517,7 +517,11 @@ export default function Sidebar({
     >
       <Box
         sx={{
-          height: temporary ? 'clamp(68px, 8.4vh, 82px)' : 'clamp(66px, 7.6vh, 76px)',
+          height: isSidebarExpanded
+            ? temporary
+              ? 'clamp(128px, 15vh, 148px)'
+              : 'clamp(120px, 14vh, 138px)'
+            : 'clamp(68px, 8.4vh, 82px)',
           px: isSidebarExpanded ? (temporary ? 2.4 : 2.1) : 1,
           display: 'flex',
           alignItems: 'center',
@@ -532,14 +536,14 @@ export default function Sidebar({
           sx={{
             width: isSidebarExpanded
               ? temporary
-                ? 'clamp(174px, 22vh, 198px)'
-                : 'clamp(166px, 20vh, 188px)'
-              : 56,
+                ? 'clamp(148px, 17vh, 168px)'
+                : 'clamp(138px, 16vh, 158px)'
+              : 58,
             height: isSidebarExpanded
               ? temporary
-                ? 'clamp(46px, 6.2vh, 54px)'
-                : 'clamp(44px, 5.9vh, 52px)'
-              : 32,
+                ? 'clamp(116px, 13.5vh, 132px)'
+                : 'clamp(108px, 12.5vh, 124px)'
+              : 46,
             flexShrink: 0,
           }}
         />

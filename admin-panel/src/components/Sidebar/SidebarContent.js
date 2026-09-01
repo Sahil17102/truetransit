@@ -331,7 +331,7 @@ const SidebarContent = ({
       }}
     >
       <Flex
-        h="68px"
+        h="104px"
         px={isCollapsed ? "10px" : "18px"}
         align="center"
         justify={isCollapsed ? "center" : "flex-start"}
@@ -344,8 +344,8 @@ const SidebarContent = ({
           as="img"
           src={brandIdentity.logoPath}
           alt={brandIdentity.name}
-          w={isCollapsed ? "62px" : "184px"}
-          h={isCollapsed ? "36px" : "54px"}
+          w={isCollapsed ? "60px" : "132px"}
+          h={isCollapsed ? "48px" : "96px"}
           objectFit="contain"
           flexShrink="0"
         />

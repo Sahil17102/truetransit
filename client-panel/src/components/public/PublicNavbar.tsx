@@ -168,7 +168,7 @@ export default function PublicNavbar({
         sx={{
           mx: 'auto',
           maxWidth: 1380,
-          minHeight: { xs: 72, lg: 90 },
+          minHeight: { xs: 104, lg: 122 },
           px: { xs: 2, sm: 3, lg: 4 },
         }}
       >
@@ -179,7 +179,6 @@ export default function PublicNavbar({
           sx={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 1.6,
             color: foreground,
             fontSize: { xs: '0.95rem', md: '1rem' },
             fontWeight: 900,
@@ -191,8 +190,8 @@ export default function PublicNavbar({
           <BrandLogo
             compact
             sx={{
-              width: { xs: 176, lg: 204 },
-              height: { xs: 51, lg: 59 },
+              width: { xs: 124, lg: 148 },
+              height: { xs: 98, lg: 116 },
             }}
           />
         </Box>

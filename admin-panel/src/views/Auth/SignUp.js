@@ -77,7 +77,7 @@ function SignUp() {
           borderRight={{ base: 'none', lg: '1px solid rgba(13,27,77,0.08)' }}
         >
           <VStack align="flex-start" spacing={5} position="relative" zIndex="1">
-            <Box as="img" src={brandIdentity.logoPath} alt={brandIdentity.name} h="62px" w="224px" objectFit="contain" />
+            <Box as="img" src={brandIdentity.logoPath} alt={brandIdentity.name} h="140px" w="178px" objectFit="contain" />
             <Heading
               fontFamily={brandFonts.display}
               fontSize={{ base: '3xl', md: '5xl' }}

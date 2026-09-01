@@ -110,7 +110,7 @@ function SidebarResponsive(props) {
   const brandHeader = (
     <Box pt="26px" mb="12px">
       <Flex align="center" justify="center" gap="10px" mb="18px" fontWeight="bold" direction="column">
-        <Box as="img" src={brandIdentity.logoPath} alt={brandIdentity.name} h="56px" w="168px" objectFit="contain" />
+        <Box as="img" src={brandIdentity.logoPath} alt={brandIdentity.name} h="106px" w="136px" objectFit="contain" />
         <Text fontSize="xs" color={textColor} fontWeight="700" textTransform="uppercase" letterSpacing="0.16em">
           {logoText || brandIdentity.name}
         </Text>

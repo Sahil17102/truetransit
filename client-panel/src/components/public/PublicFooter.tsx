@@ -67,7 +67,7 @@ export default function PublicFooter() {
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.45fr repeat(3, 1fr)' }, gap: { xs: 5, md: 6 } }}>
           <Stack spacing={2.2}>
             <Box component={RouterLink} to="/" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.2, color: '#fff', textDecoration: 'none', fontWeight: 800 }}>
-              <BrandLogo compact sx={{ width: 220, height: 64 }} />
+              <BrandLogo compact sx={{ width: 154, height: 122 }} />
             </Box>
             <Typography sx={{ color: alpha('#fff', 0.58), lineHeight: 1.7, maxWidth: 360, fontSize: '0.95rem' }}>
               {brandIdentity.tagline}

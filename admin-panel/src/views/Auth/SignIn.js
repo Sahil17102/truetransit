@@ -217,8 +217,8 @@ function SignIn() {
                 as="img"
                 src={brandIdentity.logoPath}
                 alt={brandIdentity.name}
-                h="80px"
-                w="80px"
+                h="96px"
+                w="122px"
                 objectFit="contain"
                 flexShrink="0"
               />
@@ -332,8 +332,8 @@ function SignIn() {
               as="img"
               src={brandIdentity.logoPath}
               alt={brandIdentity.name}
-              h="40px"
-              w="40px"
+              h="58px"
+              w="74px"
               objectFit="contain"
               flexShrink="0"
             />

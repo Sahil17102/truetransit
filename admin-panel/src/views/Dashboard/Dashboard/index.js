@@ -965,8 +965,8 @@ export default function Dashboard() {
         >
           <HStack spacing={3.5} align="center">
             <Flex
-              w={{ base: "48px", md: "54px" }}
-              h={{ base: "48px", md: "54px" }}
+              w={{ base: "86px", md: "98px" }}
+              h={{ base: "68px", md: "78px" }}
               bg="white"
               border="1px solid"
               borderColor={ui.border}
@@ -976,7 +976,7 @@ export default function Dashboard() {
               boxShadow="0 10px 24px rgba(13, 27, 77, 0.09)"
               flexShrink={0}
             >
-              <Image src={brandIdentity.logoPath} alt="TrueTransit" w="82%" objectFit="contain" />
+              <Image src={brandIdentity.logoPath} alt="TrueTransit" w="88%" h="88%" objectFit="contain" />
             </Flex>
             <Box>
               <HStack spacing={2} flexWrap="wrap">
