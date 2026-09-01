@@ -110,10 +110,16 @@ function BackHomeLink({ onNavigate }) {
 
 function Header({ path, onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      setScrolled(window.scrollY > 20);
+      setScrollProgress(progress);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
@@ -137,7 +143,11 @@ function Header({ path, onNavigate }) {
         </AppLink>
       </div>
 
-      <header className={`site-header${scrolled ? ' scrolled' : ''}${menuOpen ? ' menu-open' : ''}`} id="top">
+      <header
+        className={`site-header${scrolled ? ' scrolled' : ''}${menuOpen ? ' menu-open' : ''}`}
+        id="top"
+        style={{ '--scroll-progress': scrollProgress }}
+      >
         <AppLink className="brand" href="/" aria-label="TrueTransit home" onNavigate={nav}>
           <BrandLogo compact />
         </AppLink>
