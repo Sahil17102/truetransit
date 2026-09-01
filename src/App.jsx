@@ -512,26 +512,100 @@ function Stories() {
 
 function FeatureGrid({ onNavigate }) {
   const features = [
-    ['/pricing', BadgePercent, 'Discounted rates', 'Competitive pre-negotiated rates with no volume minimums.'],
-    ['/products#shipping-api', Tag, 'Label creation', 'Generate production-ready labels with a single API call.'],
-    ['/products#shipping-api', MapPinCheck, 'Address verification', 'Stop bad addresses before a shipment leaves your warehouse.'],
-    ['/products#tracking', ScanSearch, 'Smart tracking', 'Normalize tracking events from every carrier in real time.'],
-    ['/products#protection', Shield, 'Package protection', 'Affordable coverage with a remarkably simple claims flow.'],
-    ['/products#loom-ai', WandSparkles, 'AI insights', 'Turn millions of shipment events into the next best action.'],
+    [ChartNoAxesCombined, 'Unified dashboard', 'All your shipment data in one clean workspace.', true],
+    [Truck, 'Multiple carrier access', 'Connect with trusted courier partners quickly.'],
+    [MapPinCheck, 'Real-time tracking', 'Track every shipment from pickup to delivery.'],
+    [Settings2, 'Automated workflows', 'Save time with smarter dispatch rules.'],
+    [BadgePercent, 'Smart analytics', 'See rate, weight, and delivery trends clearly.'],
+  ];
+  const metrics = [
+    [Package, 'Total shipments', '2,458', '+12.5%'],
+    [Truck, 'In transit', '1,245', '+8.7%'],
+    [CircleCheck, 'Delivered', '1,150', '+15.2%'],
+    [Bell, 'Exceptions', '63', '-4.3%'],
+  ];
+  const checklist = [
+    'View shipments and delivery statuses in real time',
+    'Monitor courier performance and daily KPIs',
+    'Centralize orders across every pickup location',
+    'Filter, export, and review operations faster',
   ];
 
   return (
     <section className="features" id="features">
       <div className="container">
-        <div className="features-heading reveal"><p className="eyebrow"><span /> Everything you need</p><h2>Complex shipping,<br /><em>made simple.</em></h2></div>
-        <div className="feature-grid">
-          {features.map(([href, Icon, title, copy]) => (
-            <AppLink href={href} className="feature-item reveal" onNavigate={onNavigate} key={title}>
-              <span><Icon /></span>
-              <div><h3>{title}</h3><p>{copy}</p></div>
-              <ArrowUpRight />
+        <div className="features-heading reveal">
+          <p className="eyebrow">Features</p>
+          <h2>Powerful features.<br /><em>Built for Indian shipping.</em></h2>
+          <p>Everything you need to ship smarter, scale faster, and keep customers updated from one polished workspace.</p>
+        </div>
+        <div className="feature-showcase">
+          <div className="feature-list reveal">
+            {features.map(([Icon, title, copy, active]) => (
+              <article className={`feature-item${active ? ' active' : ''}`} key={title}>
+                <span><Icon /></span>
+                <div><h3>{title}</h3><p>{copy}</p></div>
+                <ArrowRight />
+              </article>
+            ))}
+          </div>
+          <article className="feature-detail reveal">
+            <div className="feature-detail-title">
+              <span>01</span>
+              <h3>Unified dashboard</h3>
+            </div>
+            <p>Manage shipments, courier partners, rates, and performance metrics from a single intuitive dashboard.</p>
+            <ul>
+              {checklist.map((item) => (
+                <li key={item}><CircleCheck /> {item}</li>
+              ))}
+            </ul>
+            <AppLink href="/rate-calculator" className="button button-dark" onNavigate={onNavigate}>
+              Get Started <ArrowRight />
             </AppLink>
-          ))}
+          </article>
+          <article className="dashboard-preview reveal">
+            <div className="preview-metrics">
+              {metrics.map(([Icon, label, value, trend]) => (
+                <div className="preview-metric" key={label}>
+                  <span><Icon /></span>
+                  <small>{label}</small>
+                  <strong>{value}</strong>
+                  <em className={trend.startsWith('-') ? 'down' : undefined}>{trend}</em>
+                </div>
+              ))}
+            </div>
+            <div className="preview-chart-grid">
+              <div className="mini-chart-card">
+                <h4>Shipment activity</h4>
+                <svg viewBox="0 0 240 136" role="img" aria-label="Shipment activity chart">
+                  <g>
+                    <line x1="18" x2="222" y1="108" y2="108" />
+                    <line x1="18" x2="222" y1="78" y2="78" />
+                    <line x1="18" x2="222" y1="48" y2="48" />
+                  </g>
+                  <path d="M18 96 L52 88 L86 66 L120 82 L154 75 L188 90 L222 70" className="line-orange" />
+                  <path d="M18 84 L52 72 L86 78 L120 68 L154 60 L188 48 L222 56" className="line-green" />
+                  <text x="18" y="126">Mon</text><text x="54" y="126">Tue</text><text x="90" y="126">Wed</text><text x="128" y="126">Thu</text><text x="164" y="126">Fri</text><text x="198" y="126">Sat</text>
+                </svg>
+              </div>
+              <div className="mini-chart-card">
+                <h4>Shipments by status</h4>
+                <div className="donut-row">
+                  <span className="mini-donut" />
+                  <div className="status-list">
+                    <span><b /> Delivered <strong>46%</strong></span>
+                    <span><b /> In transit <strong>30%</strong></span>
+                    <span><b /> Pending <strong>10%</strong></span>
+                    <span><b /> Exception <strong>14%</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <AppLink href={loginUrl} className="dashboard-link" onNavigate={onNavigate}>
+              View Dashboard <ArrowRight />
+            </AppLink>
+          </article>
         </div>
       </div>
     </section>
