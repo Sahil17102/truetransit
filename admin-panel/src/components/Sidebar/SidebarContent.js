@@ -344,8 +344,8 @@ const SidebarContent = ({
           as="img"
           src={brandIdentity.logoPath}
           alt={brandIdentity.name}
-          w={isCollapsed ? "52px" : "126px"}
-          h={isCollapsed ? "46px" : "60px"}
+          w={isCollapsed ? "62px" : "184px"}
+          h={isCollapsed ? "36px" : "54px"}
           objectFit="contain"
           flexShrink="0"
         />

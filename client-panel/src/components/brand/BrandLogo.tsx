@@ -12,8 +12,8 @@ export default function BrandLogo({ compact = false, sx, ...rest }: BrandLogoPro
       src={compact ? brandIdentity.markSrc : brandIdentity.logoSrc}
       alt={brandIdentity.name}
       sx={{
-        width: compact ? { xs: 122, sm: 138 } : { xs: 154, sm: 188 },
-        height: compact ? { xs: 58, sm: 66 } : 'auto',
+        width: compact ? { xs: 176, sm: 204 } : { xs: 176, sm: 216 },
+        height: compact ? { xs: 51, sm: 59 } : 'auto',
         flexShrink: 0,
         display: 'block',
         objectFit: 'contain',

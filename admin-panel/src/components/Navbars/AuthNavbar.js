@@ -50,7 +50,7 @@ export default function AuthNavbar(props) {
     >
       <Flex w="100%" justifyContent={{ base: 'start', lg: 'space-between' }} align="center" gap={4}>
         <Link href={`${process.env.PUBLIC_URL}/#/`} display="flex" alignItems="center" color={mainText}>
-          <Box as="img" src={brandIdentity.logoPath} alt={brandIdentity.name} h="54px" w="126px" objectFit="contain" me="10px" />
+          <Box as="img" src={brandIdentity.logoPath} alt={brandIdentity.name} h="54px" w="186px" objectFit="contain" me="10px" />
           <Box display={{ base: 'none', md: 'block' }}>
             <Text fontSize="xs" letterSpacing="0.16em" textTransform="uppercase" fontWeight="800" color="secondary.500">
               Admin Portal

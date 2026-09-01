@@ -39,6 +39,7 @@ const businessInfo = {
   supportHref: 'tel:+917416582587',
   address: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
   logoSrc: '/truetransit-logo.svg',
+  logoHorizontalSrc: '/truetransit-logo-horizontal.svg',
 };
 
 const pageTitle = 'TrueTransit Mobility Pvt Ltd - Transit You Can Trust';
@@ -72,7 +73,7 @@ function BrandLogo({ compact = false, small = false }) {
   return (
     <img
       className={`brand-logo-lockup${compact ? ' compact' : ''}${small ? ' small' : ''}`}
-      src={businessInfo.logoSrc}
+      src={compact || small ? businessInfo.logoHorizontalSrc : businessInfo.logoSrc}
       alt={businessInfo.name}
       decoding="async"
     />

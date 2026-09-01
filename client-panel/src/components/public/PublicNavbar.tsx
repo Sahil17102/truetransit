@@ -191,8 +191,8 @@ export default function PublicNavbar({
           <BrandLogo
             compact
             sx={{
-              width: { xs: 126, lg: 146 },
-              height: { xs: 60, lg: 70 },
+              width: { xs: 176, lg: 204 },
+              height: { xs: 51, lg: 59 },
             }}
           />
         </Box>
