@@ -837,20 +837,86 @@ function PageDetailBand({ tone = '', items }) {
   );
 }
 
+function PageHeroVisual({ type, label }) {
+  return (
+    <figure className={`page-visual page-visual-${type} reveal`} aria-label={`${label} visual preview`}>
+      <div className="page-visual-frame">
+        <span className="visual-pill">{label}</span>
+        <div className="visual-photo">
+          {type === 'weight' && (
+            <>
+              <div className="parcel-box"><span /><span /><span /></div>
+              <div className="measure measure-length">Length <b>CM</b></div>
+              <div className="measure measure-width">Width <b>CM</b></div>
+              <div className="measure measure-height">Height <b>CM</b></div>
+              <div className="scale-strip"><Package /> Billable weight check</div>
+            </>
+          )}
+          {type === 'rate' && (
+            <>
+              <div className="rate-phone">
+                <span /><span /><span />
+                <strong>Rs</strong>
+                <p>Verified estimate</p>
+              </div>
+              <div className="coin-stack coin-left" />
+              <div className="coin-stack coin-right" />
+              <div className="rate-ticket"><BadgePercent /> prepaid + COD</div>
+            </>
+          )}
+          {type === 'tracking' && (
+            <>
+              <div className="tracking-map">
+                <span /><span /><span /><span />
+                <Route />
+              </div>
+              <div className="tracking-parcel"><PackageOpen /> Out for delivery</div>
+              <div className="status-card"><CircleCheck /> Delivered soon</div>
+            </>
+          )}
+        </div>
+      </div>
+    </figure>
+  );
+}
+
+function HeroStats({ stats }) {
+  return (
+    <div className="hero-stat-row">
+      {stats.map(([value, label]) => (
+        <article key={label}>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </article>
+      ))}
+    </div>
+  );
+}
+
 function TrackingPage({ onNavigate }) {
   const [trackingId, setTrackingId] = useState('TT-XXXX');
   const cleanId = trackingId.trim() || 'TT-XXXX';
 
   return (
     <>
-      <section className="page-hero tracking-page">
-        <div className="container page-hero-inner">
-          <div className="reveal">
+      <section className="page-hero tracking-page multipage-hero">
+        <div className="container page-hero-inner multipage-hero-inner">
+          <div className="multipage-copy reveal">
             <BackHomeLink onNavigate={onNavigate} />
             <p className="eyebrow"><span /> Tracking</p>
-            <h1>Track every shipment with confidence.</h1>
-            <p>Enter a TrueTransit tracking ID to view masked delivery status, checkpoint health, and operational notes in one clean page.</p>
+            <h1>Give customers a clear shipment status page.</h1>
+            <p>Check movement, delivery milestones, exception notes, and final-mile status from one clean TrueTransit tracking view.</p>
+            <div className="hero-actions">
+              <AppLink className="button button-dark" href="/rate-calculator" onNavigate={onNavigate}>Use Rate Calculator <ArrowRight /></AppLink>
+              <AppLink className="button button-outline" href="/weight-calculator" onNavigate={onNavigate}>Check Weight Calculator</AppLink>
+            </div>
+            <HeroStats stats={[['24/7', 'shipment visibility'], ['4', 'tracking milestones'], ['1', 'customer lookup flow']]} />
           </div>
+          <PageHeroVisual type="tracking" label="Tracking" />
+        </div>
+      </section>
+      <section className="tool-section spacious-tools">
+        <div className="container tool-grid">
           <div className="tracking-workspace reveal">
             <div className="tracking-search-row">
               <label>
@@ -873,23 +939,21 @@ function TrackingPage({ onNavigate }) {
               <article><small>ETA</small><strong>Private</strong></article>
             </div>
           </div>
-        </div>
-      </section>
-      <section className="tool-section spacious-tools">
-        <div className="container tool-grid">
-          <article className="tool-panel">
-            <small>Shipment timeline</small>
-            <div className="track-steps">
-              {['Sample label created', 'Carrier hidden', 'Route masked', 'ETA hidden'].map((step, index) => (
-                <p className={index < 4 ? 'done' : ''} key={step}><span />{step}<b>{index === 3 ? 'Hidden' : `Step ${index + 1}`}</b></p>
-              ))}
-            </div>
-          </article>
-          <article className="tool-panel accent">
-            <small>Delivery promise</small>
-            <strong>Details masked</strong>
-            <p>Public previews show the product experience without exposing any real route, recipient, or delivery detail.</p>
-          </article>
+          <div className="tool-stack reveal">
+            <article className="tool-panel">
+              <small>Shipment timeline</small>
+              <div className="track-steps">
+                {['Sample label created', 'Carrier hidden', 'Route masked', 'ETA hidden'].map((step, index) => (
+                  <p className={index < 4 ? 'done' : ''} key={step}><span />{step}<b>{index === 3 ? 'Hidden' : `Step ${index + 1}`}</b></p>
+                ))}
+              </div>
+            </article>
+            <article className="tool-panel accent">
+              <small>Delivery promise</small>
+              <strong>Details masked</strong>
+              <p>Public previews show the product experience without exposing any real route, recipient, or delivery detail.</p>
+            </article>
+          </div>
         </div>
       </section>
       <PageDetailBand
@@ -938,14 +1002,24 @@ function RateCalculatorPage({ onNavigate }) {
 
   return (
     <>
-      <section className="page-hero rate-page calculator-page">
-        <div className="container calculator-layout">
-          <div className="calculator-intro reveal">
+      <section className="page-hero rate-page multipage-hero">
+        <div className="container page-hero-inner multipage-hero-inner">
+          <div className="multipage-copy reveal">
             <BackHomeLink onNavigate={onNavigate} />
             <p className="eyebrow"><span /> Rate calculator</p>
-            <h1>Calculate courier rates before you book.</h1>
-            <p>Check guest courier estimates with pickup, delivery, weight, carton size, shipment value, and payment type.</p>
+            <h1>Preview shipping costs before dispatch starts.</h1>
+            <p>This page separates rate planning into its own tool so teams can compare lanes, weight, value, and payment type without digging through the home page.</p>
+            <div className="hero-actions">
+              <AppLink className="button button-dark" href={loginUrl} onNavigate={onNavigate}>Request Final Pricing <ArrowRight /></AppLink>
+              <AppLink className="button button-outline" href="/weight-calculator" onNavigate={onNavigate}>Check Weight Calculator</AppLink>
+            </div>
+            <HeroStats stats={[['4', 'billing inputs'], ['3', 'weight factors'], ['1', 'guest estimate']]} />
           </div>
+          <PageHeroVisual type="rate" label="Rate calculator" />
+        </div>
+      </section>
+      <section className="tool-section calculator-tool-section">
+        <div className="container calculator-layout">
           <div className="calculator-panel reveal">
             <div className="calculator-heading">
               <div>
@@ -1016,14 +1090,24 @@ function WeightCalculatorPage({ onNavigate }) {
 
   return (
     <>
-      <section className="page-hero weight-page calculator-page">
-        <div className="container calculator-layout">
-          <div className="calculator-intro reveal">
+      <section className="page-hero weight-page multipage-hero">
+        <div className="container page-hero-inner multipage-hero-inner">
+          <div className="multipage-copy reveal">
             <BackHomeLink onNavigate={onNavigate} />
             <p className="eyebrow"><span /> Weight calculator</p>
-            <h1>Find chargeable weight in seconds.</h1>
-            <p>Work out volumetric and billable weight using carton dimensions and your preferred divisor.</p>
+            <h1>Estimate dimensional weight before you choose a courier.</h1>
+            <p>This dedicated tool page gives teams a clean place to check volumetric weight and explain billing logic to internal teams or customers.</p>
+            <div className="hero-actions">
+              <AppLink className="button button-dark" href="/rate-calculator" onNavigate={onNavigate}>Check Rate Calculator <ArrowRight /></AppLink>
+              <AppLink className="button button-outline" href="/tracking" onNavigate={onNavigate}>Open Tracking</AppLink>
+            </div>
+            <HeroStats stats={[['5000', 'default divisor'], ['3', 'carton dimensions'], ['1', 'billable formula']]} />
           </div>
+          <PageHeroVisual type="weight" label="Weight calculator" />
+        </div>
+      </section>
+      <section className="tool-section calculator-tool-section">
+        <div className="container calculator-layout">
           <div className="calculator-panel reveal">
             <div className="calculator-heading">
               <div>
