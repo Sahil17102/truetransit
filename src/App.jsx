@@ -121,9 +121,13 @@ function Header({ path, onNavigate }) {
       setScrollProgress(progress);
     };
     onScroll();
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [path]);
 
   useEffect(() => {
     setMenuOpen(false);
