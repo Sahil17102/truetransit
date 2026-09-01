@@ -1610,25 +1610,46 @@ function Footer({ onNavigate, showToast }) {
   return (
     <footer className="site-footer" id="pricing">
       <div className="container">
-        <div className="footer-top">
-          <div>
+        <div className="footer-cta reveal">
+          <div className="footer-cta-copy">
+            <p className="footer-kicker"><span /> Ready when you are</p>
+            <h2>Move every shipment<br /><em>with confidence.</em></h2>
+            <p>Rates, tracking, weight, and support—all connected in one dependable transit experience.</p>
+          </div>
+          <div className="footer-cta-actions">
+            <AppLink className="button footer-primary-button" href="/rate-calculator" onNavigate={onNavigate}>Get an estimate <ArrowUpRight /></AppLink>
+            <AppLink className="button footer-secondary-button" href="/contact" onNavigate={onNavigate}>Talk to us <ArrowRight /></AppLink>
+          </div>
+          <div className="footer-route" aria-hidden="true"><span /><span /><span /></div>
+        </div>
+
+        <div className="footer-main">
+          <div className="footer-brand-column">
             <AppLink className="brand footer-brand" href="/" onNavigate={onNavigate}><BrandLogo /></AppLink>
-            <p>Reliable shipping tools for growing Indian businesses, backed by a Hyderabad based mobility team.</p>
+            <p>Reliable shipping tools for growing Indian businesses, backed by a Hyderabad-based mobility team.</p>
+            <span className="footer-live"><i /> Operations online</span>
           </div>
-          <div className="footer-contact">
-            <a href={`mailto:${businessInfo.email}`}>{businessInfo.email}</a>
-            <a href={businessInfo.supportHref}>{businessInfo.support}</a>
+
+          <nav className="footer-link-groups" aria-label="Footer navigation">
+            <div><h4>Explore</h4><AppLink href="/products" onNavigate={onNavigate}><span>Platform</span><ArrowUpRight /></AppLink><AppLink href="/solutions" onNavigate={onNavigate}><span>Solutions</span><ArrowUpRight /></AppLink><AppLink href="/developers" onNavigate={onNavigate}><span>Developers</span><ArrowUpRight /></AppLink><AppLink href="/pricing" onNavigate={onNavigate}><span>Pricing</span><ArrowUpRight /></AppLink></div>
+            <div><h4>Tools</h4><AppLink href="/tracking" onNavigate={onNavigate}><span>Tracking</span><ArrowUpRight /></AppLink><AppLink href="/rate-calculator" onNavigate={onNavigate}><span>Rate calculator</span><ArrowUpRight /></AppLink><AppLink href="/weight-calculator" onNavigate={onNavigate}><span>Weight calculator</span><ArrowUpRight /></AppLink><AppLink href="/contact" onNavigate={onNavigate}><span>Contact</span><ArrowUpRight /></AppLink></div>
+          </nav>
+
+          <div className="footer-reach">
+            <h4>Stay connected</h4>
+            <a href={`mailto:${businessInfo.email}`}>{businessInfo.email} <ArrowUpRight /></a>
+            <a href={businessInfo.supportHref}>{businessInfo.support} <ArrowUpRight /></a>
+            <p>{businessInfo.address}</p>
+            <form className="newsletter" onSubmit={newsletter}>
+              <input type="email" aria-label="Email address" placeholder="Updates to your inbox" required />
+              <button aria-label="Subscribe"><ArrowRight /></button>
+            </form>
           </div>
         </div>
-        <div className="footer-grid">
-          <div><h4>Tools</h4><AppLink href="/tracking" onNavigate={onNavigate}>Tracking</AppLink><AppLink href="/rate-calculator" onNavigate={onNavigate}>Rate calculator</AppLink><AppLink href="/weight-calculator" onNavigate={onNavigate}>Weight calculator</AppLink><AppLink href="/contact" onNavigate={onNavigate}>Contact</AppLink></div>
-          <div><h4>Services</h4><AppLink href="/products#shipping-api" onNavigate={onNavigate}>Shipping API</AppLink><AppLink href="/products#loom-ai" onNavigate={onNavigate}>Smart insights</AppLink><AppLink href="/products#tracking" onNavigate={onNavigate}>Live tracking</AppLink><AppLink href="/products#protection" onNavigate={onNavigate}>Protection</AppLink></div>
-          <div><h4>Company</h4><AppLink href="/contact" onNavigate={onNavigate}>Office address</AppLink><a href={`mailto:${businessInfo.email}`}>Email support</a><AppLink href="/tracking" onNavigate={onNavigate}>Track shipment</AppLink><AppLink href="/rate-calculator" onNavigate={onNavigate}>Estimate rate</AppLink></div>
-          <div><h4>Official Info</h4><p>{businessInfo.name}</p><p>{businessInfo.address}</p><p>Support: <a href={businessInfo.supportHref}>{businessInfo.support}</a></p><a href={`mailto:${businessInfo.email}`}>{businessInfo.email}</a><form className="newsletter" onSubmit={newsletter}><input type="email" aria-label="Email address" placeholder="Email address" required /><button aria-label="Subscribe"><ArrowRight /></button></form></div>
-        </div>
+
         <div className="footer-bottom">
           <span>&copy; 2026 {businessInfo.name}.</span>
-          <div><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a></div>
+          <span>Hyderabad, India · Transit You Can Trust.</span>
           <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Back to top <ArrowUp /></button>
         </div>
       </div>
