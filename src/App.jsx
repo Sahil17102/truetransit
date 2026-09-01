@@ -394,27 +394,27 @@ function SuiteSection({ onNavigate }) {
         <div className="suite-intro reveal">
           <div>
             <p className="eyebrow"><span /> One unified platform</p>
-            <h2>Modern shipping,<br />from API to <em>arrival.</em></h2>
+            <h2>Modern shipping,<br />from order to <em>arrival.</em></h2>
           </div>
           <p>Start with the tools you need today. Add more as you grow, all on one reliable platform with clear pricing and human support.</p>
         </div>
 
         <div className="suite-grid">
           <article className="suite-card card-yellow reveal">
-            <div className="suite-icon"><Braces /></div>
+            <div className="suite-icon"><ChartNoAxesCombined /></div>
             <span className="card-number">01</span>
-            <div className="code-window">
-              <div className="code-dots"><span /><span /><span /><small>API request</small></div>
-              <code><b>POST</b> /v1/shipments</code>
-              <div className="api-lines">
-                <p><span>carrier</span><strong>Carrier A</strong></p>
-                <p><span>service</span><strong>Sample</strong></p>
-                <p><span>status</span><strong>Demo label</strong></p>
+            <div className="decision-visual">
+              <div className="decision-head"><span>Recommended service</span><strong>Best match</strong></div>
+              <div className="decision-score"><b>96</b><span>fit score</span></div>
+              <div className="decision-bars">
+                <p><span>Delivery speed</span><i><b style={{ '--score': '92%' }} /></i></p>
+                <p><span>Rate efficiency</span><i><b style={{ '--score': '86%' }} /></i></p>
+                <p><span>Service quality</span><i><b style={{ '--score': '95%' }} /></i></p>
               </div>
             </div>
-            <h3>Shipping API</h3>
-            <p>Create labels, compare rates, and manage shipments across every major carrier with one clean integration.</p>
-            <AppLink href="/developers" onNavigate={onNavigate}>Explore the API <ArrowUpRight /></AppLink>
+            <h3>Smart courier selection</h3>
+            <p>Balance price, delivery speed, and service quality to choose the right courier for every shipment.</p>
+            <AppLink href="/solutions" onNavigate={onNavigate}>See smart routing <ArrowUpRight /></AppLink>
           </article>
 
           <article className="suite-card card-cream reveal">
@@ -1399,15 +1399,15 @@ function HomePage({ onNavigate, showToast }) {
       <Stories />
       <LogisticsAds />
 
-      <section className="developer-section" id="developers">
+      <section className="operations-section" id="operations">
         <div className="container developer-inner">
           <div className="developer-copy reveal">
-            <p className="eyebrow"><span /> Built for developers</p>
-            <h2>First label in<br /><em>under an hour.</em></h2>
-            <p>Clear docs, helpful SDKs, predictable APIs, and a sandbox that behaves like production.</p>
-            <div className="dev-links"><AppLink href="/developers" onNavigate={onNavigate}>Read API docs <ArrowUpRight /></AppLink><AppLink href="/developers#sdks" onNavigate={onNavigate}>Explore SDKs <ArrowUpRight /></AppLink></div>
+            <p className="eyebrow"><span /> Exception control</p>
+            <h2>Resolve delays before<br /><em>customers notice.</em></h2>
+            <p>Bring late pickups, stalled movements, and delivery risks into one clear queue with the next action already visible.</p>
+            <div className="dev-links"><AppLink href="/tracking" onNavigate={onNavigate}>Open tracking <ArrowUpRight /></AppLink><AppLink href="/contact" onNavigate={onNavigate}>Talk to operations <ArrowUpRight /></AppLink></div>
           </div>
-          <DeveloperTerminal />
+          <OperationsBoard />
         </div>
       </section>
 
@@ -1423,6 +1423,40 @@ function HomePage({ onNavigate, showToast }) {
         </div>
       </section>
     </>
+  );
+}
+
+function OperationsBoard() {
+  const exceptions = [
+    [MapPinCheck, 'Pickup delayed', 'Hyderabad hub', 'Assign backup'],
+    [Route, 'Route review', 'North zone lane', 'Re-route'],
+    [Bell, 'Customer update', 'ETA changed', 'Notify'],
+  ];
+
+  return (
+    <div className="operations-board reveal" aria-label="Shipment exception control tower preview">
+      <div className="operations-topbar">
+        <div><span /><span /><span /></div>
+        <strong>Transit control tower</strong>
+        <small><i /> Live network</small>
+      </div>
+      <div className="operations-metrics">
+        <article><small>On-time</small><strong>96.8%</strong><span>+4.1%</span></article>
+        <article><small>In transit</small><strong>1,248</strong><span>Live</span></article>
+        <article><small>Needs action</small><strong>14</strong><span>Review</span></article>
+      </div>
+      <div className="exception-list">
+        <div className="exception-list-head"><span>Priority queue</span><small>Recommended action</small></div>
+        {exceptions.map(([Icon, title, location, action]) => (
+          <article key={title}>
+            <span><Icon /></span>
+            <div><strong>{title}</strong><small>{location}</small></div>
+            <span className="exception-action">{action} <ArrowRight /></span>
+          </article>
+        ))}
+      </div>
+      <div className="operations-footer"><CircleCheck /><span>12 issues resolved automatically today</span><b>View activity <ArrowUpRight /></b></div>
+    </div>
   );
 }
 
