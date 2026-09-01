@@ -99,6 +99,15 @@ function AppLink({ href, className, children, onNavigate, ...props }) {
   );
 }
 
+function BackHomeLink({ onNavigate }) {
+  return (
+    <AppLink className="back-home-link" href="/" onNavigate={onNavigate}>
+      <ArrowLeft />
+      Back to home
+    </AppLink>
+  );
+}
+
 function Header({ path, onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -145,15 +154,13 @@ function Header({ path, onNavigate }) {
 
         <nav className="main-nav" aria-label="Main navigation">
           <AppLink className={path === '/' ? 'active' : undefined} href="/" onNavigate={nav}>Home</AppLink>
-          <AppLink className={path === '/products' ? 'active' : undefined} href="/products" onNavigate={nav}>Platform</AppLink>
-          <AppLink className={path === '/solutions' ? 'active' : undefined} href="/solutions" onNavigate={nav}>Solutions</AppLink>
+          <AppLink className={path === '/weight-calculator' ? 'active' : undefined} href="/weight-calculator" onNavigate={nav}>Weight Calculator</AppLink>
+          <AppLink className={path === '/rate-calculator' ? 'active' : undefined} href="/rate-calculator" onNavigate={nav}>Rate Calculator</AppLink>
           <AppLink className={path === '/tracking' ? 'active' : undefined} href="/tracking" onNavigate={nav}>Tracking</AppLink>
-          <AppLink className={path === '/rate-calculator' ? 'active' : undefined} href="/rate-calculator" onNavigate={nav}>Rate calculator</AppLink>
           <AppLink className="mobile-login-link" href={loginUrl} onNavigate={nav}>Sign in <ArrowUpRight /></AppLink>
         </nav>
 
         <div className="header-actions">
-          <AppLink className="text-link" href="/contact" onNavigate={nav}>Talk to us</AppLink>
           <AppLink className="button button-small button-dark" href={loginUrl} onNavigate={nav}>
             Sign in <ArrowUpRight />
           </AppLink>
@@ -756,7 +763,7 @@ function PageDetailBand({ tone = '', items }) {
   );
 }
 
-function TrackingPage() {
+function TrackingPage({ onNavigate }) {
   const [trackingId, setTrackingId] = useState('TT-XXXX');
   const cleanId = trackingId.trim() || 'TT-XXXX';
 
@@ -765,6 +772,7 @@ function TrackingPage() {
       <section className="page-hero tracking-page">
         <div className="container page-hero-inner">
           <div className="reveal">
+            <BackHomeLink onNavigate={onNavigate} />
             <p className="eyebrow"><span /> Tracking</p>
             <h1>Track every shipment with confidence.</h1>
             <p>Enter a TrueTransit tracking ID to view masked delivery status, checkpoint health, and operational notes in one clean page.</p>
@@ -821,7 +829,7 @@ function TrackingPage() {
   );
 }
 
-function RateCalculatorPage() {
+function RateCalculatorPage({ onNavigate }) {
   const defaultRate = {
     pickup: '',
     delivery: '',
@@ -859,6 +867,7 @@ function RateCalculatorPage() {
       <section className="page-hero rate-page calculator-page">
         <div className="container calculator-layout">
           <div className="calculator-intro reveal">
+            <BackHomeLink onNavigate={onNavigate} />
             <p className="eyebrow"><span /> Rate calculator</p>
             <h1>Calculate courier rates before you book.</h1>
             <p>Check guest courier estimates with pickup, delivery, weight, carton size, shipment value, and payment type.</p>
@@ -920,7 +929,7 @@ function RateCalculatorPage() {
   );
 }
 
-function WeightCalculatorPage() {
+function WeightCalculatorPage({ onNavigate }) {
   const defaultWeight = { length: '40', width: '32', height: '28', divisor: '5000' };
   const [form, setForm] = useState(defaultWeight);
   const updateForm = (field) => (event) => setForm((value) => ({ ...value, [field]: event.target.value }));
@@ -936,6 +945,7 @@ function WeightCalculatorPage() {
       <section className="page-hero weight-page calculator-page">
         <div className="container calculator-layout">
           <div className="calculator-intro reveal">
+            <BackHomeLink onNavigate={onNavigate} />
             <p className="eyebrow"><span /> Weight calculator</p>
             <h1>Find chargeable weight in seconds.</h1>
             <p>Work out volumetric and billable weight using carton dimensions and your preferred divisor.</p>
@@ -1542,9 +1552,9 @@ export default function App() {
   }, [path]);
 
   let page = <HomePage onNavigate={navigate} showToast={showToast} />;
-  if (path === '/tracking') page = <TrackingPage />;
-  if (path === '/rate-calculator') page = <RateCalculatorPage />;
-  if (path === '/weight-calculator') page = <WeightCalculatorPage />;
+  if (path === '/tracking') page = <TrackingPage onNavigate={navigate} />;
+  if (path === '/rate-calculator') page = <RateCalculatorPage onNavigate={navigate} />;
+  if (path === '/weight-calculator') page = <WeightCalculatorPage onNavigate={navigate} />;
   if (path === '/contact') page = <ContactPage showToast={showToast} />;
   if (path === '/products') page = <ProductsPage onNavigate={navigate} />;
   if (path === '/solutions') page = <SolutionsPage onNavigate={navigate} />;

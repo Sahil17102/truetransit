@@ -54,6 +54,9 @@ svg { width: 1em; height: 1em; stroke-width: 1.8; }
 .main-nav > a, .nav-trigger { transition: opacity .2s; }
 .main-nav > a:hover, .nav-trigger:hover { opacity: .55; }
 .main-nav > a.active { color: #078d72; border-bottom: 2px solid currentColor; padding-bottom: 5px; }
+.back-home-link { width: fit-content; margin: 0 0 18px; display: inline-flex; align-items: center; gap: 8px; color: var(--brand-green); font-size: 13px; font-weight: 800; }
+.back-home-link svg { width: 15px; height: 15px; }
+.back-home-link:hover { color: var(--brand-navy); }
 .mobile-login-link { display: none; }
 .nav-trigger { border: 0; background: transparent; padding: 25px 0; cursor: pointer; display: flex; gap: 5px; align-items: center; color: inherit; font-weight: inherit; font-size: inherit; }
 .nav-trigger svg { width: 13px; }
@@ -962,7 +965,9 @@ body { background: #fbfefe; color: var(--brand-navy); }
 .announcement { min-height: 32px; background: var(--brand-navy); font-size: 11px; }
 .announcement a { color: #bfe9dd; }
 .site-header { height: 98px; background: rgba(255,255,255,.93); border-bottom-color: rgba(7,18,97,.08); }
+.site-header::after { content: ""; position: absolute; left: max(24px, calc((100vw - 1240px)/2)); right: max(24px, calc((100vw - 1240px)/2)); bottom: -1px; height: 2px; background: linear-gradient(90deg, var(--brand-green), rgba(7,18,97,.18), transparent); pointer-events: none; opacity: .95; }
 .site-header.scrolled { height: 88px; box-shadow: 0 14px 40px rgba(7,18,97,.08); }
+.site-header.scrolled::after { opacity: 1; }
 .brand-logo-lockup { width: 146px; height: 92px; object-fit: contain; }
 .brand-logo-lockup.compact { width: 112px; height: 78px; }
 .brand-logo-lockup.small { width: 94px; height: 66px; }
@@ -1154,6 +1159,7 @@ h1 em, h2 em { color: var(--brand-green); }
   .main-nav > a { padding: 14px 0; }
   .main-nav > a.active { padding-bottom: 14px; }
   .hero-copy { padding-top: 66px; }
+  .site-header::after { left: 18px; right: 18px; }
   .hero-visual { margin-top: 6px; }
   .trust-strip { padding: 70px 0 104px; }
   .trust-strip p { letter-spacing: .32em; line-height: 1.7; }
@@ -1173,6 +1179,7 @@ h1 em, h2 em { color: var(--brand-green); }
 
 @media (max-width: 560px) {
   .announcement { padding-inline: 14px; }
+  .back-home-link { font-size: 12px; margin-bottom: 14px; }
   .brand-logo-lockup.compact { width: 102px; height: 70px; }
   h1 { font-size: clamp(46px, 14vw, 62px); }
   .hero { min-height: auto; }
