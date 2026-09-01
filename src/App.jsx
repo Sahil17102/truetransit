@@ -1433,12 +1433,18 @@ function Footer({ onNavigate, showToast }) {
     <footer className="site-footer" id="pricing">
       <div className="container">
         <div className="footer-top">
-          <AppLink className="brand footer-brand" href="/" onNavigate={onNavigate}><BrandLogo /></AppLink>
-          <p>Transit You Can Trust.</p>
+          <div>
+            <AppLink className="brand footer-brand" href="/" onNavigate={onNavigate}><BrandLogo /></AppLink>
+            <p>Reliable shipping tools for growing Indian businesses, backed by a Hyderabad based mobility team.</p>
+          </div>
+          <div className="footer-contact">
+            <a href={`mailto:${businessInfo.email}`}>{businessInfo.email}</a>
+            <a href={businessInfo.supportHref}>{businessInfo.support}</a>
+          </div>
         </div>
         <div className="footer-grid">
           <div><h4>Tools</h4><AppLink href="/tracking" onNavigate={onNavigate}>Tracking</AppLink><AppLink href="/rate-calculator" onNavigate={onNavigate}>Rate calculator</AppLink><AppLink href="/weight-calculator" onNavigate={onNavigate}>Weight calculator</AppLink><AppLink href="/contact" onNavigate={onNavigate}>Contact</AppLink></div>
-          <div><h4>Services</h4><AppLink href="/products#shipping-api" onNavigate={onNavigate}>Shipping API</AppLink><AppLink href="/products#loom-ai" onNavigate={onNavigate}>Transit AI</AppLink><AppLink href="/products#tracking" onNavigate={onNavigate}>Live tracking</AppLink><AppLink href="/products#protection" onNavigate={onNavigate}>Protection</AppLink></div>
+          <div><h4>Services</h4><AppLink href="/products#shipping-api" onNavigate={onNavigate}>Shipping API</AppLink><AppLink href="/products#loom-ai" onNavigate={onNavigate}>Smart insights</AppLink><AppLink href="/products#tracking" onNavigate={onNavigate}>Live tracking</AppLink><AppLink href="/products#protection" onNavigate={onNavigate}>Protection</AppLink></div>
           <div><h4>Company</h4><AppLink href="/contact" onNavigate={onNavigate}>Office address</AppLink><a href={`mailto:${businessInfo.email}`}>Email support</a><AppLink href="/tracking" onNavigate={onNavigate}>Track shipment</AppLink><AppLink href="/rate-calculator" onNavigate={onNavigate}>Estimate rate</AppLink></div>
           <div><h4>Official Info</h4><p>{businessInfo.name}</p><p>{businessInfo.address}</p><p>Support: <a href={businessInfo.supportHref}>{businessInfo.support}</a></p><a href={`mailto:${businessInfo.email}`}>{businessInfo.email}</a><form className="newsletter" onSubmit={newsletter}><input type="email" aria-label="Email address" placeholder="Email address" required /><button aria-label="Subscribe"><ArrowRight /></button></form></div>
         </div>
