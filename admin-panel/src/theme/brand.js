@@ -21,9 +21,9 @@ export const brandIdentity = {
   shortName: 'TrueTransit',
   tagline: 'Transit You Can Trust.',
   supportEmail: 'Hello@truetransitmobility.com',
-  supportPhone: '+91 99066 90088',
+  supportPhone: '+91 7416582587',
   supportAddress: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
-  logoPath: '/truetransit-logo.png',
+  logoPath: '/truetransit-logo.svg',
 }
 
 export const brandFonts = {

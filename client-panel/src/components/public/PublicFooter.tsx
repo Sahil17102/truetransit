@@ -67,8 +67,7 @@ export default function PublicFooter() {
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.45fr repeat(3, 1fr)' }, gap: { xs: 5, md: 6 } }}>
           <Stack spacing={2.2}>
             <Box component={RouterLink} to="/" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1.2, color: '#fff', textDecoration: 'none', fontWeight: 800 }}>
-              <BrandLogo compact sx={{ width: 62, height: 23 }} />
-              {brandIdentity.name}
+              <BrandLogo compact sx={{ width: 136, height: 76 }} />
             </Box>
             <Typography sx={{ color: alpha('#fff', 0.58), lineHeight: 1.7, maxWidth: 360, fontSize: '0.95rem' }}>
               {brandIdentity.tagline}
@@ -82,7 +81,7 @@ export default function PublicFooter() {
               </Stack>
               <Stack direction="row" spacing={1.2} alignItems="center">
                 <FiPhone color="#6c5ce7" />
-                <Box component="a" href="tel:+919906690088" sx={{ color: alpha('#fff', 0.62), fontWeight: 600 }}>
+                <Box component="a" href="tel:+917416582587" sx={{ color: alpha('#fff', 0.62), fontWeight: 600 }}>
                   {brandIdentity.supportPhone}
                 </Box>
               </Stack>

@@ -27,6 +27,9 @@ svg { width: 1em; height: 1em; stroke-width: 1.8; }
 .site-header { height: 77px; padding: 0 max(24px, calc((100vw - 1240px)/2)); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 50; background: rgba(247,248,245,.94); backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: .25s ease; }
 .site-header.scrolled { height: 66px; border-color: var(--line); box-shadow: 0 10px 35px rgba(24,58,107,.08); }
 .brand { justify-self: start; font-size: 23px; font-weight: 700; letter-spacing: 0; display: inline-flex; align-items: center; gap: 10px; }
+.brand-logo-lockup { width: 170px; height: 86px; display: block; object-fit: contain; object-position: center; }
+.brand-logo-lockup.compact { width: 122px; height: 58px; }
+.brand-logo-lockup.small { width: 98px; height: 66px; }
 .brand-mark { width: 47px; height: 34px; position: relative; display: inline-block; flex: 0 0 auto; }
 .brand-mark span { position: absolute; display: block; }
 .brand-mark span:nth-child(1) { left: 4px; top: 5px; width: 31px; height: 9px; background: linear-gradient(135deg, #173d91, #0751b8); transform: skewX(-32deg); }
@@ -208,8 +211,7 @@ h1 em, h2 em { font-family: inherit; font-style: normal; font-weight: 700; color
 .flow-system { min-width: 164px; height: 60px; padding: 0 18px; }
 .flow-action { height: 48px; padding: 0 18px; background: #283f8f; border-color: rgba(223,232,245,.6); color: #fff; justify-content: center; }
 .flow-core { left: 50%; top: 51%; width: 164px; height: 136px; transform: translate(-50%,-50%); background: rgba(255,255,255,.9); color: var(--ink); border-color: rgba(20,43,79,.18); display: grid; place-items: center; align-content: center; gap: 10px; text-align: center; box-shadow: 0 18px 50px rgba(20,43,79,.14); }
-.flow-core .brand-mark { width: 32px; height: 24px; }
-.flow-core .brand-name { font-size: 13px; letter-spacing: -.04em; }
+.flow-core .brand-logo-lockup { width: 118px; height: 88px; }
 .flow-oms { left: 6%; top: 25%; background: #3f73df; }
 .flow-wms { left: 8%; top: 48%; background: #3f73df; }
 .flow-store { left: 6%; bottom: 17%; background: #3f73df; }
@@ -781,6 +783,8 @@ h1 em, h2 em { font-family: inherit; font-style: normal; font-weight: 700; color
   h1 { font-size: 55px; }
   .hero-actions { flex-direction: column; align-items: stretch; }
   .brand { font-size: 20px; gap: 8px; }
+  .brand-logo-lockup { width: 148px; height: 74px; }
+  .brand-logo-lockup.compact { width: 106px; height: 52px; }
   .brand-mark { width: 39px; height: 29px; }
   .brand-mark span:nth-child(1) { width: 26px; height: 8px; }
   .brand-mark span:nth-child(2) { left: 11px; top: 12px; width: 10px; height: 17px; }

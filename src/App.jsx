@@ -35,8 +35,10 @@ const businessInfo = {
   name: 'TrueTransit Mobility Pvt Ltd',
   shortName: 'TrueTransit',
   email: 'Hello@truetransitmobility.com',
-  support: 'Keep it Blank | will update after coming India.',
+  support: '+91 7416582587',
+  supportHref: 'tel:+917416582587',
   address: '6th floor, The District, Financial District, Hyderabad, Nanakramguda, Telangana 500032',
+  logoSrc: '/truetransit-logo.svg',
 };
 
 const pageTitle = 'TrueTransit Mobility Pvt Ltd - Transit You Can Trust';
@@ -68,10 +70,12 @@ function BrandName({ compact = false }) {
 
 function BrandLogo({ compact = false, small = false }) {
   return (
-    <>
-      <BrandMark small={small} />
-      <BrandName compact={compact} />
-    </>
+    <img
+      className={`brand-logo-lockup${compact ? ' compact' : ''}${small ? ' small' : ''}`}
+      src={businessInfo.logoSrc}
+      alt={businessInfo.name}
+      decoding="async"
+    />
   );
 }
 
@@ -709,7 +713,7 @@ function BusinessDetails() {
       </div>
       <div>
         <small>Support Number</small>
-        <p>{businessInfo.support}</p>
+        <a href={businessInfo.supportHref}>{businessInfo.support}</a>
       </div>
       <div>
         <small>Email</small>
@@ -987,7 +991,7 @@ function ContactPage({ showToast }) {
       <section className="contact-section standalone-contact">
         <div className="container contact-inner">
           <div>
-            <div className="contact-copy reveal"><p className="eyebrow light-eye"><span /> Contact</p><h2>{businessInfo.shortName}<br /><em>official details.</em></h2><p>Business information, office address, support placeholder, and email are shown clearly for customers.</p></div>
+            <div className="contact-copy reveal"><p className="eyebrow light-eye"><span /> Contact</p><h2>{businessInfo.shortName}<br /><em>official details.</em></h2><p>Business information, office address, support number, and email are shown clearly for customers.</p></div>
             <BusinessDetails />
           </div>
           <ContactForm showToast={showToast} />
@@ -997,7 +1001,7 @@ function ContactPage({ showToast }) {
         tone=" light"
         items={[
           [Bell, 'Response flow', 'Clear inquiry routing', 'Lead capture stays simple for rate questions, integrations, operations, and support follow-up.'],
-          [Home, 'Business details', 'Official information visible', 'Company name, office address, email, and support placeholder are kept together for trust.'],
+          [Home, 'Business details', 'Official information visible', 'Company name, office address, email, and support number are kept together for trust.'],
           [ShieldCheck, 'Customer trust', 'No private shipment fields', 'The contact page stays business-focused and does not expose shipment-level data.'],
         ]}
       />
@@ -1420,7 +1424,7 @@ function Footer({ onNavigate, showToast }) {
           <div><h4>Tools</h4><AppLink href="/tracking" onNavigate={onNavigate}>Tracking</AppLink><AppLink href="/rate-calculator" onNavigate={onNavigate}>Rate calculator</AppLink><AppLink href="/weight-calculator" onNavigate={onNavigate}>Weight calculator</AppLink><AppLink href="/contact" onNavigate={onNavigate}>Contact</AppLink></div>
           <div><h4>Services</h4><AppLink href="/products#shipping-api" onNavigate={onNavigate}>Shipping API</AppLink><AppLink href="/products#loom-ai" onNavigate={onNavigate}>Transit AI</AppLink><AppLink href="/products#tracking" onNavigate={onNavigate}>Live tracking</AppLink><AppLink href="/products#protection" onNavigate={onNavigate}>Protection</AppLink></div>
           <div><h4>Company</h4><AppLink href="/contact" onNavigate={onNavigate}>Office address</AppLink><a href={`mailto:${businessInfo.email}`}>Email support</a><AppLink href="/tracking" onNavigate={onNavigate}>Track shipment</AppLink><AppLink href="/rate-calculator" onNavigate={onNavigate}>Estimate rate</AppLink></div>
-          <div><h4>Official Info</h4><p>{businessInfo.name}</p><p>{businessInfo.address}</p><p>Support: {businessInfo.support}</p><a href={`mailto:${businessInfo.email}`}>{businessInfo.email}</a><form className="newsletter" onSubmit={newsletter}><input type="email" aria-label="Email address" placeholder="Email address" required /><button aria-label="Subscribe"><ArrowRight /></button></form></div>
+          <div><h4>Official Info</h4><p>{businessInfo.name}</p><p>{businessInfo.address}</p><p>Support: <a href={businessInfo.supportHref}>{businessInfo.support}</a></p><a href={`mailto:${businessInfo.email}`}>{businessInfo.email}</a><form className="newsletter" onSubmit={newsletter}><input type="email" aria-label="Email address" placeholder="Email address" required /><button aria-label="Subscribe"><ArrowRight /></button></form></div>
         </div>
         <div className="footer-bottom">
           <span>&copy; 2026 {businessInfo.name}.</span>

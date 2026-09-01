@@ -191,11 +191,10 @@ export default function PublicNavbar({
           <BrandLogo
             compact
             sx={{
-              width: { xs: 58, lg: 68 },
-              height: { xs: 21, lg: 25 },
+              width: { xs: 112, lg: 132 },
+              height: { xs: 58, lg: 68 },
             }}
           />
-          {brandIdentity.name}
         </Box>
 
         <Stack
