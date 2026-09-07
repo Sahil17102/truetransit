@@ -178,14 +178,6 @@ const ServiceProviders = () => {
     );
   }
 
-  if (error) {
-    return (
-      <AdminStack>
-        <Text color="red.500">Failed to load service providers</Text>
-      </AdminStack>
-    );
-  }
-
   const columns = [
     {
       key: "name",
@@ -290,6 +282,25 @@ const ServiceProviders = () => {
           for each provider.
         </Text>
       </Flex>
+
+      {error ? (
+        <Flex
+          align="center"
+          gap="10px"
+          px="18px"
+          py="13px"
+          border="1px solid"
+          borderColor="#FED7AA"
+          borderRadius="14px"
+          bg="#FFF7ED"
+          color="#9A3412"
+        >
+          <Icon as={IconInfoCircle} boxSize="20px" color="#EA580C" />
+          <Text fontSize="16px">
+            Live provider data is unavailable, showing default providers.
+          </Text>
+        </Flex>
+      ) : null}
 
       <DataTable
         columns={columns}
