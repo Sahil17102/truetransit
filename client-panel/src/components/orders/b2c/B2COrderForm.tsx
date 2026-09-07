@@ -86,7 +86,7 @@ export type B2CFormData = {
   pickupLocationId?: string
   pickupLocationPincode?: string
   pickupLocationName?: string
-  integrationType?: 'delhivery' | 'xpressbees' | 'ekart' | 'deliveryone' | 'icarry' | 'bigship' | 'shipmozo'
+  integrationType?: 'delhivery' | 'xpressbees' | 'ekart' | 'deliveryone' | 'icarry' | 'bigship' | 'shipmozo' | 'shipway'
   shippingMode?: string
   pickupAddress?: string
   pickupLocationPOCName?: string

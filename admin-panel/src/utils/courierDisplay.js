@@ -70,12 +70,15 @@ export const getCourierDisplayName = (courierOrName, fallback = 'N/A') => {
 
   const values = getCourierValues(courierOrName)
 
+  if (values.some((value) => normalizeToken(value).includes('shipway'))) return 'Shipway'
   if (values.some(isDeliveryOneValue)) return getDeliveryOneDisplayName(courierOrName)
   return courierOrName?.displayName || courierOrName?.courier_name || courierOrName?.name || fallback
 }
 
 export const getProviderDisplayName = (provider, fallback = 'Not selected') =>
-  normalizeToken(provider) === 'shipmozo'
+  normalizeToken(provider) === 'shipway'
+    ? 'Shipway'
+    : normalizeToken(provider) === 'shipmozo'
     ? 'Shipmozo'
     : isDeliveryOneValue(provider)
       ? 'Delhivery'

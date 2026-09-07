@@ -226,9 +226,11 @@ export const SelectCourierForm = ({
       provider.startsWith('delhivery') ||
       provider.startsWith('bigship') ||
       provider.startsWith('shipmozo') ||
+      provider.startsWith('shipway') ||
       name.includes('delhivery') ||
       name.includes('bigship') ||
-      name.includes('shipmozo')
+      name.includes('shipmozo') ||
+      name.includes('shipway')
     )
   })
   if (!pickupPincode || !deliveryPincode || !totalWeight) {

@@ -49,6 +49,7 @@ const providerColors = {
   Xpressbees: ["#FFF7E3", "#F08A00"],
   Bigship: ["#EAF3FF", "#1167D8"],
   Shipmozo: ["#EAF0FF", "#14213D"],
+  Shipway: ["#E7FAFA", "#0E7C86"],
 };
 
 const fallbackCouriers = [
@@ -85,6 +86,13 @@ const fallbackCouriers = [
     name: "Shipmozo B2B",
     serviceProvider: "Shipmozo",
     businessType: ["b2b"],
+    isEnabled: true,
+  },
+  {
+    id: "shipway-b2c",
+    name: "Shipway B2C",
+    serviceProvider: "Shipway",
+    businessType: ["b2c"],
     isEnabled: true,
   },
   {
@@ -136,6 +144,7 @@ const normalizeProvider = (value) => {
   if (value === "deliveryone" || value === "delhivery") return "Delhivery";
   if (value === "bigship") return "Bigship";
   if (value === "shipmozo") return "Shipmozo";
+  if (value === "shipway") return "Shipway";
   return value;
 };
 
@@ -376,6 +385,7 @@ const Couriers = () => {
                 <option value="delhivery">Delhivery</option>
                 <option value="bigship">Bigship</option>
                 <option value="shipmozo">Shipmozo</option>
+                <option value="shipway">Shipway</option>
               </AdminSelect>
             </Box>
             <Box>

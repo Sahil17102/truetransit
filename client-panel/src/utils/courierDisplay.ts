@@ -89,6 +89,7 @@ const isDelhiveryB2BValue = (value?: string | null) => {
 
 const isShipmozoValue = (value?: string | null) => normalizeToken(value).includes('shipmozo')
 const isBigshipValue = (value?: string | null) => normalizeToken(value).includes('bigship')
+const isShipwayValue = (value?: string | null) => normalizeToken(value).includes('shipway')
 
 const getProviderValues = (courier: CourierLike) => {
   if (typeof courier === 'string' || !courier) return []
@@ -151,11 +152,15 @@ export const getCourierDisplayName = (courier: CourierLike, fallback = 'Unknown 
   if (getProviderValues(courier).some(isShipmozoValue)) {
     return getProviderDisplayName(courier, isShipmozoValue, 'Shipmozo') || 'Shipmozo'
   }
+  if (getProviderValues(courier).some(isShipwayValue)) {
+    return getProviderDisplayName(courier, isShipwayValue, 'Shipway') || 'Shipway'
+  }
   if (getProviderValues(courier).some(isBigshipValue)) {
     return getProviderDisplayName(courier, isBigshipValue, 'Bigship') || 'Bigship'
   }
   if (values.some(isDelhiveryB2BValue)) return DELHIVERY_B2B_DISPLAY_NAME
   if (values.some(isShipmozoValue)) return getProviderDisplayName(courier, isShipmozoValue, 'Shipmozo') || 'Shipmozo'
+  if (values.some(isShipwayValue)) return getProviderDisplayName(courier, isShipwayValue, 'Shipway') || 'Shipway'
   if (values.some(isBigshipValue)) return getProviderDisplayName(courier, isBigshipValue, 'Bigship') || 'Bigship'
   if (values.some(isDeliveryOneValue)) return getDeliveryOneDisplayName(courier)
   if (typeof courier === 'string') return courier || fallback
@@ -175,6 +180,10 @@ export const getCourierLogo = (courier: CourierLike, fallback = defaultLogo) => 
 
   if (values.some(isShipmozoValue)) {
     return courierLogos.Shipmozo || fallback
+  }
+
+  if (values.some(isShipwayValue)) {
+    return courierLogos.Shipway || fallback
   }
 
   if (values.some(isBigshipValue)) {

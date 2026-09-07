@@ -111,7 +111,7 @@ export type B2BFormData = {
   chargeableWeight?: number | null
   volumetricWeight?: number | null
   slabs?: number | null
-  integrationType?: 'delhivery' | 'bigship' | 'shipmozo'
+  integrationType?: 'delhivery' | 'bigship' | 'shipmozo' | 'shipway'
   shippingMode?: string
 
   // Pickup location (optional)
@@ -568,7 +568,8 @@ export default function B2BOrderForm({ onClose }: { onClose?: () => void }) {
     const supportedB2BProvider =
       selectedProvider.includes('delhivery') ||
       selectedProvider.includes('bigship') ||
-      selectedProvider.includes('shipmozo')
+      selectedProvider.includes('shipmozo') ||
+      selectedProvider.includes('shipway')
 
     if (!data.courierPartnerId || !supportedB2BProvider) {
       methods.setError('courierPartnerId', {

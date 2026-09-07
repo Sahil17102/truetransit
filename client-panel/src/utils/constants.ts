@@ -265,6 +265,8 @@ export const courierLogos: Record<string, string> = {
   Bigship: '/logo/integrations/default-courier.png',
   Shipmozo: '/logo/integrations/default-courier.png',
   shipmozo: '/logo/integrations/default-courier.png',
+  Shipway: '/logo/integrations/default-courier.png',
+  shipway: '/logo/integrations/default-courier.png',
 }
 export const defaultLogo = '/logo/integrations/default-courier.png'
 

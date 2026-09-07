@@ -20,10 +20,12 @@ import {
   useTestBigshipCredentials,
   useTestDelhiveryB2BCredentials,
   useTestShipmozoCredentials,
+  useTestShipwayCredentials,
   useUpdateBigshipCredentials,
   useUpdateDelhiveryB2BCredentials,
   useUpdateDelhiveryCredentials,
   useUpdateShipmozoCredentials,
+  useUpdateShipwayCredentials,
 } from 'hooks/useCouriers'
 
 const cardStyles = {
@@ -50,9 +52,11 @@ const CourierCredentials = () => {
   const updateDelhiveryB2B = useUpdateDelhiveryB2BCredentials()
   const updateBigship = useUpdateBigshipCredentials()
   const updateShipmozo = useUpdateShipmozoCredentials()
+  const updateShipway = useUpdateShipwayCredentials()
   const testDelhiveryB2B = useTestDelhiveryB2BCredentials()
   const testBigship = useTestBigshipCredentials()
   const testShipmozo = useTestShipmozoCredentials()
+  const testShipway = useTestShipwayCredentials()
 
   const [b2cForm, setB2CForm] = useState({
     apiBase: 'https://track.delhivery.com',
@@ -76,6 +80,11 @@ const CourierCredentials = () => {
     password: '',
     publicKey: '',
     privateKey: '',
+  })
+  const [shipwayForm, setShipwayForm] = useState({
+    apiBase: 'https://app.shipway.com/api',
+    email: '',
+    licenseKey: '',
   })
 
   useEffect(() => {
@@ -109,6 +118,13 @@ const CourierCredentials = () => {
         password: '',
         publicKey: '',
         privateKey: '',
+      })
+    }
+    if (data?.shipway) {
+      setShipwayForm({
+        apiBase: data.shipway.apiBase || 'https://app.shipway.com/api',
+        email: data.shipway.email || data.shipway.username || '',
+        licenseKey: '',
       })
     }
   }, [data])
@@ -339,6 +355,68 @@ const CourierCredentials = () => {
     })
   }
 
+  const handleSaveShipway = () => {
+    const cleanLicenseKey = cleanOptionalSecret(shipwayForm.licenseKey)
+    const missing = [
+      !shipwayForm.apiBase.trim() && 'API Base URL',
+      !shipwayForm.email.trim() && 'Shipway email',
+      !data?.shipway?.hasLicenseKey && !data?.shipway?.hasPassword && !cleanLicenseKey && 'License Key',
+    ].filter(Boolean)
+
+    if (missing.length) {
+      toast({
+        title: 'Complete the required Shipway fields',
+        description: `Missing: ${missing.join(', ')}`,
+        status: 'warning',
+      })
+      return
+    }
+
+    updateShipway.mutate(
+      {
+        apiBase: shipwayForm.apiBase.trim().replace(/\/+$/, ''),
+        email: shipwayForm.email.trim(),
+        username: shipwayForm.email.trim(),
+        ...(cleanLicenseKey ? { licenseKey: cleanLicenseKey, password: cleanLicenseKey } : {}),
+      },
+      {
+        onSuccess: () => {
+          toast({ title: 'Shipway credentials saved', status: 'success' })
+          setShipwayForm((previous) => ({ ...previous, licenseKey: '' }))
+        },
+        onError: (saveError) =>
+          toast({
+            title: 'Failed to save Shipway credentials',
+            description: getErrorMessage(saveError, 'Please try again.'),
+            status: 'error',
+          }),
+      },
+    )
+  }
+
+  const handleTestShipway = () => {
+    const cleanLicenseKey = cleanOptionalSecret(shipwayForm.licenseKey)
+
+    testShipway.mutate({
+      apiBase: shipwayForm.apiBase.trim().replace(/\/+$/, ''),
+      email: shipwayForm.email.trim(),
+      username: shipwayForm.email.trim(),
+      ...(cleanLicenseKey ? { licenseKey: cleanLicenseKey, password: cleanLicenseKey } : {}),
+    }, {
+      onSuccess: () =>
+        toast({
+          title: 'Shipway authentication successful',
+          status: 'success',
+        }),
+      onError: (testError) =>
+        toast({
+          title: 'Shipway authentication failed',
+          description: getErrorMessage(testError, 'Check the saved email and license key.'),
+          status: 'error',
+        }),
+    })
+  }
+
   const renderBigshipCredentialCard = ({ title, subtitle }) => {
     const hasPasswordForTest = data?.bigship?.hasPassword || Boolean(bigshipForm.password.trim())
     const hasAccessKeyForTest =
@@ -546,6 +624,92 @@ const CourierCredentials = () => {
     )
   }
 
+  const renderShipwayCredentialCard = ({ title, subtitle }) => {
+    const hasLicenseKeyForTest =
+      data?.shipway?.hasLicenseKey ||
+      data?.shipway?.hasPassword ||
+      Boolean(cleanOptionalSecret(shipwayForm.licenseKey))
+
+    return (
+      <Box {...cardStyles}>
+        <VStack spacing={4} align="stretch">
+          <Flex justify="space-between" align="center" gap={3}>
+            <Box>
+              <Text fontSize="lg" fontWeight="700">{title}</Text>
+              <Text fontSize="sm" color="gray.500">{subtitle}</Text>
+            </Box>
+            <Badge colorScheme={hasLicenseKeyForTest ? 'green' : 'orange'}>
+              {hasLicenseKeyForTest ? 'Configured' : 'Setup required'}
+            </Badge>
+          </Flex>
+          <Divider />
+
+          <FormControl isRequired>
+            <FormLabel>API Base URL</FormLabel>
+            <Input
+              value={shipwayForm.apiBase}
+              onChange={(event) =>
+                setShipwayForm((previous) => ({ ...previous, apiBase: event.target.value }))
+              }
+              placeholder="https://app.shipway.com/api"
+            />
+          </FormControl>
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Shipway Email</FormLabel>
+              <Input
+                autoComplete="username"
+                value={shipwayForm.email}
+                onChange={(event) =>
+                  setShipwayForm((previous) => ({ ...previous, email: event.target.value }))
+                }
+                placeholder="email@example.com"
+              />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>License Key</FormLabel>
+              <Input
+                type="password"
+                autoComplete="new-password"
+                value={shipwayForm.licenseKey}
+                onChange={(event) =>
+                  setShipwayForm((previous) => ({ ...previous, licenseKey: event.target.value }))
+                }
+                placeholder={
+                  hasLicenseKeyForTest
+                    ? 'Saved license key hidden - paste full key to replace'
+                    : 'Shipway license key'
+                }
+              />
+              <FormHelperText>
+                Shipway uses Basic Auth with email as username and license key as password.
+              </FormHelperText>
+            </FormControl>
+          </SimpleGrid>
+
+          <Flex gap={3} direction={{ base: 'column', sm: 'row' }}>
+            <Button
+              colorScheme="blue"
+              onClick={handleSaveShipway}
+              isLoading={updateShipway.isPending}
+            >
+              Save Shipway Credentials
+            </Button>
+            <Button
+              variant="outline"
+              colorScheme="blue"
+              onClick={handleTestShipway}
+              isLoading={testShipway.isPending}
+              isDisabled={!hasLicenseKeyForTest}
+            >
+              Test Shipway Credentials
+            </Button>
+          </Flex>
+        </VStack>
+      </Box>
+    )
+  }
+
   if (isLoading) return <Spinner size="md" />
   if (error) return <Text color="red.500">Failed to load courier credentials</Text>
 
@@ -706,6 +870,10 @@ const CourierCredentials = () => {
         {renderShipmozoCredentialCard({
           title: 'Shipmozo B2B',
           subtitle: 'B2B public/private key authentication',
+        })}
+        {renderShipwayCredentialCard({
+          title: 'Shipway / MRK',
+          subtitle: 'B2C Basic Auth credentials for live shipment booking and tracking',
         })}
       </SimpleGrid>
     </Flex>
