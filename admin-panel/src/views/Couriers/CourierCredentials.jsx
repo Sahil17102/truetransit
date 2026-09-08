@@ -45,6 +45,32 @@ const cleanOptionalSecret = (value = '') => {
   return trimmed && !trimmed.includes('*') ? trimmed : ''
 }
 
+const buildShipwayPayload = (form) => {
+  const apiBase = form.apiBase.trim().replace(/\/+$/, '')
+  const email = form.email.trim()
+  const licenseKey = cleanOptionalSecret(form.licenseKey)
+
+  return {
+    serviceProvider: 'shipway',
+    provider: 'shipway',
+    apiBase,
+    api_base: apiBase,
+    baseUrl: apiBase,
+    email,
+    username: email,
+    shipwayEmail: email,
+    ...(licenseKey
+      ? {
+          licenseKey,
+          license_key: licenseKey,
+          apiKey: licenseKey,
+          api_key: licenseKey,
+          password: licenseKey,
+        }
+      : {}),
+  }
+}
+
 const CourierCredentials = () => {
   const toast = useToast()
   const { data, isLoading, error } = useCourierCredentials()
@@ -373,12 +399,7 @@ const CourierCredentials = () => {
     }
 
     updateShipway.mutate(
-      {
-        apiBase: shipwayForm.apiBase.trim().replace(/\/+$/, ''),
-        email: shipwayForm.email.trim(),
-        username: shipwayForm.email.trim(),
-        ...(cleanLicenseKey ? { licenseKey: cleanLicenseKey, password: cleanLicenseKey } : {}),
-      },
+      buildShipwayPayload(shipwayForm),
       {
         onSuccess: () => {
           toast({ title: 'Shipway credentials saved', status: 'success' })
@@ -397,12 +418,7 @@ const CourierCredentials = () => {
   const handleTestShipway = () => {
     const cleanLicenseKey = cleanOptionalSecret(shipwayForm.licenseKey)
 
-    testShipway.mutate({
-      apiBase: shipwayForm.apiBase.trim().replace(/\/+$/, ''),
-      email: shipwayForm.email.trim(),
-      username: shipwayForm.email.trim(),
-      ...(cleanLicenseKey ? { licenseKey: cleanLicenseKey, password: cleanLicenseKey } : {}),
-    }, {
+    testShipway.mutate(buildShipwayPayload(shipwayForm), {
       onSuccess: () =>
         toast({
           title: 'Shipway authentication successful',

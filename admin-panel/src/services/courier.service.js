@@ -194,7 +194,9 @@ export const testShipmozoCredentials = async (payload = {}) => {
 
 export const updateShipwayCredentials = async (payload) => {
   const { data } = await api.put('/admin/couriers/credentials/shipway', payload)
-  if (!data?.success) throw new Error('Failed to update Shipway credentials')
+  if (!data?.success) {
+    throw new Error(data?.message || data?.error || 'Failed to update Shipway credentials')
+  }
   return data.data
 }
 
