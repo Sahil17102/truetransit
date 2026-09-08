@@ -1,7 +1,7 @@
 import axios from "axios";
 import { isDemoAdminSession } from "../utils/demoAdminAuth";
 
-const DEPLOYED_API_BASE_URL = "https://aggregator-backend-7gmk.onrender.com/api";
+const DEPLOYED_API_BASE_URL = "https://truetransit1.onrender.com/api";
 const DEFAULT_API_BASE_URL = window.location.hostname.endsWith("onrender.com")
   ? DEPLOYED_API_BASE_URL
   : "/api";

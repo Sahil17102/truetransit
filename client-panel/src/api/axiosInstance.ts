@@ -4,7 +4,7 @@ import { clearAuthTokens, getAuthTokens, setAuthTokens } from './tokenVault'
 import { isDemoSessionActive } from '../utils/demoAuth'
 
 const RAW_API_BASE_URL = import.meta.env.VITE_API_URL
-const DEPLOYED_API_BASE_URL = 'https://aggregator-backend-7gmk.onrender.com/api'
+const DEPLOYED_API_BASE_URL = 'https://truetransit1.onrender.com/api'
 const DEFAULT_API_BASE_URL = window.location.hostname.endsWith('onrender.com')
   ? DEPLOYED_API_BASE_URL
   : '/api'
