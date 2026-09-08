@@ -4,8 +4,10 @@ import { clearAuthTokens, getAuthTokens, setAuthTokens } from './tokenVault'
 import { isDemoSessionActive } from '../utils/demoAuth'
 
 const RAW_API_BASE_URL = import.meta.env.VITE_API_URL
-const DEFAULT_API_BASE_URL = '/api'
-const LEGACY_AGGREGATOR_API_HOST = 'aggregator-backend-7gmk.onrender.com'
+const DEPLOYED_API_BASE_URL = 'https://aggregator-backend-7gmk.onrender.com/api'
+const DEFAULT_API_BASE_URL = window.location.hostname.endsWith('onrender.com')
+  ? DEPLOYED_API_BASE_URL
+  : '/api'
 const LEGACY_RAILWAY_API_HOST = ['choice', 'me-backend-production.up.railway.app'].join('')
 const PLACEHOLDER_API_HOST = 'your-backend-url.onrender.com'
 
@@ -17,7 +19,6 @@ const getApiBaseUrl = () => {
 
     const candidate = new URL(RAW_API_BASE_URL, window.location.origin)
     const currentHost = window.location.hostname
-    const pointsToLegacyAggregatorApi = candidate.hostname === LEGACY_AGGREGATOR_API_HOST
     const pointsToLegacyRailwayApi = candidate.hostname === LEGACY_RAILWAY_API_HOST
     const pointsToPlaceholderApi = candidate.hostname === PLACEHOLDER_API_HOST
     const isHostedFrontend = currentHost.endsWith('onrender.com')
@@ -34,7 +35,7 @@ const getApiBaseUrl = () => {
     }
 
     // Retired backend hosts can lag behind the live API or reject newer routes.
-    if (pointsToLegacyAggregatorApi || pointsToLegacyRailwayApi || pointsToPlaceholderApi) {
+    if (pointsToLegacyRailwayApi || pointsToPlaceholderApi) {
       return fallback
     }
 

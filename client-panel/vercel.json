@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://api.mydigivallet.com/api/$1"
+      "destination": "https://aggregator-backend-7gmk.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
