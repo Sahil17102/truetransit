@@ -31,6 +31,7 @@ import {
   useServiceProviders,
   useUpdateServiceProviderStatus,
 } from "hooks/useCouriers";
+import { API_BASE_URL } from "services/axios";
 import { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -292,6 +293,11 @@ const ServiceProviders = () => {
   const updateStatus = useUpdateServiceProviderStatus();
   const history = useHistory();
   const toast = useToast();
+  const providerErrorMessage =
+    error?.response?.data?.message ||
+    error?.response?.data?.error ||
+    error?.message ||
+    "Unknown API error";
 
   const rows = useMemo(() => {
     const credentialStatus = getCredentialStatus(credentials);
@@ -465,7 +471,8 @@ const ServiceProviders = () => {
         >
           <Icon as={IconInfoCircle} boxSize="20px" color="#EA580C" />
           <Text fontSize="16px">
-            Live provider data is unavailable, showing default providers.
+            Cannot reach the courier API at {API_BASE_URL}. Shipway credentials and provider status
+            cannot be verified ({providerErrorMessage}).
           </Text>
         </Flex>
       ) : null}

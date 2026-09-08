@@ -184,6 +184,8 @@ export const useUpdateShipwayCredentials = () => {
     mutationFn: updateShipwayCredentials,
     onSuccess: () => {
       queryClient.invalidateQueries(['courierCredentials'])
+      queryClient.invalidateQueries(['serviceProviders'])
+      queryClient.invalidateQueries(['couriers'])
     },
   })
 }
