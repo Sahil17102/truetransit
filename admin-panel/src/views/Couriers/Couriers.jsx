@@ -250,14 +250,6 @@ const Couriers = () => {
     );
   }
 
-  if (error) {
-    return (
-      <AdminStack>
-        <Text color="red.500">Failed to load couriers</Text>
-      </AdminStack>
-    );
-  }
-
   const columns = [
     {
       key: "name",
@@ -441,6 +433,25 @@ const Couriers = () => {
           </HStack>
         </Box>
       </AdminCard>
+
+      {error ? (
+        <Flex
+          align="center"
+          gap="10px"
+          px="18px"
+          py="13px"
+          border="1px solid"
+          borderColor="#FED7AA"
+          borderRadius="14px"
+          bg="#FFF7ED"
+          color="#9A3412"
+        >
+          <Icon as={IconCircleX} boxSize="20px" color="#EA580C" />
+          <Text fontSize="16px">
+            Live courier data is unavailable, showing default couriers.
+          </Text>
+        </Flex>
+      ) : null}
 
       <DataTable
         columns={columns}

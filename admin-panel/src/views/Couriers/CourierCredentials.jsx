@@ -711,7 +711,6 @@ const CourierCredentials = () => {
   }
 
   if (isLoading) return <Spinner size="md" />
-  if (error) return <Text color="red.500">Failed to load courier credentials</Text>
 
   return (
     <Flex direction="column" pt={{ base: '120px', md: '75px' }} gap={6}>
@@ -723,6 +722,25 @@ const CourierCredentials = () => {
           Configure courier API credentials for live bookings.
         </Text>
       </Box>
+
+      {error ? (
+        <Flex
+          align="center"
+          gap="10px"
+          px="18px"
+          py="13px"
+          border="1px solid"
+          borderColor="#FED7AA"
+          borderRadius="14px"
+          bg="#FFF7ED"
+          color="#9A3412"
+        >
+          <Text fontSize="16px">
+            Saved credential status is unavailable. You can still enter and save provider
+            credentials.
+          </Text>
+        </Flex>
+      ) : null}
 
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing={6} alignItems="start">
         <Box {...cardStyles}>
