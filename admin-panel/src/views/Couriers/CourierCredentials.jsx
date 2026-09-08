@@ -45,6 +45,23 @@ const cleanOptionalSecret = (value = '') => {
   return trimmed && !trimmed.includes('*') ? trimmed : ''
 }
 
+const hasShipwaySecret = (shipway = {}) =>
+  Boolean(
+    shipway.hasLicenseKey ||
+      shipway.has_license_key ||
+      shipway.hasPassword ||
+      shipway.has_password ||
+      shipway.hasApiKey ||
+      shipway.has_api_key ||
+      shipway.hasApiToken ||
+      shipway.has_api_token ||
+      shipway.hasToken ||
+      shipway.has_token ||
+      shipway.licenseKeyMasked ||
+      shipway.apiKeyMasked ||
+      shipway.tokenMasked,
+  )
+
 const buildShipwayPayload = (form) => {
   const apiBase = form.apiBase.trim().replace(/\/+$/, '')
   const email = form.email.trim()
@@ -65,6 +82,11 @@ const buildShipwayPayload = (form) => {
           license_key: licenseKey,
           apiKey: licenseKey,
           api_key: licenseKey,
+          apiToken: licenseKey,
+          api_token: licenseKey,
+          token: licenseKey,
+          authToken: licenseKey,
+          auth_token: licenseKey,
           password: licenseKey,
         }
       : {}),
@@ -148,8 +170,18 @@ const CourierCredentials = () => {
     }
     if (data?.shipway) {
       setShipwayForm({
-        apiBase: data.shipway.apiBase || 'https://app.shipway.com/api',
-        email: data.shipway.email || data.shipway.username || '',
+        apiBase:
+          data.shipway.apiBase ||
+          data.shipway.api_base ||
+          data.shipway.baseUrl ||
+          data.shipway.base_url ||
+          'https://app.shipway.com/api',
+        email:
+          data.shipway.email ||
+          data.shipway.username ||
+          data.shipway.shipwayEmail ||
+          data.shipway.shipway_email ||
+          '',
         licenseKey: '',
       })
     }
@@ -383,10 +415,11 @@ const CourierCredentials = () => {
 
   const handleSaveShipway = () => {
     const cleanLicenseKey = cleanOptionalSecret(shipwayForm.licenseKey)
+    const savedShipwaySecret = hasShipwaySecret(data?.shipway)
     const missing = [
       !shipwayForm.apiBase.trim() && 'API Base URL',
       !shipwayForm.email.trim() && 'Shipway email',
-      !data?.shipway?.hasLicenseKey && !data?.shipway?.hasPassword && !cleanLicenseKey && 'License Key',
+      !savedShipwaySecret && !cleanLicenseKey && 'License Key / API Token',
     ].filter(Boolean)
 
     if (missing.length) {
@@ -416,8 +449,6 @@ const CourierCredentials = () => {
   }
 
   const handleTestShipway = () => {
-    const cleanLicenseKey = cleanOptionalSecret(shipwayForm.licenseKey)
-
     testShipway.mutate(buildShipwayPayload(shipwayForm), {
       onSuccess: () =>
         toast({
@@ -642,9 +673,7 @@ const CourierCredentials = () => {
 
   const renderShipwayCredentialCard = ({ title, subtitle }) => {
     const hasLicenseKeyForTest =
-      data?.shipway?.hasLicenseKey ||
-      data?.shipway?.hasPassword ||
-      Boolean(cleanOptionalSecret(shipwayForm.licenseKey))
+      hasShipwaySecret(data?.shipway) || Boolean(cleanOptionalSecret(shipwayForm.licenseKey))
 
     return (
       <Box {...cardStyles}>
@@ -672,7 +701,7 @@ const CourierCredentials = () => {
           </FormControl>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
             <FormControl isRequired>
-              <FormLabel>Shipway Email</FormLabel>
+              <FormLabel>Shipway Email / Username</FormLabel>
               <Input
                 autoComplete="username"
                 value={shipwayForm.email}
@@ -683,7 +712,7 @@ const CourierCredentials = () => {
               />
             </FormControl>
             <FormControl isRequired>
-              <FormLabel>License Key</FormLabel>
+              <FormLabel>License Key / API Token</FormLabel>
               <Input
                 type="password"
                 autoComplete="new-password"
@@ -693,8 +722,8 @@ const CourierCredentials = () => {
                 }
                 placeholder={
                   hasLicenseKeyForTest
-                    ? 'Saved license key hidden - paste full key to replace'
-                    : 'Shipway license key'
+                    ? 'Saved key hidden - paste full key/token to replace'
+                    : 'Shipway license key or API token'
                 }
               />
               <FormHelperText>

@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   HStack,
   Icon,
@@ -11,6 +12,7 @@ import {
 import {
   IconCircleCheck,
   IconInfoCircle,
+  IconKey,
   IconLink,
   IconPlus,
   IconShieldCheck,
@@ -25,9 +27,12 @@ import {
   adminUi,
 } from "components/AdminUI/AdminPage";
 import {
+  useCourierCredentials,
   useServiceProviders,
   useUpdateServiceProviderStatus,
 } from "hooks/useCouriers";
+import { useMemo } from "react";
+import { useHistory } from "react-router-dom";
 
 const providerLabels = {
   delhivery: "Delhivery",
@@ -68,6 +73,166 @@ const fallbackProviders = [
   },
 ];
 
+const providerKeys = ["delhivery", "bigship", "shipmozo", "shipway"];
+
+const normalizeProviderKey = (value) => {
+  const normalized = String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]+/g, "");
+
+  if (normalized.includes("shipway")) return "shipway";
+  if (normalized.includes("shipmozo")) return "shipmozo";
+  if (normalized.includes("bigship")) return "bigship";
+  if (normalized.includes("delhivery") || normalized.includes("deliveryone")) {
+    return "delhivery";
+  }
+
+  return normalized;
+};
+
+const readBoolean = (source, keys) => {
+  for (const key of keys) {
+    const value = source?.[key];
+    if (typeof value === "boolean") return value;
+    if (typeof value === "string") {
+      const normalized = value.trim().toLowerCase();
+      if (["true", "active", "enabled", "configured", "yes", "1"].includes(normalized)) {
+        return true;
+      }
+      if (["false", "inactive", "disabled", "not_configured", "no", "0"].includes(normalized)) {
+        return false;
+      }
+    }
+    if (typeof value === "number") return value > 0;
+  }
+
+  return undefined;
+};
+
+const hasAnySecret = (credentials, keys) =>
+  keys.some((key) => credentials?.[key] === true || Boolean(credentials?.[key]));
+
+const getCredentialStatus = (credentials = {}) => {
+  const delhiveryB2C = credentials.delhivery || {};
+  const delhiveryB2B = credentials.delhiveryB2B || credentials.delhivery_b2b || {};
+  const bigship = credentials.bigship || {};
+  const shipmozo = credentials.shipmozo || {};
+  const shipway = credentials.shipway || {};
+
+  return {
+    delhivery: {
+      b2c: hasAnySecret(delhiveryB2C, ["hasApiKey", "has_api_key", "apiKeyMasked"]),
+      b2b: hasAnySecret(delhiveryB2B, ["hasPassword", "has_password", "passwordMasked"]),
+    },
+    bigship: {
+      b2c:
+        hasAnySecret(bigship, ["hasPassword", "has_password", "passwordMasked"]) &&
+        hasAnySecret(bigship, ["hasAccessKey", "has_access_key", "accessKeyMasked"]),
+      b2b:
+        hasAnySecret(bigship, ["hasPassword", "has_password", "passwordMasked"]) &&
+        hasAnySecret(bigship, ["hasAccessKey", "has_access_key", "accessKeyMasked"]),
+    },
+    shipmozo: {
+      b2c:
+        hasAnySecret(shipmozo, ["hasPublicKey", "has_public_key", "publicKeyMasked"]) &&
+        (hasAnySecret(shipmozo, ["hasPrivateKey", "has_private_key", "privateKeyMasked"]) ||
+          hasAnySecret(shipmozo, ["hasPassword", "has_password", "passwordMasked"])),
+      b2b:
+        hasAnySecret(shipmozo, ["hasPublicKey", "has_public_key", "publicKeyMasked"]) &&
+        (hasAnySecret(shipmozo, ["hasPrivateKey", "has_private_key", "privateKeyMasked"]) ||
+          hasAnySecret(shipmozo, ["hasPassword", "has_password", "passwordMasked"])),
+    },
+    shipway: {
+      b2c: hasAnySecret(shipway, [
+        "hasLicenseKey",
+        "has_license_key",
+        "hasPassword",
+        "has_password",
+        "hasApiKey",
+        "has_api_key",
+        "hasApiToken",
+        "has_api_token",
+        "hasToken",
+        "has_token",
+        "licenseKeyMasked",
+        "apiKeyMasked",
+        "tokenMasked",
+      ]),
+      b2b: hasAnySecret(shipway, [
+        "hasLicenseKey",
+        "has_license_key",
+        "hasPassword",
+        "has_password",
+        "hasApiKey",
+        "has_api_key",
+        "hasApiToken",
+        "has_api_token",
+        "hasToken",
+        "has_token",
+        "licenseKeyMasked",
+        "apiKeyMasked",
+        "tokenMasked",
+      ]),
+    },
+  };
+};
+
+const readCredentialFlag = (provider, keys, fallback) => {
+  const explicit = readBoolean(provider, keys);
+  return explicit === undefined ? fallback : explicit;
+};
+
+const toProviderRow = (provider, credentialStatus) => {
+  const providerKey = normalizeProviderKey(provider.serviceProvider || provider.provider || provider.name);
+  const credentials = credentialStatus[providerKey] || {};
+  const totalCouriers = Number(
+    provider.totalCouriers ??
+      provider.total_couriers ??
+      provider.courierCount ??
+      provider.courier_count ??
+      0
+  );
+  const enabledCouriers = Number(
+    provider.enabledCouriers ??
+      provider.enabled_couriers ??
+      provider.activeCouriers ??
+      provider.active_couriers ??
+      0
+  );
+  const explicitEnabled = readBoolean(provider, [
+    "isEnabled",
+    "is_enabled",
+    "enabled",
+    "isActive",
+    "is_active",
+    "active",
+    "status",
+  ]);
+  const b2cConfigured = readCredentialFlag(
+    provider,
+    ["b2cConfigured", "b2c_configured", "hasB2CCredentials", "has_b2c_credentials"],
+    credentials.b2c === true
+  );
+  const b2bConfigured = readCredentialFlag(
+    provider,
+    ["b2bConfigured", "b2b_configured", "hasB2BCredentials", "has_b2b_credentials"],
+    credentials.b2b === true
+  );
+  const inferredEnabled = enabledCouriers > 0 || b2cConfigured || b2bConfigured;
+
+  return {
+    ...provider,
+    serviceProvider: providerKey,
+    name: providerLabels[providerKey] || provider.name || provider.serviceProvider,
+    totalCouriers,
+    enabledCouriers,
+    b2cConfigured,
+    b2bConfigured,
+    isEnabled: explicitEnabled ?? inferredEnabled,
+  };
+};
+
 const brandStyles = {
   Delhivery: ["#FFFFFF", "#111111"],
   "DP World": ["linear-gradient(135deg, #5025B9 0%, #00C7B2 100%)", "#FFFFFF"],
@@ -101,7 +266,7 @@ function ProviderMark({ name }) {
   );
 }
 
-function ConfigBadge({ configured = true }) {
+function ConfigBadge({ configured = false }) {
   return configured ? (
     <SoftBadge
       colorScheme="green"
@@ -116,32 +281,36 @@ function ConfigBadge({ configured = true }) {
     </SoftBadge>
   ) : (
     <SoftBadge colorScheme="gray" bg="#F7F9FC" color={adminUi.muted}>
-      Not set
+      Setup required
     </SoftBadge>
   );
 }
 
 const ServiceProviders = () => {
   const { data: providers = [], isLoading, error } = useServiceProviders();
+  const { data: credentials, isLoading: credentialsLoading } = useCourierCredentials();
   const updateStatus = useUpdateServiceProviderStatus();
+  const history = useHistory();
   const toast = useToast();
 
-  const visibleProviders = providers.filter(
-    (provider) =>
-      ["delhivery", "bigship", "shipmozo", "shipway"].includes(
-        provider.serviceProvider?.toLowerCase()
+  const rows = useMemo(() => {
+    const credentialStatus = getCredentialStatus(credentials);
+    const liveProviders = providers.filter((provider) =>
+      providerKeys.includes(
+        normalizeProviderKey(provider.serviceProvider || provider.provider || provider.name)
       )
-  );
+    );
+    const providerByKey = new Map(
+      liveProviders.map((provider) => [
+        normalizeProviderKey(provider.serviceProvider || provider.provider || provider.name),
+        provider,
+      ])
+    );
 
-  const rows = visibleProviders.length
-    ? visibleProviders.map((provider) => ({
-        ...provider,
-        name:
-          providerLabels[provider.serviceProvider] ||
-          provider.name ||
-          provider.serviceProvider,
-      }))
-    : fallbackProviders;
+    return fallbackProviders.map((fallbackProvider) =>
+      toProviderRow(providerByKey.get(fallbackProvider.serviceProvider) || fallbackProvider, credentialStatus)
+    );
+  }, [providers, credentials]);
 
   const handleToggle = (provider) => {
     updateStatus.mutate(
@@ -170,7 +339,7 @@ const ServiceProviders = () => {
     );
   };
 
-  if (isLoading && !providers.length) {
+  if ((isLoading || credentialsLoading) && !providers.length && !credentials) {
     return (
       <AdminStack>
         <Spinner size="md" />
@@ -212,15 +381,15 @@ const ServiceProviders = () => {
     {
       key: "b2c",
       label: "B2C Credentials",
-      render: () => <ConfigBadge />,
+      render: (value, row) => <ConfigBadge configured={row.b2cConfigured} />,
     },
     {
       key: "b2b",
       label: "B2B Credentials",
-      render: (value) => (
+      render: (value, row) => (
         <HStack spacing="10px">
-          <ConfigBadge configured={value !== false} />
-          {value !== false ? (
+          <ConfigBadge configured={row.b2bConfigured} />
+          {row.b2bConfigured ? (
             <SoftBadge
               bg="#F4F1FF"
               color={adminUi.purple}
@@ -278,8 +447,7 @@ const ServiceProviders = () => {
       >
         <Icon as={IconInfoCircle} boxSize="20px" color={adminUi.purple} />
         <Text fontSize="18px">
-          Expand a row to view or edit credentials (API keys, tokens, passwords)
-          for each provider.
+          Configure and test provider credentials from Courier Credentials, then enable the provider and its couriers here.
         </Text>
       </Flex>
 
@@ -308,12 +476,22 @@ const ServiceProviders = () => {
         rowKey="serviceProvider"
         minW="1180px"
         actions={(row) => (
-          <Switch
-            colorScheme="purple"
-            isChecked={row.isEnabled !== false}
-            isDisabled={updateStatus.isPending}
-            onChange={() => handleToggle(row)}
-          />
+          <HStack spacing="12px" justify="flex-end">
+            <Button
+              size="sm"
+              variant="outline"
+              leftIcon={<Icon as={IconKey} boxSize="15px" />}
+              onClick={() => history.push("/admin/courier-credentials")}
+            >
+              Credentials
+            </Button>
+            <Switch
+              colorScheme="purple"
+              isChecked={row.isEnabled !== false}
+              isDisabled={updateStatus.isPending}
+              onChange={() => handleToggle(row)}
+            />
+          </HStack>
         )}
       />
     </AdminStack>

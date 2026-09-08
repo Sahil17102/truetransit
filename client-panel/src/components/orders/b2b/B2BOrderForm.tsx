@@ -369,6 +369,12 @@ export default function B2BOrderForm({ onClose }: { onClose?: () => void }) {
         courier_id: Number(data.courierPartnerId),
         courier_partner: data.courierPartner,
         integration_type: data.integrationType || 'delhivery',
+        courier_option_key: data.courierOptionKey,
+        selected_max_slab_weight:
+          data.selectedMaxSlabWeight !== undefined && data.selectedMaxSlabWeight !== null
+            ? Number(data.selectedMaxSlabWeight)
+            : undefined,
+        shipping_mode: data.shippingMode,
         is_insurance: !!data.isInsurance,
         is_rto_different: data.isRtoSame === false ? 'yes' : 'no',
         request_auto_pickup: 'no',
@@ -613,6 +619,8 @@ export default function B2BOrderForm({ onClose }: { onClose?: () => void }) {
     setValue('courierCost', null)
     setValue('chargeableWeight', null)
     setValue('volumetricWeight', null)
+    setValue('integrationType', undefined)
+    setValue('shippingMode', '')
   }, [rateInputSignature, selectedCourierPartnerId, setValue])
 
   return (

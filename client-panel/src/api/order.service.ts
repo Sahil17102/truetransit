@@ -238,6 +238,9 @@ export type CreateB2BShipmentParams = {
   tags?: string
   delivery_location?: string
   zone_id?: string
+  courier_option_key?: string
+  selected_max_slab_weight?: number
+  shipping_mode?: string
 }
 
 export const createB2BShipment = async (data: CreateB2BShipmentParams) => {

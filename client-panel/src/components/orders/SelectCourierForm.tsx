@@ -20,8 +20,59 @@ const TEXT_PRIMARY = '#102A54'
 const TEXT_SECONDARY = '#4C6185'
 const SURFACE = '#F6F8FC'
 const DEFAULT_B2B_VOLUMETRIC_DIVISOR = 4500
+type CourierIntegrationType = NonNullable<
+  B2BFormData['integrationType'] | B2CFormData['integrationType']
+>
 
 const roundMoney = (value: number) => Math.round(value * 100) / 100
+const normalizeProviderToken = (value: unknown) =>
+  String(value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+
+const getCourierIntegrationType = (courier: {
+  integration_type?: string | null
+  serviceProvider?: string | null
+  service_provider?: string | null
+  provider?: string | null
+  name?: string | null
+}): CourierIntegrationType | undefined => {
+  const explicitIntegrationType = normalizeProviderToken(courier?.integration_type)
+  if (explicitIntegrationType === 'shipway') return 'shipway'
+  if (explicitIntegrationType === 'shipmozo') return 'shipmozo'
+  if (explicitIntegrationType === 'bigship') return 'bigship'
+  if (explicitIntegrationType === 'delhivery') return 'delhivery'
+  if (explicitIntegrationType === 'xpressbees') return 'xpressbees'
+  if (explicitIntegrationType === 'ekart') return 'ekart'
+  if (explicitIntegrationType === 'deliveryone') return 'deliveryone'
+  if (explicitIntegrationType === 'icarry') return 'icarry'
+  if (explicitIntegrationType.includes('shipway')) return 'shipway'
+  if (explicitIntegrationType.includes('shipmozo')) return 'shipmozo'
+  if (explicitIntegrationType.includes('bigship')) return 'bigship'
+  if (explicitIntegrationType.includes('deliveryone')) return 'deliveryone'
+  if (explicitIntegrationType.includes('delhivery')) return 'delhivery'
+  if (explicitIntegrationType.includes('xpressbees')) return 'xpressbees'
+  if (explicitIntegrationType.includes('ekart')) return 'ekart'
+  if (explicitIntegrationType.includes('icarry')) return 'icarry'
+
+  const values = [
+    courier?.serviceProvider,
+    courier?.service_provider,
+    courier?.provider,
+    courier?.name,
+  ].map(normalizeProviderToken)
+
+  if (values.some((value) => value.includes('shipway'))) return 'shipway'
+  if (values.some((value) => value.includes('shipmozo'))) return 'shipmozo'
+  if (values.some((value) => value.includes('bigship'))) return 'bigship'
+  if (values.some((value) => value.includes('delhivery') || value.includes('deliveryone'))) {
+    return 'delhivery'
+  }
+
+  return undefined
+}
+
 const calculateB2BVolumetricKg = (
   length: number,
   breadth: number,
@@ -737,7 +788,7 @@ export const SelectCourierForm = ({
                       'courierCost',
                       providerCost > 0 ? providerCost : null,
                     ) // Estimated courier cost from serviceability
-                    setValue('integrationType', courier?.integration_type)
+                    setValue('integrationType', getCourierIntegrationType(courier))
                     setValue('zone', courier?.approxZone?.code ?? courier?.approxZone?.name ?? '')
                     setValue('zoneId', courier?.approxZone?.id ?? '')
                     setValue('chargeableWeight', courier?.chargeable_weight ?? null)

@@ -139,13 +139,44 @@ const fallbackCouriers = [
   },
 ];
 
+const normalizeProviderKey = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]+/g, "");
+
 const normalizeProvider = (value) => {
-  if (!value) return "Delhivery";
-  if (value === "deliveryone" || value === "delhivery") return "Delhivery";
-  if (value === "bigship") return "Bigship";
-  if (value === "shipmozo") return "Shipmozo";
-  if (value === "shipway") return "Shipway";
+  const normalized = normalizeProviderKey(value);
+  if (!normalized) return "Delhivery";
+  if (normalized.includes("deliveryone") || normalized.includes("delhivery")) return "Delhivery";
+  if (normalized.includes("bigship")) return "Bigship";
+  if (normalized.includes("shipmozo")) return "Shipmozo";
+  if (normalized.includes("shipway")) return "Shipway";
   return value;
+};
+
+const readCourierEnabled = (courier) => {
+  const statusFields = [
+    courier?.isEnabled,
+    courier?.is_enabled,
+    courier?.enabled,
+    courier?.isActive,
+    courier?.is_active,
+    courier?.active,
+    courier?.status,
+  ];
+
+  for (const value of statusFields) {
+    if (typeof value === "boolean") return value;
+    if (typeof value === "number") return value > 0;
+    if (typeof value === "string") {
+      const normalized = value.trim().toLowerCase();
+      if (["active", "enabled", "true", "yes", "1"].includes(normalized)) return true;
+      if (["inactive", "disabled", "false", "no", "0"].includes(normalized)) return false;
+    }
+  }
+
+  return true;
 };
 
 function ProviderBadge({ provider }) {
@@ -195,7 +226,13 @@ const Couriers = () => {
     return source
       .map((courier) => ({
         ...courier,
-        serviceProvider: normalizeProvider(courier.serviceProvider),
+        serviceProvider: normalizeProvider(
+          courier.serviceProvider ||
+            courier.service_provider ||
+            courier.provider ||
+            courier.integration_type
+        ),
+        isEnabled: readCourierEnabled(courier),
         type: courier.type || "Delivery",
         businessType: courier.businessType || courier.business_type || ["b2c"],
       }))
