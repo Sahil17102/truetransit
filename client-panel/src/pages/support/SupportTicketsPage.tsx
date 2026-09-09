@@ -106,7 +106,7 @@ export const SupportTicketsPage = () => {
   ).length
 
   return (
-    <Stack spacing={{ xs: 2, md: 3 }} sx={{ width: '100%', minWidth: 0, pb: 2 }}>
+    <Stack spacing={{ xs: 1.5, md: 2 }} sx={{ width: '100%', minWidth: 0, pb: 2 }}>
       <PageHeading
         eyebrow="Support Panel"
         title="Support"
@@ -121,9 +121,9 @@ export const SupportTicketsPage = () => {
       )}
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
-        alignItems={{ xs: 'stretch', sm: 'flex-start' }}
+        alignItems={{ xs: 'stretch', sm: 'center' }}
         justifyContent="space-between"
-        gap={1.25}
+        gap={1}
         sx={{ width: '100%', minWidth: 0 }}
       >
         <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -136,45 +136,54 @@ export const SupportTicketsPage = () => {
             }}
             bgOverlayImg="/images/filters-bg.png"
             appliedCount={appliedCount}
+            compact
           />
         </Box>
-        <Button
-          sx={{
-            flexShrink: 0,
-            alignSelf: { xs: 'stretch', sm: 'flex-start' },
-            minHeight: 42,
-            mt: { xs: 0, sm: 0.25 },
-            px: 2,
-            textTransform: 'none',
-            fontWeight: 700,
-          }}
-          size="small"
-          variant="contained"
-          startIcon={<FiPlus size={18} />}
-          onClick={() => setDrawerOpen(true)}
+        <Stack
+          direction={{ xs: 'row', sm: 'column' }}
+          alignItems="stretch"
+          gap={0.75}
+          sx={{ flexShrink: 0, width: { xs: '100%', sm: 'auto' } }}
         >
-          Create Ticket
-        </Button>
-      </Stack>
-      {!showTableLoading && (
-        <Stack direction="row" justifyContent="flex-end">
           <Button
-            href={`https://wa.me/${brandIdentity.supportPhone.replace(/\D/g, '')}?text=Hi%2C%20I%27m%20a%20seller%20and%20I%20need%20some%20assistance.%20Can%20you%20please%20help%3F`}
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="outlined"
-            color="success"
-            startIcon={<FaWhatsapp />}
             sx={{
+              minHeight: 38,
+              px: 1.75,
               textTransform: 'none',
-              mt: 1,
-              color: 'green',
+              fontWeight: 700,
+              whiteSpace: 'nowrap',
+              flex: { xs: 1, sm: 'initial' },
             }}
+            size="small"
+            variant="contained"
+            startIcon={<FiPlus size={17} />}
+            onClick={() => setDrawerOpen(true)}
           >
-            Get Help on WhatsApp
+            Create Ticket
           </Button>
+          {!showTableLoading && (
+            <Button
+              href={`https://wa.me/${brandIdentity.supportPhone.replace(/\D/g, '')}?text=Hi%2C%20I'm%20a%20seller%20and%20I%20need%20some%20assistance.%20Can%20you%20please%20help%3F`}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outlined"
+              color="success"
+              size="small"
+              startIcon={<FaWhatsapp />}
+              sx={{
+                minHeight: 34,
+                px: 1.25,
+                textTransform: 'none',
+                fontWeight: 650,
+                whiteSpace: 'nowrap',
+                flex: { xs: 1, sm: 'initial' },
+              }}
+            >
+              WhatsApp Help
+            </Button>
+          )}
         </Stack>
-      )}
+      </Stack>
 
       {showTableLoading ? (
         <TableSkeleton />
