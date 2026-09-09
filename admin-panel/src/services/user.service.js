@@ -252,6 +252,12 @@ export const getSellerPickupAddresses = async (userId) => {
 }
 
 export const resetUserPassword = async (userId) => {
+  if (isDemoAdminSession()) {
+    const user = readDemoSellers().find((seller) => seller.id === userId || seller.userId === userId)
+    if (!user) throw new Error('Seller not found')
+    return 'DemoSeller@123'
+  }
+
   const response = await api.post(`/admin/users/${userId}/reset-password`)
   return response.data.tempPassword
 }
@@ -288,16 +294,57 @@ export const getKyc = async (userId) => {
 }
 
 export const approveKyc = async (userId) => {
+  if (isDemoAdminSession()) {
+    return updateDemoSeller(userId, (seller) => ({
+      kycStatus: 'verified',
+      kycVerified: true,
+      kyc_verified: true,
+      domesticKyc: {
+        ...(seller.domesticKyc || {}),
+        status: 'verified',
+        updatedAt: new Date().toISOString(),
+      },
+    }))
+  }
+
   const { data } = await api.post(`/admin/users/kyc/approve/${userId}`)
   return data
 }
 
 export const rejectKyc = async (userId, reason) => {
+  if (isDemoAdminSession()) {
+    return updateDemoSeller(userId, (seller) => ({
+      kycStatus: 'rejected',
+      kycVerified: false,
+      kyc_verified: false,
+      domesticKyc: {
+        ...(seller.domesticKyc || {}),
+        status: 'rejected',
+        rejectionReason: reason,
+        updatedAt: new Date().toISOString(),
+      },
+    }))
+  }
+
   const { data } = await api.post(`/admin/users/kyc/reject/${userId}`, { reason })
   return data
 }
 
 export const revokeKyc = async (userId, reason) => {
+  if (isDemoAdminSession()) {
+    return updateDemoSeller(userId, (seller) => ({
+      kycStatus: 'verification_in_progress',
+      kycVerified: false,
+      kyc_verified: false,
+      domesticKyc: {
+        ...(seller.domesticKyc || {}),
+        status: 'verification_in_progress',
+        revocationReason: reason,
+        updatedAt: new Date().toISOString(),
+      },
+    }))
+  }
+
   const { data } = await api.post(`/admin/users/kyc/revoke/${userId}`, { reason })
   return data
 }

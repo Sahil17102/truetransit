@@ -2,6 +2,7 @@ export const DEMO_ADMIN_EMAIL = "admin@truetransitmobility.com";
 export const DEMO_ADMIN_PASSWORD = "TrueTransit@123";
 export const DEMO_ADMIN_USER_ID = "truetransit-demo-admin";
 export const DEMO_SELLERS_KEY = "truetransit-admin-demo-sellers:v1";
+export const DEMO_WALLET_TRANSACTIONS_KEY = "truetransit-admin-demo-wallet-transactions:v1";
 export const DEMO_SELLER_ID = "truetransit-demo-user";
 export const DEMO_SELLER_EMAIL = "sahilmittal1920@gmail.com";
 
@@ -135,4 +136,61 @@ export const updateDemoSeller = (userId, updater) => {
   );
   writeDemoSellers(updated);
   return updated.find((seller) => seller.id === userId || seller.userId === userId);
+};
+
+export const readDemoWalletTransactions = (userId) => {
+  if (typeof window === "undefined") return [];
+
+  try {
+    const stored = JSON.parse(localStorage.getItem(DEMO_WALLET_TRANSACTIONS_KEY) || "[]");
+    return Array.isArray(stored)
+      ? stored.filter((transaction) => transaction.userId === userId)
+      : [];
+  } catch {
+    return [];
+  }
+};
+
+export const adjustDemoWallet = ({ userId, type, amount, reason, notes = "" }) => {
+  const amountNumber = Number(amount);
+  if (!Number.isFinite(amountNumber) || amountNumber <= 0) {
+    throw new Error("Amount must be greater than zero");
+  }
+
+  const seller = readDemoSellers().find(
+    (candidate) => candidate.id === userId || candidate.userId === userId,
+  );
+  if (!seller) throw new Error("Seller not found");
+
+  const currentBalance = Number(seller.walletBalance || 0);
+  const nextBalance = type === "credit" ? currentBalance + amountNumber : currentBalance - amountNumber;
+  if (type === "debit" && nextBalance < 0) {
+    throw new Error("Insufficient wallet balance");
+  }
+
+  const updatedSeller = updateDemoSeller(userId, () => ({ walletBalance: nextBalance }));
+  const transaction = {
+    id: `demo-wallet-${Date.now()}`,
+    userId,
+    type,
+    amount: amountNumber,
+    reason,
+    notes,
+    balance_after: nextBalance,
+    created_at: nowIso(),
+  };
+
+  let allTransactions = [];
+  try {
+    const stored = JSON.parse(localStorage.getItem(DEMO_WALLET_TRANSACTIONS_KEY) || "[]");
+    if (Array.isArray(stored)) allTransactions = stored;
+  } catch {
+    allTransactions = [];
+  }
+  localStorage.setItem(
+    DEMO_WALLET_TRANSACTIONS_KEY,
+    JSON.stringify([transaction, ...allTransactions]),
+  );
+
+  return { seller: updatedSeller, transaction };
 };

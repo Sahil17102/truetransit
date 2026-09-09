@@ -1,5 +1,6 @@
 // src/services/plansService.ts
 import api from './axios' // your pre-configured axios instance
+import { isDemoAdminSession, updateDemoSeller } from '../utils/demoAdminAuth'
 
 const API_URL = '/plans' // adjust if your backend is on another host
 
@@ -24,6 +25,10 @@ export const PlansService = {
     return res.data
   },
   assignPlanToUser: async (userId, planId) => {
+    if (isDemoAdminSession()) {
+      return updateDemoSeller(userId, () => ({ currentPlanId: planId, planId }))
+    }
+
     const res = await api.post(`${API_URL}/assign-to-user`, { userId, planId })
     return res.data
   },
