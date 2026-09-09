@@ -15,6 +15,7 @@ interface StepTwoFormProps {
     subKey: keyof UserInfoData,
   ) => void
   errors: FormErrors
+  compact?: boolean
 }
 
 const DE_BLUE = '#0052CC'
@@ -38,7 +39,7 @@ const BUSINESS_OPTIONS = [
   },
 ]
 
-export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormProps) {
+export default function StepTwoForm({ formData, onChange, errors, compact = false }: StepTwoFormProps) {
   const [sameAsCompany, setSameAsCompany] = useState(false)
 
   const selectedCategories = useMemo(
@@ -64,39 +65,39 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
     onChange(createSyntheticEvent('businessCategory', next), 'businessLegal')
   }
 
+  const panelSx = {
+    p: compact ? { xs: 1, md: 1.15 } : { xs: 1.6, md: 2 },
+    borderRadius: 1,
+    border: `1px solid ${alpha(DE_BLUE, 0.12)}`,
+    backgroundColor: '#fff',
+  }
+
   return (
-    <Stack spacing={{ xs: 2.2, md: 2.8 }}>
+    <Stack spacing={compact ? { xs: 1.1, md: 1.25 } : { xs: 2.2, md: 2.8 }}>
       <Box>
         <Typography
           variant="h5"
           sx={{
             fontWeight: 800,
             color: DE_BLUE,
-            mb: 0.7,
-            fontSize: { xs: '1.22rem', md: '1.5rem' },
+            mb: compact ? 0.25 : 0.7,
+            fontSize: compact ? { xs: '1.05rem', md: '1.22rem' } : { xs: '1.22rem', md: '1.5rem' },
           }}
         >
           Shipping Profile
         </Typography>
-        <Typography variant="body2" sx={{ color: '#60789f', lineHeight: 1.55 }}>
+        <Typography variant="body2" sx={{ color: '#60789f', lineHeight: 1.4, fontSize: compact ? '0.82rem' : undefined }}>
           Choose your business model and shipment volume so we can configure panel defaults
           correctly.
         </Typography>
       </Box>
 
-      <Box
-        sx={{
-          p: { xs: 1.6, md: 2 },
-          borderRadius: 1,
-          border: `1px solid ${alpha(DE_BLUE, 0.12)}`,
-          backgroundColor: '#fff',
-        }}
-      >
-        <Typography sx={{ fontSize: '0.84rem', fontWeight: 700, color: DE_BLUE, mb: 1.2 }}>
+      <Box sx={panelSx}>
+        <Typography sx={{ fontSize: '0.82rem', fontWeight: 700, color: DE_BLUE, mb: compact ? 0.8 : 1.2 }}>
           Select one or more shipment models
         </Typography>
 
-        <Grid container spacing={1.3}>
+        <Grid container spacing={compact ? 0.9 : 1.3}>
           {BUSINESS_OPTIONS.map((option) => {
             const active = selectedCategories.includes(option.key)
 
@@ -110,7 +111,7 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
                     if (e.key === 'Enter') toggleCategory(option.key)
                   }}
                   sx={{
-                    p: 1.5,
+                    p: compact ? 1 : 1.5,
                     borderRadius: 1,
                     border: `1px solid ${active ? alpha(DE_BLUE, 0.4) : alpha(DE_BLUE, 0.12)}`,
                     backgroundColor: active ? alpha(DE_BLUE, 0.06) : '#fff',
@@ -119,12 +120,12 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
-                    minHeight: { xs: 'auto', md: 112 },
+                    minHeight: compact ? { xs: 'auto', md: 74 } : { xs: 'auto', md: 112 },
                   }}
                 >
                   <Typography
                     sx={{
-                      fontSize: '0.94rem',
+                      fontSize: compact ? '0.86rem' : '0.94rem',
                       fontWeight: 800,
                       color: active ? DE_BLUE : '#2f4e77',
                     }}
@@ -133,7 +134,7 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
                   </Typography>
                   <Typography
                     sx={{
-                      fontSize: '0.78rem',
+                      fontSize: compact ? '0.72rem' : '0.78rem',
                       color: '#6b82a8',
                       mt: 0.2,
                       lineHeight: 1.35,
@@ -149,19 +150,12 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
         </Grid>
       </Box>
 
-      <Box
-        sx={{
-          p: { xs: 1.6, md: 2 },
-          borderRadius: 1,
-          border: `1px solid ${alpha(DE_BLUE, 0.12)}`,
-          backgroundColor: '#fff',
-        }}
-      >
-        <Typography sx={{ fontSize: '0.84rem', fontWeight: 700, color: DE_BLUE, mb: 1.6 }}>
+      <Box sx={panelSx}>
+        <Typography sx={{ fontSize: '0.82rem', fontWeight: 700, color: DE_BLUE, mb: compact ? 1 : 1.6 }}>
           Shipment Volume & Brand Identity
         </Typography>
 
-        <Grid container spacing={2.2}>
+        <Grid container spacing={compact ? 1.1 : 2.2}>
           <Grid size={{ xs: 12, md: 6 }}>
             <CustomSelect
               label="Expected Orders / Month"
@@ -185,6 +179,7 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
               error={!!errors.businessLegal.monthlyShipments}
               helperText={errors.businessLegal.monthlyShipments}
               placeholder="Select volume range"
+              topMargin={!compact}
             />
           </Grid>
 
@@ -199,6 +194,7 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
                 error={!!errors.businessLegal.brandName}
                 helperText={errors.businessLegal.brandName}
                 prefix={<MdBusiness color={DE_BLUE} />}
+                topMargin={!compact}
               />
               <FormControlLabel
                 control={
@@ -220,19 +216,21 @@ export default function StepTwoForm({ formData, onChange, errors }: StepTwoFormP
         </Grid>
       </Box>
 
-      <Box
-        sx={{
-          p: 1.5,
-          borderRadius: 1,
-          bgcolor: alpha(DE_AMBER, 0.06),
-          border: `1px solid ${alpha(DE_AMBER, 0.2)}`,
-        }}
-      >
-        <Typography variant="caption" sx={{ color: DE_AMBER, fontWeight: 700, display: 'block' }}>
-          These shipping profile details help us show the most relevant couriers and defaults across
-          the panel.
-        </Typography>
-      </Box>
+      {!compact && (
+        <Box
+          sx={{
+            p: 1.5,
+            borderRadius: 1,
+            bgcolor: alpha(DE_AMBER, 0.06),
+            border: `1px solid ${alpha(DE_AMBER, 0.2)}`,
+          }}
+        >
+          <Typography variant="caption" sx={{ color: DE_AMBER, fontWeight: 700, display: 'block' }}>
+            These shipping profile details help us show the most relevant couriers and defaults across
+            the panel.
+          </Typography>
+        </Box>
+      )}
     </Stack>
   )
 }

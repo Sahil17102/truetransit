@@ -1,9 +1,9 @@
-import { Box, Chip, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { FiShield } from 'react-icons/fi'
-import { MdArrowForward } from 'react-icons/md'
+import { MdArrowBack, MdArrowForward } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import StepOneForm from '../../components/onboarding/StepOneForm'
 import StepThree from '../../components/onboarding/StepThree'
@@ -23,7 +23,13 @@ import { toast } from '../../components/UI/Toast'
 
 const DE_BLUE = brand.ink
 const DE_AMBER = brand.accent
-const ONBOARDING_STEPS = [1, 2, 3] as const
+const BACKEND_ONBOARDING_STEPS = [1, 2, 3] as const
+const UI_STEPS = [
+  { key: 1, label: 'Account' },
+  { key: 2, label: 'Shipping' },
+] as const
+type BackendOnboardingStep = (typeof BACKEND_ONBOARDING_STEPS)[number]
+type UiOnboardingStep = (typeof UI_STEPS)[number]['key']
 
 export type FormErrors = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,15 +69,14 @@ export default function UserOnboarding() {
   const [formErrors, setFormErrors] = useState<FormErrors>(
     JSON.parse(JSON.stringify(emptyErrors)) as FormErrors,
   )
+  const [activeStep, setActiveStep] = useState<UiOnboardingStep>(1)
 
   useEffect(() => {
     if (!userData) return
 
     if (isOnboardingComplete(userData)) {
       navigate('/dashboard')
-      return
     }
-
   }, [userData, navigate])
 
   useEffect(() => {
@@ -153,8 +158,8 @@ export default function UserOnboarding() {
     })
   }
 
-  const getCombinedErrors = () => {
-    const combinedErrors = ONBOARDING_STEPS.reduce((acc, currentStep) => {
+  const getCombinedErrors = (steps: readonly BackendOnboardingStep[] = BACKEND_ONBOARDING_STEPS) => {
+    const combinedErrors = steps.reduce((acc, currentStep) => {
       const stepErrors = validateOnboardingFields(formData, currentStep)
 
       return {
@@ -177,18 +182,15 @@ export default function UserOnboarding() {
     return combinedErrors
   }
 
-  const handleCompleteSetup = async () => {
-    const errors = getCombinedErrors()
-    setFormErrors(errors)
+  const focusFirstError = (errors: FormErrors) => {
+    const firstError = findFirstError(errors)
+    toast.open({
+      message: firstError?.message || 'Please complete the highlighted fields before continuing.',
+      severity: 'error',
+      position: { vertical: 'top', horizontal: 'center' },
+    })
 
-    if (hasValidationErrors(errors)) {
-      const firstError = findFirstError(errors)
-      toast.open({
-        message: firstError?.message || 'Please complete the highlighted fields before continuing.',
-        severity: 'error',
-        position: { vertical: 'top', horizontal: 'center' },
-      })
-
+    window.setTimeout(() => {
       window.requestAnimationFrame(() => {
         const target = firstError?.field
           ? document.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
@@ -201,10 +203,36 @@ export default function UserOnboarding() {
         target?.scrollIntoView({ behavior: 'smooth', block: 'center' })
         target?.focus({ preventScroll: true })
       })
+    }, 80)
+  }
+
+  const handleContinue = () => {
+    const errors = getCombinedErrors([1])
+    setFormErrors(errors)
+
+    if (hasValidationErrors(errors)) {
+      focusFirstError(errors)
       return
     }
 
-    for (const currentStep of ONBOARDING_STEPS) {
+    setActiveStep(2)
+    window.requestAnimationFrame(() => {
+      document.getElementById('onboarding-panel')?.scrollTo({ top: 0, behavior: 'smooth' })
+    })
+  }
+
+  const handleCompleteSetup = async () => {
+    const errors = getCombinedErrors()
+    setFormErrors(errors)
+
+    if (hasValidationErrors(errors)) {
+      const basicInfoHasErrors = Object.values(errors.basicInfo || {}).some(Boolean)
+      if (basicInfoHasErrors) setActiveStep(1)
+      focusFirstError(errors)
+      return
+    }
+
+    for (const currentStep of BACKEND_ONBOARDING_STEPS) {
       await completeOnboarding({ step: currentStep, data: formData })
     }
 
@@ -222,23 +250,24 @@ export default function UserOnboarding() {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        height: '100dvh',
         background: brandGradients.page,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        p: { xs: 2, md: 4 },
+        overflow: 'hidden',
+        p: { xs: 1.25, md: 2 },
       }}
     >
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-          sx={{ width: '100%', maxWidth: 840, mb: 3 }}
+        sx={{ width: '100%', maxWidth: 1020, mb: { xs: 1.25, md: 1.5 } }}
       >
         <Typography
           variant="h6"
-          sx={{ fontWeight: 900, color: DE_BLUE, letterSpacing: -0.5, fontSize: '1.4rem' }}
+          sx={{ fontWeight: 900, color: DE_BLUE, fontSize: { xs: '1rem', md: '1.25rem' } }}
         >
           TrueTransit Seller Panel
         </Typography>
@@ -249,98 +278,168 @@ export default function UserOnboarding() {
         elevation={0}
         sx={{
           width: '100%',
-          maxWidth: 960,
-          borderRadius: '34px',
+          maxWidth: 1100,
+          maxHeight: { xs: 'calc(100dvh - 78px)', md: 'calc(100dvh - 82px)' },
+          borderRadius: { xs: '22px', md: '26px' },
           border: `1px solid ${alpha('#FFFFFF', 0.72)}`,
           overflow: 'hidden',
-          display: 'block',
+          display: 'flex',
+          flexDirection: 'column',
           boxShadow: '0 24px 54px rgba(15, 44, 67, 0.1)',
         }}
       >
         <Box
           sx={{
-            p: { xs: 2.5, md: 4 },
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(248,251,255,0.98) 100%)',
+            p: { xs: 1.5, md: 2.25 },
+            background:
+              'linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(248,251,255,0.98) 100%)',
+            display: 'flex',
+            minHeight: 0,
+            flex: 1,
+            flexDirection: 'column',
           }}
         >
-            <Box sx={{ mb: 3 }}>
-              <Chip
-                icon={<FiShield size={15} />}
-                label="Secure merchant setup"
-                sx={{
-                  mb: 1.4,
-                  bgcolor: alpha(DE_AMBER, 0.14),
-                  color: DE_BLUE,
-                  fontWeight: 800,
-                  border: `1px solid ${alpha(DE_AMBER, 0.24)}`,
-                }}
-              />
-              <Typography
-                sx={{
-                  fontSize: '0.72rem',
-                  fontWeight: 800,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: alpha(DE_BLUE, 0.6),
-                  mb: 0.75,
-                }}
-              >
-                TrueTransit onboarding
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: { xs: '1.35rem', md: '1.8rem' },
-                  fontWeight: 900,
-                  color: DE_BLUE,
-                }}
-              >
-                Fill your business details
-              </Typography>
-              <Typography sx={{ mt: 0.9, color: alpha(DE_BLUE, 0.72), fontSize: '0.94rem', lineHeight: 1.65 }}>
-                Add your contact, business, and shipping profile once. We’ll use it to prepare your dashboard,
-                courier setup, wallet, and order readiness.
-              </Typography>
-            </Box>
+          <Box sx={{ mb: { xs: 1.4, md: 1.7 }, flexShrink: 0 }}>
+            <Chip
+              icon={<FiShield size={15} />}
+              label="Secure merchant setup"
+              size="small"
+              sx={{
+                mb: 0.8,
+                bgcolor: alpha(DE_AMBER, 0.14),
+                color: DE_BLUE,
+                fontWeight: 800,
+                border: `1px solid ${alpha(DE_AMBER, 0.24)}`,
+              }}
+            />
+            <Typography
+              sx={{
+                fontSize: '0.72rem',
+                fontWeight: 800,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: alpha(DE_BLUE, 0.6),
+                mb: 0.45,
+              }}
+            >
+              TrueTransit onboarding
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: '1.3rem', md: '1.75rem' },
+                fontWeight: 900,
+                color: DE_BLUE,
+              }}
+            >
+              Fill your business details
+            </Typography>
+            <Typography
+              sx={{ mt: 0.45, color: alpha(DE_BLUE, 0.72), fontSize: '0.9rem', lineHeight: 1.45 }}
+            >
+              Add your business profile once. Existing completed accounts go straight to the dashboard.
+            </Typography>
+          </Box>
 
-          <Stack spacing={3}>
-            <StepOneForm
-              formData={formData}
-              errors={formErrors}
-              onChange={handleChange}
-              setFormData={setFormData}
-              setErrors={setFormErrors}
-              onNext={() => undefined}
-            />
-            <StepTwoForm formData={formData} errors={formErrors} onChange={handleChange} />
-            <StepThree
-              formData={formData}
-              errors={formErrors}
-              onChange={handleChange}
-              setErrors={setFormErrors}
-            />
+          <Stack direction="row" spacing={1} sx={{ mb: { xs: 1.25, md: 1.5 }, flexShrink: 0 }}>
+            {UI_STEPS.map((step) => {
+              const isActive = activeStep === step.key
+              const isDone = activeStep > step.key
+
+              return (
+                <Box
+                  key={step.key}
+                  sx={{
+                    flex: 1,
+                    borderRadius: 999,
+                    px: 1.4,
+                    py: 0.75,
+                    border: `1px solid ${alpha(DE_BLUE, isActive || isDone ? 0.28 : 0.1)}`,
+                    bgcolor: isActive ? alpha(DE_AMBER, 0.12) : alpha(DE_BLUE, 0.035),
+                    color: isActive || isDone ? DE_BLUE : alpha(DE_BLUE, 0.6),
+                    fontSize: '0.82rem',
+                    fontWeight: 900,
+                    textAlign: 'center',
+                  }}
+                >
+                  {step.key}. {step.label}
+                </Box>
+              )
+            })}
           </Stack>
+
+          <Box
+            id="onboarding-panel"
+            sx={{
+              flex: 1,
+              minHeight: 0,
+              overflowY: 'auto',
+              pr: { md: 0.5 },
+              scrollbarWidth: 'thin',
+            }}
+          >
+            {activeStep === 1 ? (
+              <StepOneForm
+                formData={formData}
+                errors={formErrors}
+                onChange={handleChange}
+                setFormData={setFormData}
+                setErrors={setFormErrors}
+                onNext={() => undefined}
+                compact
+              />
+            ) : (
+              <Stack spacing={{ xs: 1.5, md: 1.75 }}>
+                <StepTwoForm formData={formData} errors={formErrors} onChange={handleChange} compact />
+                <StepThree
+                  formData={formData}
+                  errors={formErrors}
+                  onChange={handleChange}
+                  setErrors={setFormErrors}
+                  compact
+                />
+              </Stack>
+            )}
+          </Box>
 
           <Stack
             direction="row"
-            spacing={2}
+            spacing={1.25}
             alignItems="stretch"
-            sx={{ mt: 4, pt: 3, borderTop: `1px solid ${alpha(DE_BLUE, 0.06)}` }}
+            sx={{ mt: 1.6, pt: 1.5, borderTop: `1px solid ${alpha(DE_BLUE, 0.06)}`, flexShrink: 0 }}
           >
+            {activeStep === 2 && (
+              <Button
+                variant="outlined"
+                startIcon={<MdArrowBack />}
+                onClick={() => setActiveStep(1)}
+                disabled={isPending}
+                sx={{
+                  minWidth: { xs: 96, md: 132 },
+                  borderRadius: 999,
+                  borderColor: alpha(DE_BLUE, 0.2),
+                  color: DE_BLUE,
+                  fontWeight: 800,
+                  textTransform: 'none',
+                }}
+              >
+                Back
+              </Button>
+            )}
             <CustomIconLoadingButton
               variant="solid"
               fullWidth
               loading={isPending}
-              onClick={handleCompleteSetup}
+              onClick={activeStep === 1 ? handleContinue : handleCompleteSetup}
               endIconNode={<MdArrowForward />}
-              text="Save Details & Open Dashboard"
+              text={activeStep === 1 ? 'Continue' : 'Save & Open Dashboard'}
               styles={{
                 flex: 1,
                 background: brandGradients.button,
                 color: brand.ink,
                 borderRadius: 999,
                 fontWeight: 800,
-                fontSize: '1rem',
-                py: 1.25,
+                fontSize: '0.96rem',
+                py: 1,
                 boxShadow: '0 16px 32px rgba(130,194,255,0.24)',
               }}
             />
@@ -350,5 +449,3 @@ export default function UserOnboarding() {
     </Box>
   )
 }
-
-

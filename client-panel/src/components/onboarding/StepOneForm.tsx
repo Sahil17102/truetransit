@@ -19,6 +19,7 @@ interface StepOneProps {
   onNext: () => void
   errors: FormErrors
   setErrors: React.Dispatch<React.SetStateAction<FormErrors>>
+  compact?: boolean
 }
 
 const DE_BLUE = '#8A1F43'
@@ -29,7 +30,14 @@ type UserVerificationState = {
   phoneVerified?: boolean
 }
 
-export default function StepOneForm({ formData, onChange, errors, setFormData, setErrors }: StepOneProps) {
+export default function StepOneForm({
+  formData,
+  onChange,
+  errors,
+  setFormData,
+  setErrors,
+  compact = false,
+}: StepOneProps) {
   const { user: userData } = useAuth()
   const [loadingPincode, setLoadingPincode] = useState(false)
   const [location, setLocation] = useState<{ city: string; state: string }>({ city: '', state: '' })
@@ -103,27 +111,32 @@ export default function StepOneForm({ formData, onChange, errors, setFormData, s
   }, [location?.state, location?.city, setFormData])
 
   const fieldCardSx = {
-    p: { xs: 1.6, md: 2 },
+    p: compact ? { xs: 1, md: 1.15 } : { xs: 1.6, md: 2 },
     borderRadius: 1,
     border: `1px solid ${alpha(DE_BLUE, 0.12)}`,
     backgroundColor: '#fff',
   }
 
   return (
-    <Stack spacing={{ xs: 2, md: 2.6 }}>
+    <Stack spacing={compact ? { xs: 1.1, md: 1.25 } : { xs: 2, md: 2.6 }}>
       <Box>
         <Typography
           variant="h5"
-          sx={{ fontWeight: 800, color: DE_BLUE, mb: 0.7, fontSize: { xs: '1.22rem', md: '1.5rem' } }}
+          sx={{
+            fontWeight: 800,
+            color: DE_BLUE,
+            mb: compact ? 0.25 : 0.7,
+            fontSize: compact ? { xs: '1.05rem', md: '1.22rem' } : { xs: '1.22rem', md: '1.5rem' },
+          }}
         >
           Account Details
         </Typography>
-        <Typography variant="body2" sx={{ color: '#6A616A', lineHeight: 1.55 }}>
+        <Typography variant="body2" sx={{ color: '#6A616A', lineHeight: 1.4, fontSize: compact ? '0.82rem' : undefined }}>
           Add primary contact information and your business address so your seller panel is ready to use.
         </Typography>
       </Box>
 
-      <Grid container spacing={{ xs: 1.5, md: 2 }}>
+      <Grid container spacing={compact ? { xs: 1, md: 1.2 } : { xs: 1.5, md: 2 }}>
         <Grid size={{ xs: 12, md: 6 }}>
           <Box sx={fieldCardSx}>
             <CustomInput
@@ -135,6 +148,7 @@ export default function StepOneForm({ formData, onChange, errors, setFormData, s
               error={!!errors.basicInfo.firstName}
               helperText={errors.basicInfo.firstName}
               prefix={<FiUser color={DE_BLUE} />}
+              topMargin={!compact}
             />
           </Box>
         </Grid>
@@ -150,25 +164,25 @@ export default function StepOneForm({ formData, onChange, errors, setFormData, s
               error={!!errors.basicInfo.lastName}
               helperText={errors.basicInfo.lastName}
               prefix={<FiUser color={DE_BLUE} />}
+              topMargin={!compact}
             />
           </Box>
         </Grid>
-      </Grid>
-
-      <Box sx={fieldCardSx}>
-        <CustomInput
-          label="Business Name"
-          name="companyName"
-          value={formData?.basicInfo.companyName}
-          onChange={(e) => onChange(e, 'basicInfo')}
-          required
-          error={!!errors.basicInfo.companyName}
-          helperText={errors.basicInfo.companyName}
-          prefix={<MdBusiness color={DE_BLUE} />}
-        />
-      </Box>
-
-      <Grid container spacing={{ xs: 1.5, md: 2 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box sx={fieldCardSx}>
+            <CustomInput
+              label="Business Name"
+              name="companyName"
+              value={formData?.basicInfo.companyName}
+              onChange={(e) => onChange(e, 'basicInfo')}
+              required
+              error={!!errors.basicInfo.companyName}
+              helperText={errors.basicInfo.companyName}
+              prefix={<MdBusiness color={DE_BLUE} />}
+              topMargin={!compact}
+            />
+          </Box>
+        </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Box sx={fieldCardSx}>
             <CustomInput
@@ -182,6 +196,7 @@ export default function StepOneForm({ formData, onChange, errors, setFormData, s
               error={!!errors.basicInfo.email}
               helperText={errors.basicInfo.email}
               prefix={<MdEmail color={DE_BLUE} />}
+              topMargin={!compact}
             />
           </Box>
         </Grid>
@@ -198,37 +213,42 @@ export default function StepOneForm({ formData, onChange, errors, setFormData, s
               error={!!errors.basicInfo.phone}
               helperText={errors.basicInfo.phone}
               prefix={<MdPhone color={DE_BLUE} />}
+              topMargin={!compact}
+            />
+          </Box>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Box sx={fieldCardSx}>
+            <CustomInput
+              label="Pincode"
+              name="pincode"
+              value={formData?.basicInfo?.pincode}
+              onChange={(e) => onChange(e, 'basicInfo')}
+              error={!!errors.basicInfo.pincode}
+              helperText={errors.basicInfo.pincode}
+              prefix={<MdLocationPin color={DE_BLUE} />}
+              topMargin={!compact}
+            />
+          </Box>
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <Box sx={fieldCardSx}>
+            <CustomInput
+              label="Business Address"
+              name="companyAddress"
+              value={formData?.basicInfo?.companyAddress}
+              onChange={(e) => onChange(e, 'basicInfo')}
+              required
+              multiline
+              minRows={compact ? 1 : 2}
+              error={!!errors.basicInfo.companyAddress}
+              helperText={errors.basicInfo.companyAddress}
+              prefix={<MdLocationPin color={DE_BLUE} />}
+              topMargin={!compact}
             />
           </Box>
         </Grid>
       </Grid>
-
-      <Box sx={fieldCardSx}>
-        <CustomInput
-          label="Pincode"
-          name="pincode"
-          value={formData?.basicInfo?.pincode}
-          onChange={(e) => onChange(e, 'basicInfo')}
-          error={!!errors.basicInfo.pincode}
-          helperText={errors.basicInfo.pincode}
-          prefix={<MdLocationPin color={DE_BLUE} />}
-        />
-      </Box>
-
-      <Box sx={fieldCardSx}>
-        <CustomInput
-          label="Business Address"
-          name="companyAddress"
-          value={formData?.basicInfo?.companyAddress}
-          onChange={(e) => onChange(e, 'basicInfo')}
-          required
-          multiline
-          minRows={2}
-          error={!!errors.basicInfo.companyAddress}
-          helperText={errors.basicInfo.companyAddress}
-          prefix={<MdLocationPin color={DE_BLUE} />}
-        />
-      </Box>
 
       {loadingPincode && (
         <Chip
@@ -245,7 +265,7 @@ export default function StepOneForm({ formData, onChange, errors, setFormData, s
       {location?.city && (
         <Box
           sx={{
-            p: 1.5,
+            p: compact ? 1 : 1.5,
             borderRadius: 2,
             backgroundColor: alpha(BRAND_ORANGE, 0.12),
             border: `1px solid ${alpha(BRAND_ORANGE, 0.24)}`,

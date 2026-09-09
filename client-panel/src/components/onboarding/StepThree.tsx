@@ -17,6 +17,7 @@ interface IStepThree {
     subKey?: keyof UserInfoData,
   ) => void
   setErrors: React.Dispatch<React.SetStateAction<FormErrors>>
+  compact?: boolean
 }
 
 const DE_BLUE = '#071D49'
@@ -77,26 +78,28 @@ const CHANNEL_OPTIONS: ChannelOption[] = [
   },
 ]
 
-export default function StepThree({ formData, onChange }: IStepThree) {
+export default function StepThree({ formData, onChange, compact = false }: IStepThree) {
   const selectedChannels = formData?.platformIntegration || {}
 
   const toggleChannel = (key: string) => {
     onChange(
-      createSyntheticEvent(key, !Boolean(selectedChannels?.[key])),
+      createSyntheticEvent(key, !selectedChannels?.[key]),
       'platformIntegration',
     )
   }
 
   return (
-    <Stack spacing={{ xs: 2.4, md: 3 }}>
+    <Stack spacing={compact ? { xs: 1.1, md: 1.25 } : { xs: 2.4, md: 3 }}>
       <Box>
         <Typography
           variant="h5"
           sx={{
             fontWeight: 900,
             color: DE_BLUE,
-            mb: 0.8,
-            fontSize: { xs: '1.45rem', sm: '1.7rem', md: '2rem' },
+            mb: compact ? 0.25 : 0.8,
+            fontSize: compact
+              ? { xs: '1.05rem', sm: '1.14rem', md: '1.22rem' }
+              : { xs: '1.45rem', sm: '1.7rem', md: '2rem' },
             letterSpacing: 0,
           }}
         >
@@ -104,19 +107,23 @@ export default function StepThree({ formData, onChange }: IStepThree) {
         </Typography>
         <Typography
           variant="body2"
-          sx={{ color: '#5A6C8C', fontSize: { xs: '0.9rem', sm: '1rem' }, lineHeight: 1.55 }}
+          sx={{
+            color: '#5A6C8C',
+            fontSize: compact ? '0.82rem' : { xs: '0.9rem', sm: '1rem' },
+            lineHeight: compact ? 1.35 : 1.55,
+          }}
         >
           Select platforms you'd like to integrate. You can always do this later.
         </Typography>
       </Box>
 
-      <Grid container spacing={{ xs: 1.4, md: 1.8 }}>
+      <Grid container spacing={compact ? { xs: 0.9, md: 1 } : { xs: 1.4, md: 1.8 }}>
         {CHANNEL_OPTIONS.map((option) => {
           const active = Boolean(selectedChannels?.[option.key])
           const Icon = option.icon
 
           return (
-            <Grid key={option.key} size={{ xs: 12, sm: 6 }}>
+            <Grid key={option.key} size={compact ? { xs: 12, sm: 6, md: 4 } : { xs: 12, sm: 6 }}>
               <Box
                 role="button"
                 tabIndex={0}
@@ -129,17 +136,17 @@ export default function StepThree({ formData, onChange }: IStepThree) {
                   }
                 }}
                 sx={{
-                  minHeight: 92,
+                  minHeight: compact ? 70 : 92,
                   height: '100%',
-                  p: { xs: 1.7, md: 2 },
-                  borderRadius: 2.4,
+                  p: compact ? { xs: 1, md: 1.1 } : { xs: 1.7, md: 2 },
+                  borderRadius: compact ? 1.2 : 2.4,
                   border: `2px solid ${active ? BRAND_PURPLE : '#E7ECF4'}`,
                   backgroundColor: active ? alpha(BRAND_PURPLE, 0.035) : '#FAFBFD',
                   boxShadow: active ? `0 18px 34px ${alpha(BRAND_PURPLE, 0.14)}` : 'none',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 1.6,
+                  gap: compact ? 1 : 1.6,
                   position: 'relative',
                   transition: 'border-color .2s ease, box-shadow .2s ease, transform .2s ease',
                   '&:hover': {
@@ -154,9 +161,9 @@ export default function StepThree({ formData, onChange }: IStepThree) {
               >
                 <Box
                   sx={{
-                    width: 42,
-                    height: 42,
-                    borderRadius: 2,
+                    width: compact ? 34 : 42,
+                    height: compact ? 34 : 42,
+                    borderRadius: compact ? 1.2 : 2,
                     bgcolor: option.logoBg,
                     display: 'flex',
                     alignItems: 'center',
@@ -174,10 +181,10 @@ export default function StepThree({ formData, onChange }: IStepThree) {
                       component="img"
                       src={option.logo}
                       alt=""
-                      sx={{ width: 30, height: 30, objectFit: 'contain' }}
+                      sx={{ width: compact ? 24 : 30, height: compact ? 24 : 30, objectFit: 'contain' }}
                     />
                   ) : Icon ? (
-                    <Icon size={22} color="#617089" />
+                    <Icon size={compact ? 18 : 22} color="#617089" />
                   ) : (
                     option.fallback
                   )}
@@ -186,7 +193,7 @@ export default function StepThree({ formData, onChange }: IStepThree) {
                 <Box sx={{ minWidth: 0, pr: active ? 3.3 : 0 }}>
                   <Typography
                     sx={{
-                      fontSize: { xs: '0.98rem', md: '1.05rem' },
+                      fontSize: compact ? '0.86rem' : { xs: '0.98rem', md: '1.05rem' },
                       lineHeight: 1.2,
                       fontWeight: 900,
                       color: DE_BLUE,
@@ -196,8 +203,8 @@ export default function StepThree({ formData, onChange }: IStepThree) {
                   </Typography>
                   <Typography
                     sx={{
-                      mt: 0.3,
-                      fontSize: { xs: '0.82rem', md: '0.9rem' },
+                      mt: compact ? 0.15 : 0.3,
+                      fontSize: compact ? '0.72rem' : { xs: '0.82rem', md: '0.9rem' },
                       color: '#5B6F91',
                       lineHeight: 1.25,
                     }}
@@ -210,14 +217,14 @@ export default function StepThree({ formData, onChange }: IStepThree) {
                   <Box
                     sx={{
                       position: 'absolute',
-                      right: 16,
+                      right: compact ? 10 : 16,
                       top: '50%',
                       transform: 'translateY(-50%)',
                       color: BRAND_PURPLE,
                       display: 'flex',
                     }}
                   >
-                    <MdCheckCircle size={26} />
+                    <MdCheckCircle size={compact ? 21 : 26} />
                   </Box>
                 )}
               </Box>
