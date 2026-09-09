@@ -65,6 +65,7 @@ const hasShipwaySecret = (shipway = {}) =>
 const buildShipwayPayload = (form) => {
   const apiBase = form.apiBase.trim().replace(/\/+$/, '')
   const email = form.email.trim()
+  const warehouseId = form.warehouseId.trim()
   const licenseKey = cleanOptionalSecret(form.licenseKey)
 
   return {
@@ -76,6 +77,8 @@ const buildShipwayPayload = (form) => {
     email,
     username: email,
     shipwayEmail: email,
+    warehouseId,
+    warehouse_id: warehouseId,
     ...(licenseKey
       ? {
           licenseKey,
@@ -132,6 +135,7 @@ const CourierCredentials = () => {
   const [shipwayForm, setShipwayForm] = useState({
     apiBase: 'https://app.shipway.com/api',
     email: '',
+    warehouseId: '',
     licenseKey: '',
   })
 
@@ -181,6 +185,11 @@ const CourierCredentials = () => {
           data.shipway.username ||
           data.shipway.shipwayEmail ||
           data.shipway.shipway_email ||
+          '',
+        warehouseId:
+          data.shipway.warehouseId ||
+          data.shipway.warehouse_id ||
+          data.shipway.clientId ||
           '',
         licenseKey: '',
       })
@@ -419,6 +428,7 @@ const CourierCredentials = () => {
     const missing = [
       !shipwayForm.apiBase.trim() && 'API Base URL',
       !shipwayForm.email.trim() && 'Shipway email',
+      !shipwayForm.warehouseId.trim() && 'Warehouse ID',
       !savedShipwaySecret && !cleanLicenseKey && 'License Key / API Token',
     ].filter(Boolean)
 
@@ -710,6 +720,23 @@ const CourierCredentials = () => {
                 }
                 placeholder="email@example.com"
               />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Warehouse ID</FormLabel>
+              <Input
+                inputMode="numeric"
+                value={shipwayForm.warehouseId}
+                onChange={(event) =>
+                  setShipwayForm((previous) => ({
+                    ...previous,
+                    warehouseId: event.target.value.replace(/\D/g, ''),
+                  }))
+                }
+                placeholder="Shipway warehouse ID"
+              />
+              <FormHelperText>
+                Found in Shipway under Settings &gt; Warehouse.
+              </FormHelperText>
             </FormControl>
             <FormControl isRequired>
               <FormLabel>License Key / API Token</FormLabel>
