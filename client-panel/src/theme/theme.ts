@@ -241,6 +241,15 @@ export const createAppTheme = (mode: PaletteMode = 'light') => {
           minHeight: 40,
           alignItems: 'center',
           justifyContent: 'center',
+          gap: 8,
+          whiteSpace: 'nowrap',
+          textTransform: 'none',
+        },
+        '.MuiButton-startIcon, .MuiButton-endIcon': {
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
         },
         '.MuiCard-root': {
           borderRadius: '16px !important',
@@ -320,12 +329,16 @@ export const createAppTheme = (mode: PaletteMode = 'light') => {
           transition: 'background-color .18s ease, border-color .18s ease, color .18s ease',
         },
         containedPrimary: {
-          background: brandGradients.button,
+          background: brand.accent,
           color: '#FFFFFF',
           boxShadow: 'none',
           '&:hover': {
-            background: brandGradients.button,
+            background: '#0E7A55',
             boxShadow: 'none',
+          },
+          '&.Mui-disabled': {
+            background: alpha(brand.ink, 0.16),
+            color: alpha(textPrimary, 0.58),
           },
         },
         containedSecondary: {

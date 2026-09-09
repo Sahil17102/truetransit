@@ -1,4 +1,4 @@
-import { Button, Skeleton, Stack, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button, Skeleton, Stack } from '@mui/material'
 import { useState } from 'react'
 import { FaWhatsapp } from 'react-icons/fa'
 import { FiPlus } from 'react-icons/fi'
@@ -89,8 +89,6 @@ const initialFilterValues = {
 }
 
 export const SupportTicketsPage = () => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [filters, setFilters] = useState(initialFilterValues)
   const [page, setPage] = useState(1)
@@ -123,25 +121,30 @@ export const SupportTicketsPage = () => {
       )}
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
-        alignItems={{ xs: 'stretch', sm: 'center' }}
+        alignItems={{ xs: 'stretch', sm: 'flex-start' }}
         justifyContent="space-between"
-        gap={1.5}
+        gap={1.25}
+        sx={{ width: '100%', minWidth: 0 }}
       >
-        <FilterBar
-          fields={supportTicketFilterFields}
-          defaultValues={initialFilterValues}
-          onApply={(newFilters) => {
-            setFilters(newFilters)
-            setPage(0) // reset to first page on filter change
-          }}
-          bgOverlayImg="/images/filters-bg.png"
-          appliedCount={appliedCount}
-        />
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <FilterBar
+            fields={supportTicketFilterFields}
+            defaultValues={initialFilterValues}
+            onApply={(newFilters) => {
+              setFilters(newFilters)
+              setPage(1)
+            }}
+            bgOverlayImg="/images/filters-bg.png"
+            appliedCount={appliedCount}
+          />
+        </Box>
         <Button
           sx={{
-            ml: !isMobile ? '50px' : 0,
             flexShrink: 0,
-            alignSelf: { xs: 'stretch', sm: 'center' },
+            alignSelf: { xs: 'stretch', sm: 'flex-start' },
+            minHeight: 42,
+            mt: { xs: 0, sm: 0.25 },
+            px: 2,
             textTransform: 'none',
             fontWeight: 700,
           }}

@@ -74,7 +74,7 @@ interface SidebarProps {
 }
 
 export const COLLAPSED_WIDTH = 88
-export const DESKTOP_SIDEBAR_WIDTH = 284
+export const DESKTOP_SIDEBAR_WIDTH = 300
 
 const STANDARD_ICON_SIZE = 21
 const ACTIVE = brand.navy
@@ -292,6 +292,11 @@ export default function Sidebar({
     overflow: 'hidden',
     border: `1px solid transparent`,
     transition: 'background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
+    gap: isSidebarExpanded ? 1.15 : 0,
+    '& .MuiListItemText-root': {
+      minWidth: 0,
+      m: 0,
+    },
     '&:hover': {
       bgcolor: itemHoverBg,
       borderColor: SOFT_BORDER,
@@ -360,6 +365,7 @@ export default function Sidebar({
             minWidth: isSidebarExpanded ? 42 : 40,
             width: isSidebarExpanded ? 34 : 40,
             height: isSidebarExpanded ? 34 : 40,
+            mr: isSidebarExpanded ? 0.1 : 0,
             flexShrink: 0,
             borderRadius: 1.6,
             bgcolor: isDark ? alpha('#ffffff', 0.04) : alpha(ACTIVE, 0.055),
@@ -382,7 +388,7 @@ export default function Sidebar({
                 ? 'clamp(0.86rem, 2vh, 1rem)'
                 : 'clamp(0.82rem, 1.9vh, 0.93rem)',
               fontWeight: active ? 650 : 500,
-              letterSpacing: '-0.01em',
+              letterSpacing: 0,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -441,6 +447,11 @@ export default function Sidebar({
                       color: subActive ? activeText : TEXT,
                       bgcolor: subActive ? childActiveBg : 'transparent',
                       border: `1px solid ${subActive ? alpha(ACCENT, 0.2) : 'transparent'}`,
+                      gap: 0.85,
+                      '& .MuiListItemText-root': {
+                        minWidth: 0,
+                        m: 0,
+                      },
                       '&:hover': {
                         bgcolor: childHoverBg,
                         color: WHITE,
@@ -453,6 +464,8 @@ export default function Sidebar({
                       <ListItemIcon
                         sx={{
                           minWidth: 28,
+                          width: 22,
+                          flexShrink: 0,
                           color: subActive ? ACCENT : iconMuted,
                           '& svg': { width: 17, height: 17, strokeWidth: 2.35 },
                         }}
