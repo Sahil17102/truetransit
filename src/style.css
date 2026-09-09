@@ -2198,7 +2198,7 @@ h2 em { color: var(--brand-blue); }
 .flow-node,
 .route-panel > div,
 .hero-stat-row article { transition: transform .25s ease, box-shadow .25s ease; }
-.flow-node:hover,
+.flow-node:not(.flow-core):hover,
 .route-panel > div:hover,
 .hero-stat-row article:hover { transform: translateY(-5px); box-shadow: 0 16px 34px rgba(7,18,97,.12); }
 
