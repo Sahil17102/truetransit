@@ -45,7 +45,7 @@ export const loginAdmin = async (email, password) => {
   const response = await api.post(
     "/auth/admin/login",
     { email, password },
-    { timeout: 60000 },
+    { timeout: 120000 },
   );
   return response.data;
 };

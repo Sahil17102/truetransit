@@ -77,9 +77,13 @@ function SignIn() {
 
     setLoading(true);
     setLoadingText("Signing in");
+    const wakeMessageTimer = window.setTimeout(() => {
+      setLoadingText("Waking server");
+    }, 1800);
 
     try {
       if (isDemoAdminCredential(email, password)) {
+        window.clearTimeout(wakeMessageTimer);
         login(
           createDemoAdminToken("access"),
           DEMO_ADMIN_USER_ID,
@@ -98,11 +102,8 @@ function SignIn() {
         return;
       }
 
-      setLoadingText("Waking server");
-      await waitForAdminApi();
-      setLoadingText("Signing in");
-
       const data = await loginAdmin(email, password);
+      window.clearTimeout(wakeMessageTimer);
 
       const adminUser = data?.user || data?.admin || null;
       login(data.token, adminUser?.id, data.refreshToken, adminUser);
@@ -138,6 +139,7 @@ function SignIn() {
         isClosable: true,
       });
     } finally {
+      window.clearTimeout(wakeMessageTimer);
       setLoading(false);
     }
   };
