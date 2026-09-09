@@ -20,6 +20,7 @@ import {
   useTheme,
 } from '@mui/material'
 import moment from 'moment'
+import { saveAs } from 'file-saver'
 import { useEffect, useMemo, useState, type MouseEvent, type ReactNode } from 'react'
 import {
   MdAssignment,
@@ -36,7 +37,11 @@ import {
 } from 'react-icons/md'
 import { TbDownload, TbFilter, TbPlus, TbRefresh } from 'react-icons/tb'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import { fetchOrdersForCsvExport, generateManifestService } from '../../api/order.service'
+import {
+  downloadGeneratedOrderDocument,
+  fetchOrdersForCsvExport,
+  generateManifestService,
+} from '../../api/order.service'
 import {
   useAllOrders,
   useB2BOrdersByUser,
@@ -787,6 +792,16 @@ const AllOrders = () => {
       const documentEntries = getDocumentEntriesForOrders([order], type)
 
       if (!documentEntries.length) {
+        if ((type === 'label' || type === 'invoice') && isDocumentGenerationReady(order)) {
+          const document = await downloadGeneratedOrderDocument(String(order.id), type)
+          saveAs(document, getDownloadFileName(order, type))
+          toast.open({
+            message: `${typeLabel} downloaded for ${order.order_number || 'this order'}.`,
+            severity: 'success',
+          })
+          return
+        }
+
         toast.open({
           message: `${typeLabel} is not available for ${order.order_number || 'this order'} yet.`,
           severity: 'error',
@@ -1396,8 +1411,8 @@ const AllOrders = () => {
         const isLabelDownloading = downloadingRowDocument === `${row.id}-label`
         const isInvoiceDownloading = downloadingRowDocument === `${row.id}-invoice`
         const isManifestDownloading = downloadingRowDocument === `${row.id}-manifest`
-        const canDownloadLabel = hasDocument(row, 'label')
-        const canDownloadInvoice = hasDocument(row, 'invoice')
+        const canDownloadLabel = hasDocument(row, 'label') || isDocumentReady
+        const canDownloadInvoice = hasDocument(row, 'invoice') || isDocumentReady
         const canDownloadManifest = hasDocument(row, 'manifest')
         const isMenuOpen = activeActionOrderId === row.id && Boolean(actionMenuAnchor)
         const canSelectCourier = isCourierSelectionPending(row)

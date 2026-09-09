@@ -20,6 +20,7 @@ import {
   useTheme,
 } from '@mui/material'
 import moment from 'moment'
+import { saveAs } from 'file-saver'
 import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 import {
   MdAssignment,
@@ -36,7 +37,11 @@ import {
   MdVisibility,
 } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { fetchOrdersForCsvExport, generateManifestService } from '../../../api/order.service'
+import {
+  downloadGeneratedOrderDocument,
+  fetchOrdersForCsvExport,
+  generateManifestService,
+} from '../../../api/order.service'
 import {
   useB2COrdersByUser,
   useCancelShipment,
@@ -985,6 +990,16 @@ const B2COrdersList = () => {
       const documentEntries = getDocumentEntriesForOrders([order], type)
 
       if (!documentEntries.length) {
+        if ((type === 'label' || type === 'invoice') && isDocumentGenerationReady(order)) {
+          const document = await downloadGeneratedOrderDocument(String(order.id), type)
+          saveAs(document, getDownloadFileName(order, type))
+          toast.open({
+            message: `${typeLabel} downloaded for ${order.order_number}.`,
+            severity: 'success',
+          })
+          return
+        }
+
         toast.open({
           message: `${typeLabel} is not available for ${order.order_number} yet.`,
           severity: 'error',
@@ -1555,8 +1570,8 @@ const B2COrdersList = () => {
         const isLabelDownloading = downloadingRowDocument === `${row.id}-label`
         const isInvoiceDownloading = downloadingRowDocument === `${row.id}-invoice`
         const isManifestDownloading = downloadingRowDocument === `${row.id}-manifest`
-        const canDownloadLabel = hasDocument(row, 'label')
-        const canDownloadInvoice = hasDocument(row, 'invoice')
+        const canDownloadLabel = hasDocument(row, 'label') || isDocumentReady
+        const canDownloadInvoice = hasDocument(row, 'invoice') || isDocumentReady
         const canDownloadManifest = hasDocument(row, 'manifest')
         const isMenuOpen = activeActionOrderId === row.id && Boolean(actionMenuAnchor)
         const canSelectCourier = isCourierSelectionPending(row)

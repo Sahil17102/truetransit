@@ -352,6 +352,17 @@ export const generateManifestService = async (params: GenerateManifestParams) =>
   return res.data
 }
 
+export const downloadGeneratedOrderDocument = async (
+  orderId: string,
+  documentType: 'label' | 'invoice',
+): Promise<Blob> => {
+  const response = await axiosInstance.get(`/orders/${encodeURIComponent(orderId)}/documents/${documentType}`, {
+    responseType: 'blob',
+    timeout: 120000,
+  })
+  return response.data
+}
+
 export interface RetryManifestResponse extends GenerateManifestResponse {
   manifest_key?: string | null
   retry_count: number
