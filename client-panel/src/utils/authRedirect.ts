@@ -3,6 +3,7 @@ type OnboardingStatusUser = {
   profileComplete?: boolean | null
   accountVerified?: boolean | null
   onboardingStep?: number | null
+  approved?: boolean | null
   companyInfo?: {
     businessName?: string | null
     brandName?: string | null
@@ -52,4 +53,8 @@ export const isOnboardingComplete = (user?: OnboardingStatusUser | null) =>
   )
 
 export const getPostAuthRedirect = (user?: OnboardingStatusUser | null) =>
-  isOnboardingComplete(user) ? '/dashboard' : '/onboarding-questions'
+  isOnboardingComplete(user)
+    ? user?.approved
+      ? '/orders/create'
+      : '/dashboard'
+    : '/onboarding-questions'
