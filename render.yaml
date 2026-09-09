@@ -9,6 +9,8 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://truetransit1.onrender.com/api
+      - key: VITE_DEMO_OTP_ENABLED
+        value: "false"
     routes:
       - type: rewrite
         source: /*
@@ -26,6 +28,8 @@ services:
         value: https://truetransit1.onrender.com/api
       - key: REACT_APP_CLIENT_URL
         value: https://truetransit-2.onrender.com
+      - key: REACT_APP_DEMO_ADMIN_ENABLED
+        value: "false"
     routes:
       - type: rewrite
         source: /*

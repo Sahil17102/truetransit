@@ -13,7 +13,7 @@ import { clearAuthTokens, getAuthTokens, setAuthTokens } from '../../api/tokenVa
 import { useUserProfile } from '../../hooks/User/useUserProfile'
 import type { IUserProfileDB } from '../../types/user.types'
 import { emptyUserProfile } from '../../utils/utility'
-import { DEMO_SESSION_EMAIL_KEY } from '../../utils/demoAuth'
+import { DEMO_SESSION_EMAIL_KEY, isDemoLoginEnabled } from '../../utils/demoAuth'
 
 const AUTH_USER_CACHE_KEY = 'truetransit-auth-user-cache:v1'
 
@@ -118,9 +118,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const { accessToken, refreshToken } = getAuthTokens()
   const hasTokens = !!accessToken && !!refreshToken
-  const [demoEmail, setDemoEmail] = useState(() =>
-    typeof window === 'undefined' ? '' : sessionStorage.getItem(DEMO_SESSION_EMAIL_KEY) || '',
-  )
+  const [demoEmail, setDemoEmail] = useState(() => {
+    if (typeof window === 'undefined') return ''
+    if (!isDemoLoginEnabled()) {
+      sessionStorage.removeItem(DEMO_SESSION_EMAIL_KEY)
+      sessionStorage.removeItem('activeEmail')
+      return ''
+    }
+    return sessionStorage.getItem(DEMO_SESSION_EMAIL_KEY) || ''
+  })
   const hasDemoSession = Boolean(demoEmail)
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(hasTokens || hasDemoSession)
@@ -192,6 +198,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const startDemoSession = (email: string) => {
+    if (!isDemoLoginEnabled()) return
     const normalizedEmail = email.trim().toLowerCase()
     clearAuthTokens()
     clearCachedAuthUser()

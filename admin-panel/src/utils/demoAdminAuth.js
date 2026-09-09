@@ -15,7 +15,7 @@ const encodeBase64Url = (value) =>
 
 export const isDemoAdminEnabled = () =>
   typeof window !== "undefined" &&
-  String(process.env.REACT_APP_DEMO_ADMIN_ENABLED || "true").toLowerCase() !== "false";
+  String(process.env.REACT_APP_DEMO_ADMIN_ENABLED || "false").toLowerCase() === "true";
 
 export const isDemoAdminCredential = (email, password) =>
   isDemoAdminEnabled() &&
@@ -53,6 +53,7 @@ export const getDemoAdminUser = () => ({
 });
 
 export const isDemoAdminSession = () => {
+  if (!isDemoAdminEnabled()) return false;
   try {
     const user = JSON.parse(localStorage.getItem("adminUser") || "null");
     return Boolean(user?.demo);

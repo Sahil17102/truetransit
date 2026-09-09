@@ -1,6 +1,7 @@
 // store/useAuthStore.js
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
+import { isDemoAdminEnabled } from "../utils/demoAdminAuth";
 
 function isTokenExpired(token) {
   try {
@@ -47,8 +48,16 @@ export const useAuthStore = create((set) => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   const userId = localStorage.getItem("userId");
+  const storedAdminUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("adminUser") || "null");
+    } catch {
+      return null;
+    }
+  })();
 
-  const isRefreshValid = refreshToken && !isTokenExpired(refreshToken);
+  const disabledDemoSession = Boolean(storedAdminUser?.demo) && !isDemoAdminEnabled();
+  const isRefreshValid = !disabledDemoSession && refreshToken && !isTokenExpired(refreshToken);
 
   if (!isRefreshValid) {
     localStorage.clear();

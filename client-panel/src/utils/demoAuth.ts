@@ -1,17 +1,9 @@
 export const DEMO_OTP = '246810'
 export const DEMO_SESSION_EMAIL_KEY = 'truetransit-demo-email'
 
-const DEMO_HOSTS = new Set([
-  'localhost',
-  '127.0.0.1',
-  'truetransit-2.onrender.com',
-])
-
 export const isDemoLoginEnabled = () =>
   import.meta.env.DEV ||
-  (typeof window !== 'undefined' &&
-    DEMO_HOSTS.has(window.location.hostname.toLowerCase()) &&
-    String(import.meta.env.VITE_DEMO_OTP_ENABLED || 'true').toLowerCase() !== 'false')
+  String(import.meta.env.VITE_DEMO_OTP_ENABLED || 'false').toLowerCase() === 'true'
 
 export const isDemoSessionActive = () =>
   typeof window !== 'undefined' &&
