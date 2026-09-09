@@ -1,5 +1,6 @@
 import {
   alpha,
+  Alert,
   Autocomplete,
   Box,
   Button,
@@ -15,7 +16,7 @@ import {
 import { useEffect, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { BiCheckCircle } from 'react-icons/bi'
-import { FiPlus } from 'react-icons/fi'
+import { FiPlus, FiRefreshCw } from 'react-icons/fi'
 import { usePickupAddresses } from '../../hooks/Pickup/usePickupAddresses'
 import { useInvoicePreferences } from '../../hooks/User/useInvoicePreferences'
 import type { HydratedPickup } from '../../types/generic.types'
@@ -57,6 +58,8 @@ const PickupLocationForm = ({ shipmentType = 'b2c' }: { shipmentType?: 'b2b' | '
     data: locations,
     isLoading,
     isError,
+    isFetching,
+    refetch,
   } = usePickupAddresses({ isPickupEnabled: 'active' as unknown as boolean })
   const { preferences } = useInvoicePreferences()
 
@@ -212,9 +215,13 @@ const PickupLocationForm = ({ shipmentType = 'b2c' }: { shipmentType?: 'b2b' | '
     </CustomDrawer>
   )
 
-  if (isLoading) return <Typography>Loading pickup locations...</Typography>
-  if (isError) return <Typography color="error">Failed to load pickup locations</Typography>
-  if (!locations?.pickupAddresses || locations.pickupAddresses.length === 0)
+  const pickupLocations = locations?.pickupAddresses ?? []
+
+  if (isLoading && pickupLocations.length === 0) {
+    return <Typography>Loading pickup locations...</Typography>
+  }
+
+  if (pickupLocations.length === 0)
     return (
       <>
         <Paper
@@ -229,19 +236,34 @@ const PickupLocationForm = ({ shipmentType = 'b2c' }: { shipmentType?: 'b2b' | '
         >
           <Stack spacing={1.5} alignItems="flex-start">
             <Typography sx={{ color: TEXT_PRIMARY, fontWeight: 800 }}>
-              No pickup address added yet
+              {isError ? 'Pickup locations could not be loaded' : 'No pickup address added yet'}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Add a pickup warehouse here. Your order details will stay on this step.
+              {isError
+                ? 'Retry to load your saved addresses, or add a pickup warehouse without leaving this order.'
+                : 'Add a pickup warehouse here. Your order details will stay on this step.'}
             </Typography>
-            <Button
-              variant="contained"
-              startIcon={<FiPlus />}
-              onClick={() => setAddDrawerOpen(true)}
-              sx={{ textTransform: 'none', fontWeight: 800 }}
-            >
-              Add Pickup Address
-            </Button>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25}>
+              {isError && (
+                <Button
+                  variant="outlined"
+                  startIcon={<FiRefreshCw />}
+                  onClick={() => refetch()}
+                  disabled={isFetching}
+                  sx={{ textTransform: 'none', fontWeight: 800 }}
+                >
+                  {isFetching ? 'Retrying...' : 'Retry Saved Addresses'}
+                </Button>
+              )}
+              <Button
+                variant="contained"
+                startIcon={<FiPlus />}
+                onClick={() => setAddDrawerOpen(true)}
+                sx={{ textTransform: 'none', fontWeight: 800 }}
+              >
+                Add Pickup Address
+              </Button>
+            </Stack>
           </Stack>
         </Paper>
         {addAddressDrawer}
@@ -255,6 +277,26 @@ const PickupLocationForm = ({ shipmentType = 'b2c' }: { shipmentType?: 'b2b' | '
       rules={{ required: 'Please select a pickup location' }}
       render={({ field, fieldState }) => (
         <>
+          {isError && (
+            <Alert
+              severity="warning"
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  startIcon={<FiRefreshCw />}
+                  onClick={() => refetch()}
+                  disabled={isFetching}
+                >
+                  Retry
+                </Button>
+              }
+              sx={{ mb: 2, borderRadius: 2 }}
+            >
+              Saved pickup locations may be out of date. You can still select a loaded address or
+              add a new one.
+            </Alert>
+          )}
           <Grid container spacing={3} mb={4}>
             <Grid size={12}>
               <Stack
@@ -271,9 +313,9 @@ const PickupLocationForm = ({ shipmentType = 'b2c' }: { shipmentType?: 'b2b' | '
                     Need a different pickup warehouse? Add it here without leaving this order.
                   </Typography>
                   <Autocomplete
-                    options={locations.pickupAddresses}
+                    options={pickupLocations}
                     value={
-                      locations.pickupAddresses.find((loc) => loc.pickupId === field.value) ?? null
+                      pickupLocations.find((loc) => loc.pickupId === field.value) ?? null
                     }
                     onChange={(_, value) => {
                       if (value) {
@@ -335,7 +377,7 @@ const PickupLocationForm = ({ shipmentType = 'b2c' }: { shipmentType?: 'b2b' | '
               </Stack>
             </Grid>
 
-            {locations.pickupAddresses.map((loc) => {
+            {pickupLocations.map((loc) => {
             const isSelected = field.value === loc.pickupId
             const isOpen = openRto[loc.id] || false
             const pickupGst = normalizeTaxInput(
