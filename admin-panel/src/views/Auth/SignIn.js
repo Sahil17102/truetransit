@@ -37,6 +37,7 @@ import {
   DEMO_ADMIN_PASSWORD,
   DEMO_ADMIN_USER_ID,
   getDemoAdminUser,
+  isDemoAdminEnabled,
   isDemoAdminCredential,
 } from "../../utils/demoAdminAuth";
 
@@ -50,8 +51,9 @@ function isTokenValid(token) {
 }
 
 function SignIn() {
-  const [email, setEmail] = useState(DEMO_ADMIN_EMAIL);
-  const [password, setPassword] = useState(DEMO_ADMIN_PASSWORD);
+  const demoEnabled = isDemoAdminEnabled();
+  const [email, setEmail] = useState(demoEnabled ? DEMO_ADMIN_EMAIL : "");
+  const [password, setPassword] = useState(demoEnabled ? DEMO_ADMIN_PASSWORD : "");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Signing in");
@@ -379,9 +381,11 @@ function SignIn() {
                   <Text color="#8A95A3" fontSize="14px">
                     Sign in with your TrueTransit admin credentials
                   </Text>
-                  <Text color="#607397" fontSize="12px" mt="10px" lineHeight="1.6">
-                    Demo: {DEMO_ADMIN_EMAIL} / {DEMO_ADMIN_PASSWORD}
-                  </Text>
+                  {demoEnabled && (
+                    <Text color="#607397" fontSize="12px" mt="10px" lineHeight="1.6">
+                      Demo: {DEMO_ADMIN_EMAIL} / {DEMO_ADMIN_PASSWORD}
+                    </Text>
+                  )}
                 </Box>
 
                 <FormControl>
