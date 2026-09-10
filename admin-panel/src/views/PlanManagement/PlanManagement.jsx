@@ -134,12 +134,6 @@ const PlanManagement = () => {
             render: (value) => <Text color="#607397">{value || '—'}</Text>,
           },
           {
-            key: 'commission_percentage',
-            label: 'Courier Cost Commission',
-            align: 'center',
-            render: (value) => `${Number(value || 0).toFixed(2)}%`,
-          },
-          {
             key: 'sort_order',
             label: 'Sort Order',
             align: 'center',
@@ -183,7 +177,7 @@ const PlanManagement = () => {
             ) : null}
           </HStack>
         )}
-        minW="1120px"
+        minW="980px"
       />
 
       <PlanModal
