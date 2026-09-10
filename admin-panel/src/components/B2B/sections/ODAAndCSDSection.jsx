@@ -34,9 +34,6 @@ const ODAAndCSDSection = memo(({ formData, onFieldChange }) => {
         <Text fontSize="sm" fontWeight="semibold" color="purple.700" mb={3}>
           ODA Charges
         </Text>
-        <Text fontSize="xs" color="purple.700" mb={3}>
-          Applied only when the destination pincode is marked ODA in B2B Pincodes. Update these amounts here whenever the Delhivery ODA rate changes.
-        </Text>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
           <FormControl>
             <FormLabel fontSize="sm" fontWeight="medium">

@@ -20,7 +20,6 @@ import {
 } from '@chakra-ui/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { IconDownload, IconFileImport, IconPlus } from '@tabler/icons-react'
-import Papa from 'papaparse'
 import { useMemo, useState } from 'react'
 import { useCouriers } from '../../hooks/useCouriers'
 import {
@@ -60,45 +59,6 @@ const flagFields = [
   ['isAirport', 'Airport'],
   ['isHighSecurity', 'High Security'],
 ]
-
-const normaliseCsvHeader = (header) => String(header || '').replace(/[^a-z0-9]/gi, '').toLowerCase()
-
-const isTruthyCsvValue = (value) => ['1', 'true', 'yes', 'y'].includes(String(value || '').trim().toLowerCase())
-
-const getCsvValue = (row, header) =>
-  row[Object.keys(row).find((key) => normaliseCsvHeader(key) === header) || '']
-
-const prepareDelhiveryOdaImport = async (file) => {
-  const source = await file.text()
-  const parsed = Papa.parse(source, { header: true, skipEmptyLines: true })
-  if (parsed.errors?.length) throw new Error(`CSV parse error: ${parsed.errors[0].message}`)
-
-  const firstRow = parsed.data[0] || {}
-  const isDelhiveryOdaFile =
-    Object.keys(firstRow).some((key) => normaliseCsvHeader(key) === 'pincode') &&
-    Object.keys(firstRow).some((key) => normaliseCsvHeader(key) === 'odazone')
-
-  if (!isDelhiveryOdaFile) return { file, matchedRows: null }
-
-  // Delhivery's list is a serviceability file. Inactive rows must not change
-  // our current ODA flag; active Yes/No rows become the authoritative ODA map.
-  const rows = parsed.data
-    .filter((row) => String(getCsvValue(row, 'status') || 'active').trim().toLowerCase() === 'active')
-    .map((row) => ({
-      pincode: String(getCsvValue(row, 'pincode')).trim(),
-      is_oda: isTruthyCsvValue(getCsvValue(row, 'odazone')) ? 'true' : 'false',
-    }))
-    .filter((row) => /^\d{6}$/.test(row.pincode))
-
-  if (!rows.length) throw new Error('No active, valid pincodes were found in the Delhivery CSV.')
-
-  return {
-    file: new File([Papa.unparse(rows)], 'delhivery-b2b-ltl-oda-pincodes.csv', {
-      type: 'text/csv;charset=utf-8',
-    }),
-    matchedRows: rows.length,
-  }
-}
 
 const normaliseRow = (row) => ({
   ...row,
@@ -225,10 +185,9 @@ const B2BPincodeManagement = () => {
   })
 
   const importMutation = useMutation({
-    mutationFn: async () => {
-      const prepared = await prepareDelhiveryOdaImport(importFile)
+    mutationFn: () => {
       const formData = new FormData()
-      formData.append('file', prepared.file)
+      formData.append('file', importFile)
       if (importZoneId) formData.append('defaultZoneId', importZoneId)
       if (selectedCourierFilter.courierId) {
         formData.append('courierId', selectedCourierFilter.courierId)
@@ -236,8 +195,7 @@ const B2BPincodeManagement = () => {
       if (selectedCourierFilter.serviceProvider) {
         formData.append('serviceProvider', selectedCourierFilter.serviceProvider)
       }
-      const result = await b2bAdminService.importPincodes(formData)
-      return { ...result, matchedRows: prepared.matchedRows }
+      return b2bAdminService.importPincodes(formData)
     },
     onSuccess: (result) => {
       refresh()
@@ -245,9 +203,7 @@ const B2BPincodeManagement = () => {
       setImportFile(null)
       toast({
         title: 'Pincode CSV processed',
-        description: `${result.updated || 0} updated, ${(result.skipped || []).length} skipped.${
-          result.matchedRows !== null ? ` ${result.matchedRows.toLocaleString('en-IN')} active Delhivery records were read.` : ''
-        }`,
+        description: `${result.inserted || 0} added, ${result.updated || 0} updated, ${(result.skipped || []).length} skipped.`,
         status: (result.skipped || []).length ? 'warning' : 'success',
         duration: 5000,
       })
@@ -570,7 +526,7 @@ const B2BPincodeManagement = () => {
         <Stack spacing={4}>
           <Alert status="info" borderRadius="lg">
             <AlertIcon />
-            Standard CSVs can update existing pincodes. The Delhivery B2B LTL file is supported directly: active rows are read from PinCode, ODA Zone, and Status, then its ODA flag is updated.
+            CSV can add new pincodes and update existing ones. Include zone_code, or select a default zone below.
           </Alert>
           <FormControl>
             <FormLabel>Default zone (optional)</FormLabel>
