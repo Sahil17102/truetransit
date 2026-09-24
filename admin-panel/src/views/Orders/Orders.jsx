@@ -199,7 +199,7 @@ const Orders = () => {
   }
 
   const openClientOrderCreate = () => {
-    const clientBaseUrl = (process.env.REACT_APP_CLIENT_URL || 'https://truetransit-2.onrender.com').replace(/\/+$/, '')
+    const clientBaseUrl = (process.env.REACT_APP_CLIENT_URL || 'https://truetransitclient.onrender.com').replace(/\/+$/, '')
     window.open(`${clientBaseUrl}/orders/create`, '_blank', 'noopener,noreferrer')
   }
 
