@@ -159,10 +159,11 @@ const CourierCredentials = () => {
   const [shadowfaxForm, setShadowfaxForm] = useState({ apiBase: 'https://dale.shadowfax.in/api', token: '' })
 
   useEffect(() => {
-    if (data?.delhivery) {
+    const deliveryOne = data?.deliveryOne || data?.deliveryone || data?.delhivery
+    if (deliveryOne) {
       setB2CForm({
-        apiBase: data.delhivery.apiBase || 'https://track.delhivery.com',
-        clientName: data.delhivery.clientName || '',
+        apiBase: deliveryOne.apiBase || 'https://track.delhivery.com',
+        clientName: deliveryOne.clientName || deliveryOne.username || '',
         apiKey: '',
       })
     }
@@ -230,7 +231,8 @@ const CourierCredentials = () => {
   }, [shadowfaxData])
 
   const handleSaveB2C = () => {
-    if (!b2cForm.apiBase.trim() || (!data?.delhivery?.hasApiKey && !b2cForm.apiKey.trim())) {
+    const savedDeliveryOne = data?.deliveryOne || data?.deliveryone || data?.delhivery
+    if (!b2cForm.apiBase.trim() || (!savedDeliveryOne?.hasApiKey && !b2cForm.apiKey.trim())) {
       toast({
         title: 'Complete the required B2C fields',
         description: 'API Base URL and API Token are required.',
@@ -1021,8 +1023,8 @@ const CourierCredentials = () => {
                 <Text fontSize="lg" fontWeight="700">Delhivery B2C</Text>
                 <Text fontSize="sm" color="gray.500">Token authentication</Text>
               </Box>
-              <Badge colorScheme={data?.delhivery?.hasApiKey ? 'green' : 'orange'}>
-                {data?.delhivery?.hasApiKey ? 'Configured' : 'Setup required'}
+              <Badge colorScheme={(data?.deliveryOne || data?.deliveryone || data?.delhivery)?.hasApiKey ? 'green' : 'orange'}>
+                {(data?.deliveryOne || data?.deliveryone || data?.delhivery)?.hasApiKey ? 'Configured' : 'Setup required'}
               </Badge>
             </Flex>
             <Divider />
@@ -1055,7 +1057,7 @@ const CourierCredentials = () => {
                 onChange={(event) =>
                   setB2CForm((previous) => ({ ...previous, apiKey: event.target.value }))
                 }
-                placeholder={data?.delhivery?.apiKeyMasked || 'Enter Delhivery API token'}
+                placeholder={(data?.deliveryOne || data?.deliveryone || data?.delhivery)?.apiKeyMasked || 'Enter Delhivery API token'}
               />
               <FormHelperText>Leave blank to keep the existing token.</FormHelperText>
             </FormControl>

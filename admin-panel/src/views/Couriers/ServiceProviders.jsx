@@ -28,6 +28,8 @@ import {
 } from "components/AdminUI/AdminPage";
 import {
   useCourierCredentials,
+  useIThinkCredentials,
+  useShadowfaxCredentials,
   useServiceProviders,
   useUpdateServiceProviderStatus,
 } from "hooks/useCouriers";
@@ -41,11 +43,13 @@ const providerLabels = {
   bigship: "Bigship",
   shipmozo: "Shipmozo",
   shipway: "Shipway",
+  ithink: "iThink Logistics",
+  shadowfax: "Shadowfax",
 };
 
 const fallbackProviders = [
   {
-    serviceProvider: "delhivery",
+    serviceProvider: "deliveryone",
     name: "Delhivery",
     totalCouriers: 0,
     enabledCouriers: 0,
@@ -72,9 +76,23 @@ const fallbackProviders = [
     enabledCouriers: 0,
     isEnabled: false,
   },
+  {
+    serviceProvider: "ithink",
+    name: "iThink Logistics",
+    totalCouriers: 0,
+    enabledCouriers: 0,
+    isEnabled: false,
+  },
+  {
+    serviceProvider: "shadowfax",
+    name: "Shadowfax",
+    totalCouriers: 0,
+    enabledCouriers: 0,
+    isEnabled: false,
+  },
 ];
 
-const providerKeys = ["delhivery", "bigship", "shipmozo", "shipway"];
+const providerKeys = ["deliveryone", "bigship", "shipmozo", "shipway", "ithink", "shadowfax"];
 
 const normalizeProviderKey = (value) => {
   const normalized = String(value || "")
@@ -83,11 +101,12 @@ const normalizeProviderKey = (value) => {
     .replace(/[\s_-]+/g, "");
 
   if (normalized.includes("shipway")) return "shipway";
+  if (normalized.includes("ithink")) return "ithink";
+  if (normalized.includes("shadowfax")) return "shadowfax";
   if (normalized.includes("shipmozo")) return "shipmozo";
   if (normalized.includes("bigship")) return "bigship";
-  if (normalized.includes("delhivery") || normalized.includes("deliveryone")) {
-    return "delhivery";
-  }
+  if (normalized.includes("deliveryone")) return "deliveryone";
+  if (normalized.includes("delhivery")) return "delhivery";
 
   return normalized;
 };
@@ -114,17 +133,17 @@ const readBoolean = (source, keys) => {
 const hasAnySecret = (credentials, keys) =>
   keys.some((key) => credentials?.[key] === true || Boolean(credentials?.[key]));
 
-const getCredentialStatus = (credentials = {}) => {
-  const delhiveryB2C = credentials.delhivery || {};
+const getCredentialStatus = (credentials = {}, iThink = {}, shadowfax = {}) => {
+  const delhiveryB2C = credentials.deliveryOne || credentials.deliveryone || credentials.delhivery || {};
   const delhiveryB2B = credentials.delhiveryB2B || credentials.delhivery_b2b || {};
   const bigship = credentials.bigship || {};
   const shipmozo = credentials.shipmozo || {};
   const shipway = credentials.shipway || {};
 
   return {
-    delhivery: {
+    deliveryone: {
       b2c: hasAnySecret(delhiveryB2C, ["hasApiKey", "has_api_key", "apiKeyMasked"]),
-      b2b: hasAnySecret(delhiveryB2B, ["hasPassword", "has_password", "passwordMasked"]),
+      b2b: hasAnySecret(delhiveryB2B, ["hasPassword", "has_password", "passwordMasked"]) || hasAnySecret(delhiveryB2C, ["hasPassword", "has_password"]),
     },
     bigship: {
       b2c:
@@ -176,6 +195,8 @@ const getCredentialStatus = (credentials = {}) => {
         "tokenMasked",
       ]),
     },
+    ithink: { b2c: iThink.configured === true, b2b: iThink.configured === true },
+    shadowfax: { b2c: shadowfax.configured === true, b2b: false },
   };
 };
 
@@ -243,6 +264,8 @@ const brandStyles = {
   Bigship: ["#0B66D8", "#FFFFFF"],
   Shipmozo: ["#14213D", "#FFFFFF"],
   Shipway: ["#0E7C86", "#FFFFFF"],
+  "iThink Logistics": ["#1D4ED8", "#FFFFFF"],
+  Shadowfax: ["#F97316", "#FFFFFF"],
 };
 
 function ProviderMark({ name }) {
@@ -290,6 +313,8 @@ function ConfigBadge({ configured = false }) {
 const ServiceProviders = () => {
   const { data: providers = [], isLoading, error } = useServiceProviders();
   const { data: credentials, isLoading: credentialsLoading } = useCourierCredentials();
+  const { data: iThinkCredentials, isLoading: iThinkLoading } = useIThinkCredentials();
+  const { data: shadowfaxCredentials, isLoading: shadowfaxLoading } = useShadowfaxCredentials();
   const updateStatus = useUpdateServiceProviderStatus();
   const history = useHistory();
   const toast = useToast();
@@ -300,7 +325,7 @@ const ServiceProviders = () => {
     "Unknown API error";
 
   const rows = useMemo(() => {
-    const credentialStatus = getCredentialStatus(credentials);
+    const credentialStatus = getCredentialStatus(credentials, iThinkCredentials, shadowfaxCredentials);
     const liveProviders = providers.filter((provider) =>
       providerKeys.includes(
         normalizeProviderKey(provider.serviceProvider || provider.provider || provider.name)
@@ -316,7 +341,7 @@ const ServiceProviders = () => {
     return fallbackProviders.map((fallbackProvider) =>
       toProviderRow(providerByKey.get(fallbackProvider.serviceProvider) || fallbackProvider, credentialStatus)
     );
-  }, [providers, credentials]);
+  }, [providers, credentials, iThinkCredentials, shadowfaxCredentials]);
 
   const handleToggle = (provider) => {
     updateStatus.mutate(
@@ -345,7 +370,7 @@ const ServiceProviders = () => {
     );
   };
 
-  if ((isLoading || credentialsLoading) && !providers.length && !credentials) {
+  if ((isLoading || credentialsLoading || iThinkLoading || shadowfaxLoading) && !providers.length && !credentials) {
     return (
       <AdminStack>
         <Spinner size="md" />
