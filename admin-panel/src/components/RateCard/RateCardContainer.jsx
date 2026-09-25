@@ -229,6 +229,24 @@ export const RateCardContainer = ({ forceBusinessType = null, embedded = false }
   const [filters, setFilters] = useState({})
   const { data, isLoading } = useShippingRates(filters)
 
+  const displayRates = useMemo(() => {
+    const couriers = courierList || []
+    return (data || []).map((rate) => {
+      const provider = normalizeProvider(rate.service_provider || rate.serviceProvider || '')
+      const catalogCourier = couriers.find(
+        (courier) =>
+          Number(courier.id) === Number(rate.courier_id) &&
+          normalizeProvider(courier.serviceProvider || courier.service_provider || '') === provider,
+      )
+      const currentName = String(rate.courier_name || '').trim()
+      const genericName = normalizeProvider(currentName) === provider
+
+      return catalogCourier?.name && (!currentName || genericName)
+        ? { ...rate, courier_name: catalogCourier.name }
+        : rate
+    })
+  }, [data, courierList])
+
   const [selectedRate, setSelectedRate] = useState(null)
   const [isModalOpen, setModalOpen] = useState(false)
   const [isImportModalOpen, setImportModalOpen] = useState(false)
@@ -438,7 +456,7 @@ export const RateCardContainer = ({ forceBusinessType = null, embedded = false }
 
           {/* Rate Card Table */}
           <RateCardTable
-            data={data || []}
+            data={displayRates}
             zones={zones}
             planId={activePlanId}
             businessType={selectedBusinessType}
@@ -451,7 +469,7 @@ export const RateCardContainer = ({ forceBusinessType = null, embedded = false }
             isOpen={isModalOpen}
             onClose={() => setModalOpen(false)}
             data={selectedRate}
-            existingRates={data}
+            existingRates={displayRates}
             zones={zones}
             planId={activePlanId}
             couriers={courierList || []}
