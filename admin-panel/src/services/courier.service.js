@@ -199,6 +199,24 @@ export const testIThinkCredentials = async (payload = {}) => {
   }
 }
 
+export const fetchShadowfaxCredentials = async () => {
+  const { data } = await api.get('/admin/couriers/credentials/shadowfax')
+  if (!data?.success) throw new Error('Failed to fetch Shadowfax credentials')
+  return data.data
+}
+
+export const updateShadowfaxCredentials = async (payload) => {
+  const { data } = await api.put('/admin/couriers/credentials/shadowfax', payload)
+  if (!data?.success) throw new Error(data?.message || 'Failed to update Shadowfax credentials')
+  return data.data
+}
+
+export const testShadowfaxCredentials = async () => {
+  const { data } = await api.post('/admin/couriers/credentials/shadowfax/test')
+  if (!data?.success) throw new Error(data?.message || 'Shadowfax authentication failed')
+  return data.data
+}
+
 export const testShipmozoCredentials = async (payload = {}) => {
   try {
     const { data } = await api.post('/admin/couriers/credentials/shipmozo/test', payload)

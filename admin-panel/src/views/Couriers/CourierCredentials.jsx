@@ -18,17 +18,20 @@ import { useEffect, useState } from 'react'
 import {
   useCourierCredentials,
   useIThinkCredentials,
+  useShadowfaxCredentials,
   useTestBigshipCredentials,
   useTestDelhiveryB2BCredentials,
   useTestShipmozoCredentials,
   useTestShipwayCredentials,
   useTestIThinkCredentials,
+  useTestShadowfaxCredentials,
   useUpdateBigshipCredentials,
   useUpdateDelhiveryB2BCredentials,
   useUpdateDelhiveryCredentials,
   useUpdateShipmozoCredentials,
   useUpdateShipwayCredentials,
   useUpdateIThinkCredentials,
+  useUpdateShadowfaxCredentials,
 } from 'hooks/useCouriers'
 
 const cardStyles = {
@@ -103,17 +106,20 @@ const CourierCredentials = () => {
   const toast = useToast()
   const { data, isLoading, error } = useCourierCredentials()
   const { data: iThinkData, isLoading: isIThinkLoading, error: iThinkError } = useIThinkCredentials()
+  const { data: shadowfaxData, isLoading: isShadowfaxLoading, error: shadowfaxError } = useShadowfaxCredentials()
   const updateDelhivery = useUpdateDelhiveryCredentials()
   const updateDelhiveryB2B = useUpdateDelhiveryB2BCredentials()
   const updateBigship = useUpdateBigshipCredentials()
   const updateShipmozo = useUpdateShipmozoCredentials()
   const updateShipway = useUpdateShipwayCredentials()
   const updateIThink = useUpdateIThinkCredentials()
+  const updateShadowfax = useUpdateShadowfaxCredentials()
   const testDelhiveryB2B = useTestDelhiveryB2BCredentials()
   const testBigship = useTestBigshipCredentials()
   const testShipmozo = useTestShipmozoCredentials()
   const testShipway = useTestShipwayCredentials()
   const testIThink = useTestIThinkCredentials()
+  const testShadowfax = useTestShadowfaxCredentials()
 
   const [b2cForm, setB2CForm] = useState({
     apiBase: 'https://track.delhivery.com',
@@ -150,6 +156,7 @@ const CourierCredentials = () => {
     secretKey: '',
     pickupAddressId: '',
   })
+  const [shadowfaxForm, setShadowfaxForm] = useState({ apiBase: 'https://dale.shadowfax.in/api', token: '' })
 
   useEffect(() => {
     if (data?.delhivery) {
@@ -217,6 +224,10 @@ const CourierCredentials = () => {
       pickupAddressId: iThinkData.pickupAddressId || '',
     })
   }, [iThinkData])
+
+  useEffect(() => {
+    if (shadowfaxData) setShadowfaxForm({ apiBase: shadowfaxData.apiBase || 'https://dale.shadowfax.in/api', token: '' })
+  }, [shadowfaxData])
 
   const handleSaveB2C = () => {
     if (!b2cForm.apiBase.trim() || (!data?.delhivery?.hasApiKey && !b2cForm.apiKey.trim())) {
@@ -616,6 +627,52 @@ const CourierCredentials = () => {
     </Box>
   )
 
+  const renderShadowfaxCredentialCard = () => {
+    const save = () => updateShadowfax.mutate({
+      apiBase: shadowfaxForm.apiBase.trim().replace(/\/+$/, ''),
+      ...(cleanOptionalSecret(shadowfaxForm.token) ? { token: cleanOptionalSecret(shadowfaxForm.token) } : {}),
+    }, {
+      onSuccess: () => {
+        toast({ title: 'Shadowfax credentials saved', status: 'success' })
+        setShadowfaxForm((previous) => ({ ...previous, token: '' }))
+      },
+      onError: (saveError) => toast({ title: 'Failed to save Shadowfax credentials', description: getErrorMessage(saveError, 'Please try again.'), status: 'error' }),
+    })
+    const test = () => testShadowfax.mutate(undefined, {
+      onSuccess: () => toast({ title: 'Shadowfax authentication successful', status: 'success' }),
+      onError: (testError) => toast({ title: 'Shadowfax authentication failed', description: getErrorMessage(testError, 'Check the saved API token.'), status: 'error' }),
+    })
+    return (
+      <Box {...cardStyles}>
+        <VStack spacing={4} align="stretch">
+          <Flex justify="space-between" align="center" gap={3}>
+            <Box>
+              <Text fontSize="lg" fontWeight="700">Shadowfax</Text>
+              <Text fontSize="sm" color="gray.500">B2C API token authentication</Text>
+            </Box>
+            <Badge colorScheme={shadowfaxData?.configured ? 'green' : 'orange'}>
+              {shadowfaxData?.configured ? 'Configured' : 'Setup required'}
+            </Badge>
+          </Flex>
+          <Divider />
+          <FormControl isRequired>
+            <FormLabel>API Base URL</FormLabel>
+            <Input value={shadowfaxForm.apiBase} onChange={(event) => setShadowfaxForm((previous) => ({ ...previous, apiBase: event.target.value }))} />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>API Token</FormLabel>
+            <Input type="password" value={shadowfaxForm.token} onChange={(event) => setShadowfaxForm((previous) => ({ ...previous, token: event.target.value }))} placeholder={shadowfaxData?.tokenMasked || 'Enter Shadowfax API token'} />
+            <FormHelperText>Leave blank to keep the saved token.</FormHelperText>
+          </FormControl>
+          <Flex gap={3} direction={{ base: 'column', sm: 'row' }}>
+            <Button colorScheme="blue" onClick={save} isLoading={updateShadowfax.isPending}>Save Shadowfax Credentials</Button>
+            <Button variant="outline" colorScheme="blue" onClick={test} isLoading={testShadowfax.isPending} isDisabled={!shadowfaxData?.configured}>Test Shadowfax Credentials</Button>
+          </Flex>
+        </VStack>
+      </Box>
+    )
+  }
+
   const renderBigshipCredentialCard = ({ title, subtitle }) => {
     const hasPasswordForTest = data?.bigship?.hasPassword || Boolean(bigshipForm.password.trim())
     const hasAccessKeyForTest =
@@ -924,7 +981,7 @@ const CourierCredentials = () => {
     )
   }
 
-  if (isLoading || isIThinkLoading) return <Spinner size="md" />
+  if (isLoading || isIThinkLoading || isShadowfaxLoading) return <Spinner size="md" />
 
   return (
     <Flex direction="column" pt={{ base: '120px', md: '75px' }} gap={6}>
@@ -937,7 +994,7 @@ const CourierCredentials = () => {
         </Text>
       </Box>
 
-      {error || iThinkError ? (
+      {error || iThinkError || shadowfaxError ? (
         <Flex
           align="center"
           gap="10px"
@@ -1108,6 +1165,7 @@ const CourierCredentials = () => {
           subtitle: 'B2C Basic Auth credentials for live shipment booking and tracking',
         })}
         {renderIThinkCredentialCard()}
+        {renderShadowfaxCredentialCard()}
       </SimpleGrid>
     </Flex>
   )

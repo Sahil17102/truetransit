@@ -7,6 +7,7 @@ import {
   deleteShippingRateAPI,
   fetchCourierCredentials,
   fetchIThinkCredentials,
+  fetchShadowfaxCredentials,
   fetchAllCouriersList,
   fetchAvailableCouriers,
   fetchServiceProviders,
@@ -16,12 +17,14 @@ import {
   testShipmozoCredentials,
   testShipwayCredentials,
   testIThinkCredentials,
+  testShadowfaxCredentials,
   updateBigshipCredentials,
   updateDelhiveryB2BCredentials,
   updateDelhiveryCredentials,
   updateShipmozoCredentials,
   updateShipwayCredentials,
   updateIThinkCredentials,
+  updateShadowfaxCredentials,
   updateCourierStatus,
   updateServiceProviderStatus,
   updateShippingRate,
@@ -214,6 +217,24 @@ export const useUpdateIThinkCredentials = () => {
 
 export const useTestIThinkCredentials = () =>
   useMutation({ mutationFn: testIThinkCredentials })
+
+export const useShadowfaxCredentials = () =>
+  useQuery({ queryKey: ['shadowfaxCredentials'], queryFn: fetchShadowfaxCredentials, staleTime: 60 * 1000 })
+
+export const useUpdateShadowfaxCredentials = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: updateShadowfaxCredentials,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['shadowfaxCredentials'])
+      queryClient.invalidateQueries(['serviceProviders'])
+      queryClient.invalidateQueries(['couriers'])
+    },
+  })
+}
+
+export const useTestShadowfaxCredentials = () =>
+  useMutation({ mutationFn: testShadowfaxCredentials })
 
 export const useTestShipwayCredentials = () =>
   useMutation({ mutationFn: testShipwayCredentials })
