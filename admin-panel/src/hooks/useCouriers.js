@@ -6,6 +6,7 @@ import {
   deleteCourier,
   deleteShippingRateAPI,
   fetchCourierCredentials,
+  fetchIThinkCredentials,
   fetchAllCouriersList,
   fetchAvailableCouriers,
   fetchServiceProviders,
@@ -14,11 +15,13 @@ import {
   testDelhiveryB2BCredentials,
   testShipmozoCredentials,
   testShipwayCredentials,
+  testIThinkCredentials,
   updateBigshipCredentials,
   updateDelhiveryB2BCredentials,
   updateDelhiveryCredentials,
   updateShipmozoCredentials,
   updateShipwayCredentials,
+  updateIThinkCredentials,
   updateCourierStatus,
   updateServiceProviderStatus,
   updateShippingRate,
@@ -189,6 +192,28 @@ export const useUpdateShipwayCredentials = () => {
     },
   })
 }
+
+export const useIThinkCredentials = () =>
+  useQuery({
+    queryKey: ['iThinkCredentials'],
+    queryFn: fetchIThinkCredentials,
+    staleTime: 60 * 1000,
+  })
+
+export const useUpdateIThinkCredentials = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: updateIThinkCredentials,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['iThinkCredentials'])
+      queryClient.invalidateQueries(['serviceProviders'])
+      queryClient.invalidateQueries(['couriers'])
+    },
+  })
+}
+
+export const useTestIThinkCredentials = () =>
+  useMutation({ mutationFn: testIThinkCredentials })
 
 export const useTestShipwayCredentials = () =>
   useMutation({ mutationFn: testShipwayCredentials })

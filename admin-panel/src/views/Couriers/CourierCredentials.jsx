@@ -17,15 +17,18 @@ import {
 import { useEffect, useState } from 'react'
 import {
   useCourierCredentials,
+  useIThinkCredentials,
   useTestBigshipCredentials,
   useTestDelhiveryB2BCredentials,
   useTestShipmozoCredentials,
   useTestShipwayCredentials,
+  useTestIThinkCredentials,
   useUpdateBigshipCredentials,
   useUpdateDelhiveryB2BCredentials,
   useUpdateDelhiveryCredentials,
   useUpdateShipmozoCredentials,
   useUpdateShipwayCredentials,
+  useUpdateIThinkCredentials,
 } from 'hooks/useCouriers'
 
 const cardStyles = {
@@ -99,15 +102,18 @@ const buildShipwayPayload = (form) => {
 const CourierCredentials = () => {
   const toast = useToast()
   const { data, isLoading, error } = useCourierCredentials()
+  const { data: iThinkData, isLoading: isIThinkLoading, error: iThinkError } = useIThinkCredentials()
   const updateDelhivery = useUpdateDelhiveryCredentials()
   const updateDelhiveryB2B = useUpdateDelhiveryB2BCredentials()
   const updateBigship = useUpdateBigshipCredentials()
   const updateShipmozo = useUpdateShipmozoCredentials()
   const updateShipway = useUpdateShipwayCredentials()
+  const updateIThink = useUpdateIThinkCredentials()
   const testDelhiveryB2B = useTestDelhiveryB2BCredentials()
   const testBigship = useTestBigshipCredentials()
   const testShipmozo = useTestShipmozoCredentials()
   const testShipway = useTestShipwayCredentials()
+  const testIThink = useTestIThinkCredentials()
 
   const [b2cForm, setB2CForm] = useState({
     apiBase: 'https://track.delhivery.com',
@@ -137,6 +143,12 @@ const CourierCredentials = () => {
     email: '',
     warehouseId: '',
     licenseKey: '',
+  })
+  const [iThinkForm, setIThinkForm] = useState({
+    apiBase: 'https://my.ithinklogistics.com/api_v3',
+    accessToken: '',
+    secretKey: '',
+    pickupAddressId: '',
   })
 
   useEffect(() => {
@@ -195,6 +207,16 @@ const CourierCredentials = () => {
       })
     }
   }, [data])
+
+  useEffect(() => {
+    if (!iThinkData) return
+    setIThinkForm({
+      apiBase: iThinkData.apiBase || 'https://my.ithinklogistics.com/api_v3',
+      accessToken: '',
+      secretKey: '',
+      pickupAddressId: iThinkData.pickupAddressId || '',
+    })
+  }, [iThinkData])
 
   const handleSaveB2C = () => {
     if (!b2cForm.apiBase.trim() || (!data?.delhivery?.hasApiKey && !b2cForm.apiKey.trim())) {
@@ -473,6 +495,126 @@ const CourierCredentials = () => {
         }),
     })
   }
+
+  const buildIThinkPayload = () => ({
+    apiBase: iThinkForm.apiBase.trim().replace(/\/+$/, ''),
+    pickupAddressId: iThinkForm.pickupAddressId.trim(),
+    ...(cleanOptionalSecret(iThinkForm.accessToken)
+      ? { accessToken: cleanOptionalSecret(iThinkForm.accessToken) }
+      : {}),
+    ...(cleanOptionalSecret(iThinkForm.secretKey)
+      ? { secretKey: cleanOptionalSecret(iThinkForm.secretKey) }
+      : {}),
+  })
+
+  const handleSaveIThink = () => {
+    const missing = [
+      !iThinkForm.apiBase.trim() && 'API Base URL',
+      !iThinkForm.pickupAddressId.trim() && 'Pickup Address ID',
+      !iThinkData?.configured && !cleanOptionalSecret(iThinkForm.accessToken) && 'Access Token',
+      !iThinkData?.configured && !cleanOptionalSecret(iThinkForm.secretKey) && 'Secret Key',
+    ].filter(Boolean)
+    if (missing.length) {
+      toast({
+        title: 'Complete the required iThink fields',
+        description: `Missing: ${missing.join(', ')}`,
+        status: 'warning',
+      })
+      return
+    }
+    updateIThink.mutate(buildIThinkPayload(), {
+      onSuccess: () => {
+        toast({ title: 'iThink Logistics credentials saved', status: 'success' })
+        setIThinkForm((previous) => ({ ...previous, accessToken: '', secretKey: '' }))
+      },
+      onError: (saveError) =>
+        toast({
+          title: 'Failed to save iThink Logistics credentials',
+          description: getErrorMessage(saveError, 'Please try again.'),
+          status: 'error',
+        }),
+    })
+  }
+
+  const handleTestIThink = () => {
+    testIThink.mutate(buildIThinkPayload(), {
+      onSuccess: () => toast({ title: 'iThink Logistics authentication successful', status: 'success' }),
+      onError: (testError) =>
+        toast({
+          title: 'iThink Logistics authentication failed',
+          description: getErrorMessage(testError, 'Check the saved access token and secret key.'),
+          status: 'error',
+        }),
+    })
+  }
+
+  const renderIThinkCredentialCard = () => (
+    <Box {...cardStyles}>
+      <VStack spacing={4} align="stretch">
+        <Flex justify="space-between" align="center" gap={3}>
+          <Box>
+            <Text fontSize="lg" fontWeight="700">iThink Logistics</Text>
+            <Text fontSize="sm" color="gray.500">B2C access token and secret key authentication</Text>
+          </Box>
+          <Badge colorScheme={iThinkData?.configured ? 'green' : 'orange'}>
+            {iThinkData?.configured ? 'Configured' : 'Setup required'}
+          </Badge>
+        </Flex>
+        <Divider />
+        <FormControl isRequired>
+          <FormLabel>API Base URL</FormLabel>
+          <Input
+            value={iThinkForm.apiBase}
+            onChange={(event) => setIThinkForm((previous) => ({ ...previous, apiBase: event.target.value }))}
+            placeholder="https://my.ithinklogistics.com/api_v3"
+          />
+        </FormControl>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+          <FormControl isRequired>
+            <FormLabel>Access Token</FormLabel>
+            <Input
+              type="password"
+              value={iThinkForm.accessToken}
+              onChange={(event) => setIThinkForm((previous) => ({ ...previous, accessToken: event.target.value }))}
+              placeholder={iThinkData?.accessTokenMasked || 'Enter iThink access token'}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Secret Key</FormLabel>
+            <Input
+              type="password"
+              value={iThinkForm.secretKey}
+              onChange={(event) => setIThinkForm((previous) => ({ ...previous, secretKey: event.target.value }))}
+              placeholder={iThinkData?.secretKeyMasked || 'Enter iThink secret key'}
+            />
+          </FormControl>
+        </SimpleGrid>
+        <FormControl isRequired>
+          <FormLabel>Pickup Address ID</FormLabel>
+          <Input
+            value={iThinkForm.pickupAddressId}
+            onChange={(event) => setIThinkForm((previous) => ({ ...previous, pickupAddressId: event.target.value }))}
+            placeholder="iThink pickup address ID"
+          />
+          <FormHelperText>Leave token/key blank to keep the saved secrets.</FormHelperText>
+        </FormControl>
+        <Flex gap={3} direction={{ base: 'column', sm: 'row' }}>
+          <Button colorScheme="blue" onClick={handleSaveIThink} isLoading={updateIThink.isPending}>
+            Save iThink Credentials
+          </Button>
+          <Button
+            variant="outline"
+            colorScheme="blue"
+            onClick={handleTestIThink}
+            isLoading={testIThink.isPending}
+            isDisabled={!iThinkData?.configured && (!iThinkForm.accessToken || !iThinkForm.secretKey)}
+          >
+            Test iThink Credentials
+          </Button>
+        </Flex>
+      </VStack>
+    </Box>
+  )
 
   const renderBigshipCredentialCard = ({ title, subtitle }) => {
     const hasPasswordForTest = data?.bigship?.hasPassword || Boolean(bigshipForm.password.trim())
@@ -782,7 +924,7 @@ const CourierCredentials = () => {
     )
   }
 
-  if (isLoading) return <Spinner size="md" />
+  if (isLoading || isIThinkLoading) return <Spinner size="md" />
 
   return (
     <Flex direction="column" pt={{ base: '120px', md: '75px' }} gap={6}>
@@ -795,7 +937,7 @@ const CourierCredentials = () => {
         </Text>
       </Box>
 
-      {error ? (
+      {error || iThinkError ? (
         <Flex
           align="center"
           gap="10px"
@@ -965,6 +1107,7 @@ const CourierCredentials = () => {
           title: 'Shipway / MRK',
           subtitle: 'B2C Basic Auth credentials for live shipment booking and tracking',
         })}
+        {renderIThinkCredentialCard()}
       </SimpleGrid>
     </Flex>
   )

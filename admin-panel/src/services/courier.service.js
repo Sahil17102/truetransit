@@ -175,6 +175,30 @@ export const updateShipmozoCredentials = async (payload) => {
   return data.data
 }
 
+export const fetchIThinkCredentials = async () => {
+  const { data } = await api.get('/admin/couriers/credentials/ithink')
+  if (!data?.success) throw new Error('Failed to fetch iThink Logistics credentials')
+  return data.data
+}
+
+export const updateIThinkCredentials = async (payload) => {
+  const { data } = await api.put('/admin/couriers/credentials/ithink', payload)
+  if (!data?.success) throw new Error(data?.message || 'Failed to update iThink Logistics credentials')
+  return data.data
+}
+
+export const testIThinkCredentials = async (payload = {}) => {
+  try {
+    const { data } = await api.post('/admin/couriers/credentials/ithink/test', payload)
+    if (!data?.success) throw new Error(data?.message || 'iThink Logistics authentication failed')
+    return data.data
+  } catch (error) {
+    throw new Error(
+      error?.response?.data?.message || error?.message || 'iThink Logistics authentication failed',
+    )
+  }
+}
+
 export const testShipmozoCredentials = async (payload = {}) => {
   try {
     const { data } = await api.post('/admin/couriers/credentials/shipmozo/test', payload)
