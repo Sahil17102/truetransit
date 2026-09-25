@@ -46,11 +46,15 @@ const getCourierIntegrationType = (courier: {
   if (explicitIntegrationType === 'xpressbees') return 'xpressbees'
   if (explicitIntegrationType === 'ekart') return 'ekart'
   if (explicitIntegrationType === 'deliveryone') return 'deliveryone'
+  if (explicitIntegrationType === 'shadowfax') return 'shadowfax'
+  if (explicitIntegrationType === 'ithink') return 'ithink'
   if (explicitIntegrationType === 'icarry') return 'icarry'
   if (explicitIntegrationType.includes('shipway')) return 'shipway'
   if (explicitIntegrationType.includes('shipmozo')) return 'shipmozo'
   if (explicitIntegrationType.includes('bigship')) return 'bigship'
   if (explicitIntegrationType.includes('deliveryone')) return 'deliveryone'
+  if (explicitIntegrationType.includes('shadowfax')) return 'shadowfax'
+  if (explicitIntegrationType.includes('ithink')) return 'ithink'
   if (explicitIntegrationType.includes('delhivery')) return 'delhivery'
   if (explicitIntegrationType.includes('xpressbees')) return 'xpressbees'
   if (explicitIntegrationType.includes('ekart')) return 'ekart'
@@ -65,6 +69,8 @@ const getCourierIntegrationType = (courier: {
 
   if (values.some((value) => value.includes('shipway'))) return 'shipway'
   if (values.some((value) => value.includes('shipmozo'))) return 'shipmozo'
+  if (values.some((value) => value.includes('shadowfax'))) return 'shadowfax'
+  if (values.some((value) => value.includes('ithink'))) return 'ithink'
   if (values.some((value) => value.includes('bigship'))) return 'bigship'
   if (values.some((value) => value.includes('delhivery') || value.includes('deliveryone'))) {
     return 'delhivery'
@@ -773,9 +779,13 @@ export const SelectCourierForm = ({
                       })
                       return
                     }
-                    setValue('courierPartner', courier?.name ?? '')
-                    setValue('courierPartnerId', courier?.id ?? '')
-                    setValue('courierOptionKey', courierOptionKey)
+                    const selectedCourierId = courier?.id ?? courier?.courier_id ?? ''
+                    const selectedCourierName =
+                      courier?.selected_courier_name || courier?.name || getCourierDisplayName(courier)
+                    setValue('courierPartner', courier?.name ?? selectedCourierName, { shouldDirty: true })
+                    setValue('courierPartnerId', String(selectedCourierId), { shouldDirty: true, shouldValidate: true })
+                    setValue('selectedCourierName', selectedCourierName, { shouldDirty: true })
+                    setValue('courierOptionKey', courierOptionKey, { shouldDirty: true })
                     setValue('selectedMaxSlabWeight', courier?.max_slab_weight ?? null)
                     setValue('courierCod', codCharge)
                     setValue('forwardCharges', freightCharge)

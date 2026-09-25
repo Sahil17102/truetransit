@@ -5,6 +5,7 @@ export interface Courier {
   id: number
   name: string
   displayName?: string | null
+  selected_courier_name?: string | null
   courier_option_key?: string | null
   max_slab_weight?: number | null
   edd?: string | null

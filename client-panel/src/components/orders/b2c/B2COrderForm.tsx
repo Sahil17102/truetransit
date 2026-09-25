@@ -86,7 +86,8 @@ export type B2CFormData = {
   pickupLocationId?: string
   pickupLocationPincode?: string
   pickupLocationName?: string
-  integrationType?: 'delhivery' | 'xpressbees' | 'ekart' | 'deliveryone' | 'icarry' | 'bigship' | 'shipmozo' | 'shipway'
+  integrationType?: 'delhivery' | 'xpressbees' | 'ekart' | 'deliveryone' | 'icarry' | 'bigship' | 'shipmozo' | 'shipway' | 'shadowfax' | 'ithink'
+  selectedCourierName?: string
   shippingMode?: string
   pickupAddress?: string
   pickupLocationPOCName?: string
@@ -243,6 +244,7 @@ export default function B2COrderFormSteps({
         is_rto_different: data?.isRtoSame ? 'no' : 'yes',
         discount: data.discount ?? 0,
         integration_type: data?.integrationType,
+        selected_courier_name: data?.selectedCourierName,
         transaction_fee: data?.transactionFee,
         gift_wrap: data?.giftWrap,
         consignee: {

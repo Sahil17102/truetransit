@@ -193,6 +193,7 @@ export default function B2CSelectCourierDialog({
       is_rto_different: data.isRtoSame ? 'no' : 'yes',
       discount: data.discount ?? 0,
       integration_type: data.integrationType,
+      selected_courier_name: data.selectedCourierName,
       transaction_fee: data.transactionFee,
       gift_wrap: data.giftWrap,
       consignee: {
