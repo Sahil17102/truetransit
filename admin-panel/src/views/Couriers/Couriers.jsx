@@ -53,93 +53,6 @@ const providerColors = {
   Shipway: ["#E7FAFA", "#0E7C86"],
 };
 
-const fallbackCouriers = [
-  {
-    id: "dlv-exp",
-    name: "Delhivery Express",
-    serviceProvider: "Delhivery",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "dlv-sfc",
-    name: "Delhivery Surface",
-    serviceProvider: "Delhivery",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "dlv-b2b-ltl",
-    name: "Delhivery B2B (LTL)",
-    serviceProvider: "Delhivery",
-    businessType: ["b2b"],
-    isEnabled: true,
-  },
-  {
-    id: "shipmozo-b2c",
-    name: "Shipmozo B2C",
-    serviceProvider: "Shipmozo",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "shipmozo-b2b",
-    name: "Shipmozo B2B",
-    serviceProvider: "Shipmozo",
-    businessType: ["b2b"],
-    isEnabled: true,
-  },
-  {
-    id: "shipway-b2c",
-    name: "Shipway B2C",
-    serviceProvider: "Shipway",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "ekart-sfc",
-    name: "Ekart Surface",
-    serviceProvider: "Ekart",
-    businessType: ["b2c", "b2b"],
-    isEnabled: true,
-  },
-  {
-    id: "bd-05",
-    name: "Bluedart Surface 0.5KG",
-    serviceProvider: "Shipex India",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "bd-1",
-    name: "Bluedart Surface 1KG",
-    serviceProvider: "Shipex India",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "da-025",
-    name: "Delhivery Air 0.25KG",
-    serviceProvider: "Shipex India",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "da-05",
-    name: "Delhivery Air 0.5KG",
-    serviceProvider: "Shipex India",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-  {
-    id: "da-1",
-    name: "Delhivery Air 1KG",
-    serviceProvider: "Shipex India",
-    businessType: ["b2c"],
-    isEnabled: true,
-  },
-];
-
 const normalizeProviderKey = (value) =>
   String(value || "")
     .trim()
@@ -148,11 +61,13 @@ const normalizeProviderKey = (value) =>
 
 const normalizeProvider = (value) => {
   const normalized = normalizeProviderKey(value);
-  if (!normalized) return "Delhivery";
+  if (!normalized) return "Not specified";
   if (normalized.includes("deliveryone") || normalized.includes("delhivery")) return "Delhivery";
   if (normalized.includes("bigship")) return "Bigship";
   if (normalized.includes("shipmozo")) return "Shipmozo";
   if (normalized.includes("shipway")) return "Shipway";
+  if (normalized.includes("ithink")) return "iThink Logistics";
+  if (normalized.includes("shadowfax")) return "Shadowfax";
   return value;
 };
 
@@ -190,7 +105,7 @@ function ProviderBadge({ provider }) {
 }
 
 function BusinessBadges({ types }) {
-  const normalized = Array.isArray(types) ? types : types ? [types] : ["b2c"];
+  const normalized = Array.isArray(types) ? types : types ? [types] : [];
   return (
     <HStack spacing="8px">
       {normalized.map((type) => (
@@ -223,7 +138,7 @@ const Couriers = () => {
   const addCourierModal = useDisclosure();
 
   const rows = useMemo(() => {
-    const source = couriers.length ? couriers : fallbackCouriers;
+    const source = Array.isArray(couriers) ? couriers : [];
     return source
       .map((courier) => ({
         ...courier,
@@ -235,7 +150,7 @@ const Couriers = () => {
         ),
         isEnabled: readCourierEnabled(courier),
         type: courier.type || "Delivery",
-        businessType: courier.businessType || courier.business_type || ["b2c"],
+        businessType: courier.businessType || courier.business_type || [],
       }))
       .filter((courier) => !filters.type || courier.type.toLowerCase() === filters.type)
       .filter((courier) => {
@@ -247,10 +162,10 @@ const Couriers = () => {
   }, [couriers, filters.status, filters.type]);
 
   const stats = {
-    total: rows.length || 36,
-    enabled: rows.filter((row) => row.isEnabled !== false).length || 36,
+    total: rows.length,
+    enabled: rows.filter((row) => row.isEnabled !== false).length,
     disabled: rows.filter((row) => row.isEnabled === false).length,
-    delivery: rows.length || 36,
+    delivery: rows.length,
     manual: 0,
   };
 
@@ -412,9 +327,9 @@ const Couriers = () => {
                 maxW="213px"
               >
                 <option value="">All providers</option>
-                <option value="delhivery">Delhivery</option>
-                <option value="bigship">Bigship</option>
-                <option value="shipmozo">Shipmozo</option>
+                <option value="deliveryone">Delhivery</option>
+                <option value="ithink">iThink Logistics</option>
+                <option value="shadowfax">Shadowfax</option>
                 <option value="shipway">Shipway</option>
               </AdminSelect>
             </Box>
@@ -486,7 +401,7 @@ const Couriers = () => {
         >
           <Icon as={IconCircleX} boxSize="20px" color="#EA580C" />
           <Text fontSize="16px">
-            Live courier data is unavailable, showing default couriers.
+            Could not refresh courier data. Please try again.
           </Text>
         </Flex>
       ) : null}
