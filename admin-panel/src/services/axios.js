@@ -2,9 +2,12 @@ import axios from "axios";
 import { isDemoAdminSession } from "../utils/demoAdminAuth";
 
 const DEPLOYED_API_BASE_URL = "https://truetransit12.onrender.com/api";
-const DEFAULT_API_BASE_URL = window.location.hostname.endsWith("onrender.com")
-  ? DEPLOYED_API_BASE_URL
-  : "/api";
+const VPS_API_BASE_URL = "https://api.ship.truetransitmobility.com/api";
+const DEFAULT_API_BASE_URL = window.location.hostname.endsWith("truetransitmobility.com")
+  ? VPS_API_BASE_URL
+  : window.location.hostname.endsWith("onrender.com")
+    ? DEPLOYED_API_BASE_URL
+    : "/api";
 const LEGACY_RAILWAY_API_HOST = ["choice", "me-backend-production.up.railway.app"].join("");
 const PLACEHOLDER_API_HOST = "your-backend-url.onrender.com";
 
