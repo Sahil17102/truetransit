@@ -43,7 +43,7 @@ const businessInfo = {
 };
 
 const pageTitle = 'TrueTransit Mobility Pvt Ltd - Transit You Can Trust';
-const loginUrl = 'https://truetransit-2.onrender.com/login';
+const loginUrl = '/login';
 
 function normalizePath(pathname = window.location.pathname) {
   const path = pathname.replace(/\/$/, '');
