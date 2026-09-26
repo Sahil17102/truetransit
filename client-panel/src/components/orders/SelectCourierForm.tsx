@@ -271,25 +271,9 @@ export const SelectCourierForm = ({
 
   const { data: couriers, error, isLoading, isError, isFetching } =
     useAvailableCouriers(courierPayload)
-  const availableCouriers = (couriers ?? []).filter((courier) => {
-    if (shipment_type !== 'b2b') return true
-
-    const provider = String(courier?.integration_type ?? courier?.serviceProvider ?? '')
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, '')
-    const name = String(courier?.name ?? '').toLowerCase()
-    return (
-      provider.startsWith('delhivery') ||
-      provider.startsWith('bigship') ||
-      provider.startsWith('shipmozo') ||
-      provider.startsWith('shipway') ||
-      name.includes('delhivery') ||
-      name.includes('bigship') ||
-      name.includes('shipmozo') ||
-      name.includes('shipway')
-    )
-  })
+  // The shipment-specific API validates business type, provider support and rates.
+  // Do not discard valid services using a separate courier-name allowlist here.
+  const availableCouriers = couriers ?? []
   if (!pickupPincode || !deliveryPincode || !totalWeight) {
     return <Typography>Fill pickup, delivery, and weight first to fetch couriers</Typography>
   }

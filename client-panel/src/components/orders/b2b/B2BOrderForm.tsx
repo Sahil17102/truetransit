@@ -567,17 +567,7 @@ export default function B2BOrderForm({ onClose }: { onClose?: () => void }) {
   }
 
   const requestBookingConfirmation = handleSubmit((data) => {
-    const selectedProvider = `${data.integrationType ?? ''} ${data.courierPartner ?? ''}`
-      .trim()
-      .toLowerCase()
-
-    const supportedB2BProvider =
-      selectedProvider.includes('delhivery') ||
-      selectedProvider.includes('bigship') ||
-      selectedProvider.includes('shipmozo') ||
-      selectedProvider.includes('shipway')
-
-    if (!data.courierPartnerId || !supportedB2BProvider) {
+    if (!data.courierPartnerId || !data.integrationType) {
       methods.setError('courierPartnerId', {
         type: 'manual',
         message: 'Select an available B2B courier rate before booking.',
