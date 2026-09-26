@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE plans
+  ADD COLUMN IF NOT EXISTS commission_percentage NUMERIC(5, 2) NOT NULL DEFAULT 0;
+
+COMMIT;
