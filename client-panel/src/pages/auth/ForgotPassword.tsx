@@ -66,7 +66,7 @@ export default function ForgotPassword() {
 
   const passwordError = useMemo(() => {
     if (!newPassword) return 'New password is required.'
-    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}/.test(newPassword)) {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/.test(newPassword)) {
       return 'Use at least 8 characters with upper, lower, and a number.'
     }
     return ''

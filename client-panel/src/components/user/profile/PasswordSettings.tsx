@@ -142,7 +142,10 @@ export default function PasswordSettingsForm() {
             type={showNew ? 'text' : 'password'}
             {...register('newPassword', {
               required: 'New password is required.',
-              minLength: { value: 6, message: 'Minimum 6 characters.' },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/,
+                message: 'Use at least 8 characters with upper, lower, and a number.',
+              },
             })}
             error={!!errors.newPassword}
             helperText={errors.newPassword?.message}

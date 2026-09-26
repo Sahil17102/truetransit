@@ -34,7 +34,7 @@ import { useState } from "react";
 import { changeAdminPassword } from "services/auth.service";
 import { useAuthStore } from "store/useAuthStore";
 
-const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
 
 function PasswordField({
   label,
