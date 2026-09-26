@@ -85,8 +85,10 @@ function AppLink({ href, className, children, onNavigate, ...props }) {
     if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (!href?.startsWith('/')) return;
 
-    event.preventDefault();
     const targetUrl = new URL(href, window.location.origin);
+    if (targetUrl.pathname === '/login') return;
+
+    event.preventDefault();
     const nextPath = normalizePath(targetUrl.pathname);
     window.history.pushState({}, '', `${nextPath}${targetUrl.hash}`);
     onNavigate(nextPath, targetUrl.hash);
