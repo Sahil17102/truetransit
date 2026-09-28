@@ -416,10 +416,20 @@ export default function UserOnboarding() {
                 sx={{
                   minWidth: { xs: 96, md: 132 },
                   borderRadius: 999,
-                  borderColor: alpha(DE_BLUE, 0.2),
-                  color: DE_BLUE,
+                  border: '1.5px solid #111111',
+                  bgcolor: '#FFFFFF',
+                  color: '#111111',
                   fontWeight: 800,
                   textTransform: 'none',
+                  '&:hover': {
+                    border: '1.5px solid #111111',
+                    bgcolor: '#F3F3F3',
+                  },
+                  '&.Mui-disabled': {
+                    borderColor: alpha('#111111', 0.28),
+                    bgcolor: '#FFFFFF',
+                    color: alpha('#111111', 0.42),
+                  },
                 }}
               >
                 Back
@@ -434,13 +444,26 @@ export default function UserOnboarding() {
               text={activeStep === 1 ? 'Continue' : 'Save & Open Dashboard'}
               styles={{
                 flex: 1,
-                background: brandGradients.button,
-                color: brand.ink,
+                background: '#111111',
+                color: '#FFFFFF',
+                border: '1.5px solid #111111',
                 borderRadius: 999,
                 fontWeight: 800,
                 fontSize: '0.96rem',
                 py: 1,
-                boxShadow: '0 16px 32px rgba(130,194,255,0.24)',
+                boxShadow: '0 10px 24px rgba(17,17,17,0.18)',
+                '&:hover': {
+                  background: '#2A2A2A',
+                  color: '#FFFFFF',
+                  borderColor: '#2A2A2A',
+                  boxShadow: '0 12px 28px rgba(17,17,17,0.24)',
+                },
+                '&.Mui-disabled': {
+                  background: '#111111',
+                  color: '#FFFFFF',
+                  borderColor: '#111111',
+                  opacity: 0.5,
+                },
               }}
             />
           </Stack>
