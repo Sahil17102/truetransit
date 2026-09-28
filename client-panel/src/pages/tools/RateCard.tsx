@@ -83,6 +83,19 @@ const getZoneEntry = (
 const getZoneLabel = (zone: { code?: string; name?: string }) =>
   [zone.code, zone.name].filter(Boolean).join(' - ') || 'Zone'
 
+const getProviderLabel = (row: ShippingRate) => {
+  const provider = String(row.service_provider || row.serviceProvider || '')
+    .trim()
+    .toLowerCase()
+
+  if (provider === 'ithink') return 'iThink'
+  if (['deliveryone', 'delivery1', 'delhiveryone', 'delhivery'].includes(provider)) {
+    return 'Delhivery'
+  }
+  if (provider === 'shadowfax') return 'Shadowfax'
+  return provider ? provider.replace(/\b\w/g, (letter) => letter.toUpperCase()) : 'Rate card'
+}
+
 // --- B2C Table ---
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const B2CClientTable = ({ data, zones }: { data: ShippingRate[]; zones: any[] }) => {
@@ -117,6 +130,7 @@ const B2CClientTable = ({ data, zones }: { data: ShippingRate[]; zones: any[] })
           },
           defaultLogo,
         )
+        const providerLabel = getProviderLabel(row)
         return (
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
@@ -124,7 +138,18 @@ const B2CClientTable = ({ data, zones }: { data: ShippingRate[]; zones: any[] })
               alt={displayName}
               sx={{ width: 24, height: 24 }}
             />
-            <Typography fontWeight={500}>{displayName}</Typography>
+            <Stack spacing={0.15}>
+              <Typography fontWeight={600}>{displayName}</Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  fontWeight: 800,
+                  color: providerLabel === 'iThink' ? 'primary.main' : 'text.secondary',
+                }}
+              >
+                {providerLabel}
+              </Typography>
+            </Stack>
           </Stack>
         )
       },

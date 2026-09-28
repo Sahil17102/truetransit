@@ -249,6 +249,24 @@ const formatWeightKg = (value: unknown) => {
 
 const getCompactCourierName = (courier: Courier) => getCourierDisplayName(courier)
 
+const getCompactCourierProvider = (courier: Courier) => {
+  const rawProvider = String(
+    courier.integration_type || courier.serviceProvider || courier.service_provider || '',
+  )
+    .trim()
+    .toLowerCase()
+
+  if (rawProvider === 'ithink') return 'iThink'
+  if (['deliveryone', 'delivery1', 'delhiveryone', 'delhivery'].includes(rawProvider)) {
+    return 'Delhivery'
+  }
+  if (rawProvider === 'shadowfax') return 'Shadowfax'
+  if (rawProvider === 'shipway') return 'Shipway'
+  if (rawProvider === 'shipmozo') return 'Shipmozo'
+  if (rawProvider === 'bigship') return 'Bigship'
+  return rawProvider ? rawProvider.replace(/\b\w/g, (letter) => letter.toUpperCase()) : 'Rate card'
+}
+
 const getCompactCourierMode = (courier: Courier) => {
   const text = [
     courier.localRates?.forward?.mode,
@@ -2164,6 +2182,7 @@ export function RateCalculator({ publicView }: RateCalculatorProps) {
                       <Stack spacing={1}>
                         {availableCouriers.map((courier, index) => {
                           const displayName = getCompactCourierName(courier)
+                          const providerName = getCompactCourierProvider(courier)
                           const mode = getCompactCourierMode(courier)
                           const zoneLabel = getZoneChipLabel(courier)
                           const logo = getCourierLogo(courier, defaultLogo)
@@ -2173,7 +2192,7 @@ export function RateCalculator({ publicView }: RateCalculatorProps) {
 
                           return (
                             <Box
-                              key={courier.id || `${displayName}-${index}`}
+                              key={`${String((courier as Courier & { courier_option_key?: string }).courier_option_key || '')}-${providerName}-${String(courier.id || '')}-${mode}-${index}`}
                               sx={{
                                 display: 'grid',
                                 gridTemplateColumns: resultsGridColumns,
@@ -2215,6 +2234,16 @@ export function RateCalculator({ publicView }: RateCalculatorProps) {
                                 <Stack spacing={0.35} sx={{ minWidth: 0 }}>
                                   <Typography noWrap sx={{ fontSize: '0.8rem', fontWeight: 800, color: ui.ink }}>
                                     {displayName}
+                                  </Typography>
+                                  <Typography
+                                    noWrap
+                                    sx={{
+                                      fontSize: '0.62rem',
+                                      fontWeight: 900,
+                                      color: providerName === 'iThink' ? ui.accentDark : ui.muted,
+                                    }}
+                                  >
+                                    {providerName}
                                   </Typography>
                                 </Stack>
                               </Stack>
