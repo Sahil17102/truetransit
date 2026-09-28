@@ -4,10 +4,19 @@ import { Box, Button, CircularProgress, Grid, IconButton, Typography } from '@mu
 import axios from 'axios'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useMemo, useState } from 'react'
-import { type Control, Controller, type Path, type UseFormSetValue } from 'react-hook-form'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  type Control,
+  Controller,
+  type Path,
+  type UseFormClearErrors,
+  type UseFormSetError,
+  type UseFormSetValue,
+  useWatch,
+} from 'react-hook-form'
 import { IoChevronBack } from 'react-icons/io5'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+import { lookupPincodeLocation } from '../../api/locations'
 import { useDebouncedEffect } from '../../hooks/useDebounceEffect'
 import type { PickupFormValues } from '../../types/generic.types'
 import AutocompleteDropdown from '../UI/inputs/AutoCompleteDropdown'
@@ -24,6 +33,8 @@ const markerIcon = new L.Icon({
 interface IPickupAddressSectionProps {
   control: Control<PickupFormValues>
   setValue: UseFormSetValue<PickupFormValues>
+  setError: UseFormSetError<PickupFormValues>
+  clearErrors: UseFormClearErrors<PickupFormValues>
   required: (label: string) => { required: string }
   isEdit: boolean
   prefix: 'pickup' | 'rtoAddress'
@@ -103,6 +114,8 @@ const mapNominatimResultToSuggestion = (result: any): LocationSuggestion | null 
 const PickupAddressSection = ({
   control,
   setValue,
+  setError,
+  clearErrors,
   required,
   isEdit = false,
   prefix,
@@ -117,6 +130,12 @@ const PickupAddressSection = ({
   const [confirmingMap, setConfirmingMap] = useState(false)
   const [coords, setCoords] = useState<{ lat: number; lng: number }>({ lat: 28.6139, lng: 77.209 })
   const [fetchingSuggestions, setFetchingSuggestions] = useState(false)
+  const [fetchingPincode, setFetchingPincode] = useState(false)
+
+  const pincode = useWatch({
+    control,
+    name: `${prefix}.pincode` as Path<PickupFormValues>,
+  }) as string | undefined
 
   const geoapifyKey = useMemo(() => import.meta.env.VITE_PUBLIC_GEOAPIFY_KEY ?? '', [])
 
@@ -235,6 +254,61 @@ const PickupAddressSection = ({
     [inputValue],
     400,
   )
+
+  useEffect(() => {
+    const normalizedPincode = String(pincode ?? '')
+      .replace(/\D/g, '')
+      .slice(0, 6)
+    const pincodePath = `${prefix}.pincode` as Path<PickupFormValues>
+    const cityPath = `${prefix}.city` as Path<PickupFormValues>
+    const statePath = `${prefix}.state` as Path<PickupFormValues>
+    const countryPath = `${prefix}.country` as Path<PickupFormValues>
+
+    if (pincode !== normalizedPincode) {
+      setValue(pincodePath, normalizedPincode, { shouldDirty: true, shouldValidate: true })
+      return
+    }
+
+    if (!normalizedPincode || normalizedPincode.length < 6) {
+      clearErrors(pincodePath)
+      setFetchingPincode(false)
+      return
+    }
+
+    if (!/^[1-9][0-9]{5}$/.test(normalizedPincode)) {
+      setError(pincodePath, { type: 'manual', message: 'Enter a valid 6-digit pincode' })
+      return
+    }
+
+    let isCurrentLookup = true
+    const timer = window.setTimeout(async () => {
+      setFetchingPincode(true)
+      try {
+        const location = await lookupPincodeLocation(normalizedPincode)
+        if (!isCurrentLookup) return
+
+        if (!location) {
+          setError(pincodePath, { type: 'manual', message: 'Pincode not found' })
+          return
+        }
+
+        clearErrors([pincodePath, cityPath, statePath])
+        setValue(cityPath, location.city, { shouldDirty: true, shouldValidate: true })
+        setValue(statePath, location.state, { shouldDirty: true, shouldValidate: true })
+        setValue(countryPath, 'India', { shouldDirty: true, shouldValidate: true })
+      } catch {
+        if (!isCurrentLookup) return
+        setError(pincodePath, { type: 'manual', message: 'Could not fetch city and state' })
+      } finally {
+        if (isCurrentLookup) setFetchingPincode(false)
+      }
+    }, 300)
+
+    return () => {
+      isCurrentLookup = false
+      window.clearTimeout(timer)
+    }
+  }, [clearErrors, pincode, prefix, setError, setValue])
 
   const applyGeoPropsToForm = (props: any, lat: number, lng: number) => {
     const getSafe = (v?: string) => v ?? ''
@@ -590,7 +664,12 @@ const PickupAddressSection = ({
                         fullWidth
                         maxLength={name.startsWith('addressLine') ? 200 : undefined}
                         error={!!fieldState.error}
-                        helperText={fieldState.error?.message}
+                        helperText={
+                          fieldState.error?.message ||
+                          (name === 'pincode' && fetchingPincode
+                            ? 'Finding city and state...'
+                            : undefined)
+                        }
                         {...field}
                       />
                     )}

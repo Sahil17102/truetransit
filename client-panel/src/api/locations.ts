@@ -47,7 +47,7 @@ const lookupIndiaPostPincode = async (pincode: string): Promise<PincodeLocation 
     result.PostOffice.find((office) => office.Block) ??
     result.PostOffice[0]
 
-  const city = String(postOffice?.Block || postOffice?.District || postOffice?.Name || '').trim()
+  const city = String(postOffice?.District || postOffice?.Block || postOffice?.Name || '').trim()
   const state = String(postOffice?.State || '').trim()
 
   if (!city || !state) return null

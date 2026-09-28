@@ -40,14 +40,15 @@ const AddPickupAddressForm = ({
 
   const isEdit = !!initialData?.pickupId
 
-  const { control, handleSubmit, setValue, watch, reset } = useForm<PickupFormValues>({
-    mode: 'onBlur',
-    defaultValues: {
-      pickup: initialData?.pickup ?? {},
-      rtoAddress: initialData?.rto ?? {},
-      useDifferentRTO: initialData ? !initialData?.isRTOSame : false,
-    },
-  })
+  const { control, handleSubmit, setValue, setError, clearErrors, watch, reset } =
+    useForm<PickupFormValues>({
+      mode: 'onBlur',
+      defaultValues: {
+        pickup: initialData?.pickup ?? {},
+        rtoAddress: initialData?.rto ?? {},
+        useDifferentRTO: initialData ? !initialData?.isRTOSame : false,
+      },
+    })
 
   const useDifferentRTO = watch('useDifferentRTO')
 
@@ -129,6 +130,8 @@ const AddPickupAddressForm = ({
           {/* Pass setValue directly; do not prefix here */}
           <PickupAddressSection
             setValue={setValue}
+            setError={setError}
+            clearErrors={clearErrors}
             control={control}
             isEdit={isEdit}
             required={required}
@@ -164,6 +167,8 @@ const AddPickupAddressForm = ({
               <AccordionDetails>
                 <PickupAddressSection
                   setValue={setValue}
+                  setError={setError}
+                  clearErrors={clearErrors}
                   control={control}
                   isEdit={initialData?.pickupId}
                   required={required}
