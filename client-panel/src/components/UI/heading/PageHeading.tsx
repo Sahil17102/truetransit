@@ -90,6 +90,129 @@ const getHeadingIcon = (title: string) => {
   return TbChecklist
 }
 
+interface HeadingWidgetTone {
+  background: string
+  color: string
+  border: string
+  shadow: string
+}
+
+const getHeadingWidgetTone = (title: string): HeadingWidgetTone => {
+  const normalizedTitle = title.toLowerCase()
+
+  if (normalizedTitle.includes('create') && normalizedTitle.includes('order')) {
+    return {
+      background: 'linear-gradient(145deg, #E6F8F1 0%, #CDEFE3 100%)',
+      color: '#087A57',
+      border: 'rgba(20, 155, 109, 0.24)',
+      shadow: '0 10px 22px rgba(20, 155, 109, 0.18)',
+    }
+  }
+  if (normalizedTitle.includes('ndr') || normalizedTitle.includes('pending action')) {
+    return {
+      background: 'linear-gradient(145deg, #FFF4E5 0%, #FFE2BC 100%)',
+      color: '#B45309',
+      border: 'rgba(217, 120, 66, 0.25)',
+      shadow: '0 10px 22px rgba(217, 120, 66, 0.17)',
+    }
+  }
+  if (normalizedTitle.includes('rto')) {
+    return {
+      background: 'linear-gradient(145deg, #FFF0F1 0%, #FAD7DA 100%)',
+      color: '#B83D49',
+      border: 'rgba(201, 74, 84, 0.24)',
+      shadow: '0 10px 22px rgba(201, 74, 84, 0.16)',
+    }
+  }
+  if (normalizedTitle.includes('tracking') || normalizedTitle.includes('courier') || normalizedTitle.includes('shipping charge')) {
+    return {
+      background: 'linear-gradient(145deg, #EAF4FF 0%, #D5E8FB 100%)',
+      color: '#2563A6',
+      border: 'rgba(37, 99, 166, 0.22)',
+      shadow: '0 10px 22px rgba(37, 99, 166, 0.16)',
+    }
+  }
+  if (normalizedTitle.includes('channel') || normalizedTitle.includes('integration') || normalizedTitle.includes('api')) {
+    return {
+      background: 'linear-gradient(145deg, #F1EDFF 0%, #E2D9FF 100%)',
+      color: '#6750B8',
+      border: 'rgba(103, 80, 184, 0.22)',
+      shadow: '0 10px 22px rgba(103, 80, 184, 0.16)',
+    }
+  }
+  if (normalizedTitle.includes('report') || normalizedTitle.includes('analytics')) {
+    return {
+      background: 'linear-gradient(145deg, #E9F0FF 0%, #D9E3FF 100%)',
+      color: '#4059AD',
+      border: 'rgba(64, 89, 173, 0.22)',
+      shadow: '0 10px 22px rgba(64, 89, 173, 0.16)',
+    }
+  }
+  if (normalizedTitle.includes('wallet') || normalizedTitle.includes('passbook') || normalizedTitle.includes('recharge') || normalizedTitle.includes('cod') || normalizedTitle.includes('remittance')) {
+    return {
+      background: 'linear-gradient(145deg, #EAF8EE 0%, #D4EFDC 100%)',
+      color: '#23834F',
+      border: 'rgba(35, 131, 79, 0.22)',
+      shadow: '0 10px 22px rgba(35, 131, 79, 0.16)',
+    }
+  }
+  if (normalizedTitle.includes('invoice') || normalizedTitle.includes('billing') || normalizedTitle.includes('debit note') || normalizedTitle.includes('credit note') || normalizedTitle.includes('ledger')) {
+    return {
+      background: 'linear-gradient(145deg, #FFF3EA 0%, #FBE1D2 100%)',
+      color: '#B65F32',
+      border: 'rgba(182, 95, 50, 0.22)',
+      shadow: '0 10px 22px rgba(182, 95, 50, 0.16)',
+    }
+  }
+  if (normalizedTitle.includes('rate') || normalizedTitle.includes('weight') || normalizedTitle.includes('discrepancy')) {
+    return {
+      background: 'linear-gradient(145deg, #FFF9DF 0%, #F4E9B8 100%)',
+      color: '#8A6A09',
+      border: 'rgba(138, 106, 9, 0.22)',
+      shadow: '0 10px 22px rgba(138, 106, 9, 0.15)',
+    }
+  }
+  if (normalizedTitle.includes('support') || normalizedTitle.includes('contact')) {
+    return {
+      background: 'linear-gradient(145deg, #FFF0F6 0%, #F8D8E7 100%)',
+      color: '#A83E70',
+      border: 'rgba(168, 62, 112, 0.22)',
+      shadow: '0 10px 22px rgba(168, 62, 112, 0.15)',
+    }
+  }
+  if (normalizedTitle.includes('user') || normalizedTitle.includes('account') || normalizedTitle.includes('profile') || normalizedTitle.includes('permission')) {
+    return {
+      background: 'linear-gradient(145deg, #F0EEFF 0%, #DDD9F8 100%)',
+      color: '#5F52A8',
+      border: 'rgba(95, 82, 168, 0.22)',
+      shadow: '0 10px 22px rgba(95, 82, 168, 0.15)',
+    }
+  }
+  if (normalizedTitle.includes('setting') || normalizedTitle.includes('preference') || normalizedTitle.includes('keyboard')) {
+    return {
+      background: 'linear-gradient(145deg, #EDF3F8 0%, #DCE7F0 100%)',
+      color: '#425D78',
+      border: 'rgba(66, 93, 120, 0.20)',
+      shadow: '0 10px 22px rgba(66, 93, 120, 0.14)',
+    }
+  }
+  if (normalizedTitle.includes('policy') || normalizedTitle.includes('privacy') || normalizedTitle.includes('terms') || normalizedTitle.includes('legal')) {
+    return {
+      background: 'linear-gradient(145deg, #EAF7F8 0%, #D4ECEE 100%)',
+      color: '#25747A',
+      border: 'rgba(37, 116, 122, 0.22)',
+      shadow: '0 10px 22px rgba(37, 116, 122, 0.15)',
+    }
+  }
+
+  return {
+    background: 'linear-gradient(145deg, #EEF3F8 0%, #DCE7F1 100%)',
+    color: brand.navy,
+    border: 'rgba(20, 43, 79, 0.18)',
+    shadow: '0 10px 22px rgba(20, 43, 79, 0.14)',
+  }
+}
+
 const PageHeading: React.FC<PageHeadingProps> = ({
   title,
   subtitle,
@@ -106,6 +229,7 @@ const PageHeading: React.FC<PageHeadingProps> = ({
   const normalizedEyebrow = typeof eyebrow === 'string' ? normalizeHeadingText(eyebrow) : eyebrow
   const HeadingIcon = getHeadingIcon(typeof normalizedTitle === 'string' ? normalizedTitle : '')
   const resolvedIcon = icon ?? <HeadingIcon size={20} strokeWidth={1.8} />
+  const widgetTone = getHeadingWidgetTone(typeof normalizedTitle === 'string' ? normalizedTitle : '')
 
   return (
     <Box
@@ -137,15 +261,16 @@ const PageHeading: React.FC<PageHeadingProps> = ({
           >
             <Box
               sx={{
-                width: 36,
-                height: 36,
-                borderRadius: '10px',
-                background: brandGradients.button,
-                color: brand.ink,
+                width: 40,
+                height: 40,
+                borderRadius: '12px',
+                background: widgetTone.background,
+                color: widgetTone.color,
+                border: `1px solid ${widgetTone.border}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 10px 20px rgba(130,194,255,0.24)',
+                boxShadow: widgetTone.shadow,
               }}
             >
               {resolvedIcon}
