@@ -2,7 +2,36 @@ import { alpha, Box, Stack, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { motion } from 'framer-motion'
 import React from 'react'
-import { TbSparkles } from 'react-icons/tb'
+import {
+  TbAlertTriangle,
+  TbApps,
+  TbArrowBackUp,
+  TbBook2,
+  TbBuilding,
+  TbCalculator,
+  TbChartBar,
+  TbChecklist,
+  TbCircleKey,
+  TbCoinRupee,
+  TbFileAnalytics,
+  TbFileInvoice,
+  TbFileText,
+  TbHeadset,
+  TbKeyboard,
+  TbListDetails,
+  TbPackageExport,
+  TbPlugConnected,
+  TbReceipt,
+  TbRoute,
+  TbScale,
+  TbSettings,
+  TbShieldCheck,
+  TbTag,
+  TbTruckDelivery,
+  TbUser,
+  TbUsers,
+  TbWallet,
+} from 'react-icons/tb'
 import { brand, brandGradients } from '../../../theme/brand'
 
 interface PageHeadingProps {
@@ -24,12 +53,49 @@ const normalizeHeadingText = (value: string) =>
     .replace(/Â©/g, '©')
     .replace(/Â®/g, '®')
 
+const getHeadingIcon = (title: string) => {
+  const normalizedTitle = title.toLowerCase()
+
+  if (normalizedTitle.includes('create') && normalizedTitle.includes('order')) return TbPackageExport
+  if (normalizedTitle.includes('tracking')) return TbRoute
+  if (normalizedTitle.includes('ndr') || normalizedTitle.includes('pending action')) return TbAlertTriangle
+  if (normalizedTitle.includes('rto')) return TbArrowBackUp
+  if (normalizedTitle.includes('courier')) return TbTruckDelivery
+  if (normalizedTitle.includes('channel')) return TbApps
+  if (normalizedTitle.includes('integration') || normalizedTitle.includes('api')) return TbPlugConnected
+  if (normalizedTitle.includes('report')) return TbFileAnalytics
+  if (normalizedTitle.includes('invoice')) return TbFileInvoice
+  if (normalizedTitle.includes('cod') || normalizedTitle.includes('remittance')) return TbCoinRupee
+  if (normalizedTitle.includes('wallet') || normalizedTitle.includes('passbook') || normalizedTitle.includes('recharge')) return TbWallet
+  if (normalizedTitle.includes('shipping charge')) return TbTruckDelivery
+  if (normalizedTitle.includes('credit note')) return TbCoinRupee
+  if (normalizedTitle.includes('debit note') || normalizedTitle.includes('billing')) return TbReceipt
+  if (normalizedTitle.includes('ledger')) return TbListDetails
+  if (normalizedTitle.includes('rate')) return TbCalculator
+  if (normalizedTitle.includes('weight') || normalizedTitle.includes('discrepancy')) return TbScale
+  if (normalizedTitle.includes('support') || normalizedTitle.includes('contact')) return TbHeadset
+  if (normalizedTitle.includes('keyboard')) return TbKeyboard
+  if (normalizedTitle.includes('permission') || normalizedTitle.includes('privacy')) return TbShieldCheck
+  if (normalizedTitle.includes('user')) return TbUsers
+  if (normalizedTitle.includes('account') || normalizedTitle.includes('profile')) return TbUser
+  if (normalizedTitle.includes('company')) return TbBuilding
+  if (normalizedTitle.includes('label')) return TbTag
+  if (normalizedTitle.includes('setting') || normalizedTitle.includes('preference')) return TbSettings
+  if (normalizedTitle.includes('terms') || normalizedTitle.includes('policy') || normalizedTitle.includes('legal')) return TbFileText
+  if (normalizedTitle.includes('resource') || normalizedTitle.includes('about')) return TbBook2
+  if (normalizedTitle.includes('status')) return TbChecklist
+  if (normalizedTitle.includes('key')) return TbCircleKey
+  if (normalizedTitle.includes('analytics')) return TbChartBar
+
+  return TbChecklist
+}
+
 const PageHeading: React.FC<PageHeadingProps> = ({
   title,
   subtitle,
   center = false,
   fontSize,
-  icon = <TbSparkles size={18} />,
+  icon,
   eyebrow = 'Panel',
 }) => {
   const theme = useTheme()
@@ -38,6 +104,8 @@ const PageHeading: React.FC<PageHeadingProps> = ({
   const normalizedSubtitle =
     typeof subtitle === 'string' ? normalizeHeadingText(subtitle) : subtitle
   const normalizedEyebrow = typeof eyebrow === 'string' ? normalizeHeadingText(eyebrow) : eyebrow
+  const HeadingIcon = getHeadingIcon(typeof normalizedTitle === 'string' ? normalizedTitle : '')
+  const resolvedIcon = icon ?? <HeadingIcon size={20} strokeWidth={1.8} />
 
   return (
     <Box
@@ -80,7 +148,7 @@ const PageHeading: React.FC<PageHeadingProps> = ({
                 boxShadow: '0 10px 20px rgba(130,194,255,0.24)',
               }}
             >
-              {icon}
+              {resolvedIcon}
             </Box>
           </motion.div>
           <Stack spacing={0.4}>
